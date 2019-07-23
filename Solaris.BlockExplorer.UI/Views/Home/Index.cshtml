@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
+}
+@model IEnumerable<IBlockModel>
+<div class="text-left">
+    <h1 class="display-4">Blocks</h1>
+    <table class="table text-left">
+        <tr>
+            <th>Height</th>
+            <th>Time</th>
+            <th>Transactions</th>
+            <th class="text-right">Value</th>
+            <th class="text-right">Difficulty</th>
+        </tr>
+    @foreach (var block in Model)
+    {
+        <tr>
+            <td><a href="@Url.Action("Index", "Block", new { blockHash = block.Hash })">@block.Height</a></td>
+            <td>@block.Time</td>
+            <td>@block.TransactionCount</td>
+            <td class="text-right">@block.ValueOut @ViewBag.Ticker</td>
+            <td class="text-right">@block.Difficulty</td>
+        </tr>
+    }
+    </table>
+</div>

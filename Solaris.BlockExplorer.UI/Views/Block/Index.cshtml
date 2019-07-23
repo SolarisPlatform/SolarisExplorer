@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IBlockTransactionsModel
+
+<div class="text-left">
+    <h1 class="display-4">Details for Block #@Model.Block.Height</h1>
+    <table class="table text-left">
+        <tr>
+            <th>Hash</th>
+            <td><code>@Model.Block.Hash</code></td>
+        </tr>
+        <tr>
+            <th>Date/Time</th>
+            <td>@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</td>
+        </tr>
+        <tr>
+            <th>Transactions</th>
+            <td>@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></td>
+        </tr>
+        <tr>
+            <th>Value Out</th>
+            <td>@Model.Block.ValueOut @ViewBag.Ticker</td>
+        </tr>
+    </table>
+    <h1 class="display-4">Transactions</h1>
+    <table class="table text-left">
+        <tr>
+            <th>Hash</th>
+            <th class="text-right">Value Out</th>
+            <th class="text-left pl-4">From (amount)</th>
+            <th class="text-left pl-4">To (amount)</th>
+        </tr>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Index", "Transaction", new { transactionHash = transaction.Hash })"><code>@transaction.Hash</code></a>
+                </td>
+                <td class="text-right">@transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
+                <td class="text-left">
+                    <table class="table table-borderless">
+                        @foreach (var input in transaction.Inputs)
+                        {
+                            <tr>
+                                <td>
+                                    @(string.Join("<br/>", input.From))
+
+                                    @if (!input.From.Any())
+                                    {
+                                        <span>Generation + Fees</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td class="text-right">
+                    <table class="table table-borderless">
+                        @foreach (var output in transaction.Outputs)
+                        {
+                            <tr>
+                                <td class="text-left">@(string.Join("<br/>", output.ScriptPubKey.Addresses))/td>
+                                <td>@output.Value @ViewBag.Ticker</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model ITransactionModel
+<div class="text-left">
+    <h1 class="display-4">Details for Transaction</h1>
+    <table class="table text-left">
+        <tr>
+            <th>Hash</th>
+            <td><code>@Model.Hash</code></td>
+        </tr>
+        <tr>
+            <th>Block Height</th>
+            <td>@Model.BlockHash</td>
+        </tr>
+        <tr>
+            <th>Block Time</th>
+            <td>@DateTimeOffset.FromUnixTimeSeconds(Model.BlockTime)</td>
+        </tr>
+        <tr>
+            <th>Total Output</th>
+            <td>@Model.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
+        </tr>
+    </table>
+</div>
+
