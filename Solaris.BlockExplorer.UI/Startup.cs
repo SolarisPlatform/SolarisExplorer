@@ -45,7 +45,8 @@ namespace Solaris.BlockExplorer.UI
                     return mongoClient.GetDatabase(databaseName);
                 })
                 .AddScoped<IBlockService, BlockService>()
-                .AddScoped<ITransactionService, TransactionService>();
+                .AddScoped<ITransactionService, TransactionService>()
+                .AddScoped<IAddressService, AddressService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

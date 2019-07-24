@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IAddressModel
+<div class="text-left">
+    <h1 class="display-4">Details for Address</h1>
+    <table class="table text-left">
+        <tr>
+            <th>Address</th>
+            <td><code>@Model.Address</code></td>
+        </tr>
+        <tr>
+            <th>Balance</th>
+            <td>@Model.Balance @ViewBag.Ticker</td>
+        </tr>
+        <tr>
+            <th>Received</th>
+            <td>@Model.Received @ViewBag.Ticker (in @Model.ReceivedCount transactions)</td>
+        </tr>
+        <tr>
+            <th>Sent</th>
+            <td>@Model.Sent @ViewBag.Ticker (in @Model.SentCount transactions)</td>
+        </tr>
+        <tr>
+            <th>Staked/Mined</th>
+            <td>@Model.Mined @ViewBag.Ticker (in @Model.MinedCount transactions)</td>
+        </tr>
+    </table>
+</div>
+

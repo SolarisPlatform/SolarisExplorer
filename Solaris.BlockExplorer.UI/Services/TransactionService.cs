@@ -36,6 +36,22 @@ namespace Solaris.BlockExplorer.UI.Services
             return transactions;
         }
 
+        public async Task<IEnumerable<ITransactionModel>> GetTransactionsForAddress(string address)
+        {
+            var collection = GetCollection();
+            var result = await collection.FindAsync(p => p.Outputs.Any(output => output.ScriptPubKey.Addresses.Contains(address)));
+
+            var transactions = await result.ToListAsync();
+
+            foreach (var transaction in transactions)
+            {
+                await SetInputs(transaction);
+                await SetRedeemed(transaction);
+            }
+
+            return transactions;            
+        }
+
         public async Task<ITransactionModel> GetTransaction(string transactionHash, bool recursive = false)
         {
             var collection = GetCollection();
