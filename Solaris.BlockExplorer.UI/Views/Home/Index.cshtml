@@ -2,25 +2,62 @@
     ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
 }
 @model IEnumerable<IBlockModel>
-<div class="text-left">
-    <h1 class="display-4">Blocks</h1>
-    <table class="table text-left">
-        <tr>
-            <th>Height</th>
-            <th>Time</th>
-            <th>Transactions</th>
-            <th class="text-right">Value</th>
-            <th class="text-right">Difficulty</th>
-        </tr>
-    @foreach (var block in Model)
-    {
-        <tr>
-            <td><a href="@Url.Action("Index", "Block", new { blockHash = block.Hash })">@block.Height</a></td>
-            <td>@block.Time</td>
-            <td>@block.TransactionCount</td>
-            <td class="text-right">@block.ValueOut @ViewBag.Ticker</td>
-            <td class="text-right">@block.Difficulty</td>
-        </tr>
-    }
-    </table>
+
+<div class="container info-box-container">
+    <div class="row">
+        <div class="col-4 text-center">
+            <div class="homepage-info-box mx-3">
+                <h4>Current Block height</h4>
+                <p>145,241</p>
+            </div>
+        </div>
+        <div class="col-4 text-center">
+            <div class="homepage-info-box mx-3">
+                <h4>Circulating Supply</h4>
+                <p>145,241</p>
+            </div>
+        </div>
+        <div class="col-4 text-center">
+            <div class="homepage-info-box mx-3">
+                <h4>Current price</h4>
+                <p>145,241</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="text-left" id="main-table-block">
+
+    <h1 class="display-4">Blocks</h1><hr/>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table text-left table-borderless">
+                <thead class="main-table-header">
+                <tr>
+                    <th class="text-center">Block Height</th>
+                    <th class="text-center">Block Hash</th>
+                    <th class="text-center">Transactions</th>
+                    <th class="text-center">Amount</th>
+                    <th class="text-center">Time</th>
+                </tr>
+                </thead>
+
+
+                @foreach (var block in Model)
+                {
+                    <tr>
+                        <td class="text-center"><a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Height</a></td>
+                        <td class="text-center"><a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Hash</a></td>
+                        <td class="text-center">@block.TransactionCount</td>
+                        <td class="text-center">@block.ValueOut @ViewBag.Ticker</td>
+                        <td class="text-center">@block.Time</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    
+
 </div>
