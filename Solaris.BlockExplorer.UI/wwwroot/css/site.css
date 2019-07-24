@@ -62,9 +62,11 @@ hr {
 .table-title {
     text-transform: uppercase;
     color: #387fe1;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    padding: 10px 0 0 10px;
+    border-bottom: solid 1px #363c4e;
+    padding-bottom: 5px;
+    padding-top: 10px;
 }
 
 table {
@@ -80,14 +82,15 @@ table td {
 .card {
     border-radius: 4px;
     background: #131722;
-    padding: 0 5px;
+    padding: 0 10px;
 }
 
 .main-table-header {
     text-transform: uppercase;
     background: #2f3241;
     color: #50819e;
-    font-size: 11px;
+    font-size: 9px;
+    font-weight: bold;
 }
 
 
