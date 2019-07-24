@@ -5,46 +5,46 @@
 }
 @model IBlockTransactionsModel
 
-<div class="text-center details-table-width">
-    
+    <div class="text-center details-table-width mt-4">
 
-    <h1 class="display-4">Details for Block #@Model.Block.Height</h1>
-    <div class="card">
-        <table class="table text-left table-borderless">
-            <tr>
-                <th>Hash</th>
-                <td><code>@Model.Block.Hash</code></td>
-            </tr>
-            <tr>
-                <th>Date/Time</th>
-                <td>@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</td>
-            </tr>
-            <tr>
-                <th>Transactions</th>
-                <td>@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></td>
-            </tr>
-            <tr>
-                <th>Value Out</th>
-                <td>@Model.Block.ValueOut @ViewBag.Ticker</td>
-            </tr>
-        </table>
+        <div class="card">
+            <h1 class="table-title">Details for Block #@Model.Block.Height</h1><hr />
+
+            <table class="table text-left table-borderless details-table">
+                <tr>
+                    <th>Hash</th>
+                    <td><code>@Model.Block.Hash</code></td>
+                </tr>
+                <tr>
+                    <th>Date/Time</th>
+                    <td>@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</td>
+                </tr>
+                <tr>
+                    <th>Transactions</th>
+                    <td>@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></td>
+                </tr>
+                <tr>
+                    <th>Value Out</th>
+                    <td>@Model.Block.ValueOut @ViewBag.Ticker</td>
+                </tr>
+            </table>
+        </div>
     </div>
-</div>
 <br />
 
 
 <div class="text-left transaction-table-width">
-    <h1 class="display-4">Transactions</h1><hr />
     <div class="card">
+        <h1 class="table-title">Transactions</h1><hr />
         <div class="table-responsive">
             <table class="table text-left table-borderless">
                 <thead class="main-table-header">
-                <tr>
-                    <th>Transaction Hash</th>
-                    <th class="text-right">Value Out</th>
-                    <th class="text-left pl-4">From</th>
-                    <th class="text-left pl-4">To (amount)</th>
-                </tr>
+                    <tr>
+                        <th>Transaction Hash</th>
+                        <th class="text-right">Value Out</th>
+                        <th class="text-left pl-4">From</th>
+                        <th class="text-left pl-4">To (amount)</th>
+                    </tr>
                 </thead>
                 @foreach (var transaction in Model.Transactions)
                 {

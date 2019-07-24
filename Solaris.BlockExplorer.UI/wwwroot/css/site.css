@@ -16,7 +16,7 @@ a.navbar-brand {
 }
 
 .nav-bar-bg {
-    background: #071162;
+    background: #131722;
 }
 
 .solaris-navbar-logo {
@@ -100,6 +100,10 @@ table td {
 .details-table-width {
     max-width: 50%;
     margin: auto;
+}
+
+.details-table th {
+    color: white;
 }
 
 
