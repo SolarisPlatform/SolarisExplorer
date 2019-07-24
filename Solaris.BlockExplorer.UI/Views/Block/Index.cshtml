@@ -41,9 +41,9 @@
                 <thead class="main-table-header">
                     <tr>
                         <th>Transaction Hash</th>
-                        <th class="text-right">Value Out</th>
-                        <th class="text-left pl-4">From</th>
-                        <th class="text-left pl-4">To (amount)</th>
+                        <th class="text-center">Value Out</th>
+                        <th class="text-center pl-4">From</th>
+                        <th class="text-center pl-4">To (amount)</th>
                     </tr>
                 </thead>
                 @foreach (var transaction in Model.Transactions)
@@ -52,9 +52,9 @@
                         <td>
                             <a href="@Url.Action("Index", "Transaction", new {transactionHash = transaction.Hash})"><code>@transaction.Hash</code></a>
                         </td>
-                        <td class="text-right">@transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
-                        <td class="text-left">
-                            <table class="table table-borderless ">
+                        <td class="text-center">@transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
+                        <td class="text-center">
+                            <table class="table table-borderless blocks-table-padding">
                                 @foreach (var input in transaction.Inputs)
                                 {
                                     <tr>
@@ -71,7 +71,7 @@
                             </table>
                         </td>
                         <td class="text-right">
-                            <table class="table table-borderless">
+                            <table class="table table-borderless blocks-table-padding">
                                 @foreach (var output in transaction.Outputs)
                                 {
                                     <tr>

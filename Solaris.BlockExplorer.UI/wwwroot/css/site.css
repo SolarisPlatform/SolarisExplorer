@@ -27,6 +27,13 @@ a.navbar-brand {
 hr {
     border-top: 1px solid #2f3241;
 }
+
+.rows {
+    padding: 2px;
+    border: solid 1px transparent;
+    border-bottom: dotted 1px #2f3241;
+}
+
 /* Home page styles
 -------------------------------------------------- */
 
@@ -35,10 +42,11 @@ hr {
 }
 
 .homepage-info-box {
-    border: 0px solid grey;
+    border: 1px solid rgba(236, 236, 236, 0.180);
     border-radius: 3px;
     background: #131722;
     color: white;
+    margin-bottom: 10px;
 }
 
 
@@ -51,8 +59,6 @@ hr {
     padding: 10px 0 20px 0;
     font-size: 1.4em;
 }
-
-
 
 #main-table-block {
     max-width: 70%;
@@ -83,6 +89,7 @@ table td {
     border-radius: 4px;
     background: #131722;
     padding: 0 10px;
+    border: 1px solid rgba(236, 236, 236, 0.180);
 }
 
 .main-table-header {
@@ -115,14 +122,11 @@ table td {
     margin: auto;
 }
 
-
+.blocks-table-padding {
+    margin-top: -9px;
+}
 /* Transaction page styles
 -------------------------------------------------- */
-
-
-
-
-
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
