@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
 }
 
 a.navbar-brand {
@@ -12,7 +12,7 @@ a.navbar-brand {
 }
 
 .main-background {
-    background: #F5F5F5;
+    background: #2f3241;
 }
 
 .nav-bar-bg {
@@ -22,6 +22,10 @@ a.navbar-brand {
 .solaris-navbar-logo {
     padding-left: 50px;
 
+}
+
+hr {
+    border-top: 1px solid #2f3241;
 }
 /* Home page styles
 -------------------------------------------------- */
@@ -33,10 +37,8 @@ a.navbar-brand {
 .homepage-info-box {
     border: 0px solid grey;
     border-radius: 3px;
-    -webkit-box-shadow: 0px 1px 2px #7f8be3;
-    -moz-box-shadow: 0px 1px 2px #7f8be3;
-    box-shadow: 0px 1px 2px #7f8be3;
-    background: white;
+    background: #131722;
+    color: white;
 }
 
 
@@ -56,25 +58,35 @@ a.navbar-brand {
     margin: auto;
 }
 
+.table-title {
+    text-transform: uppercase;
+    color: #387fe1;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 0 0 10px;
+}
+
 table {
     border-collapse: collapse;
-    border-radius: 4px;
     overflow: hidden;
-    
+    background: #131722;
+}
+
+table td {
+    color: white;
 }
 
 .card {
     border-radius: 4px;
-    border: 0px solid grey;
-    -webkit-box-shadow: 0px 1px 2px #7f8be3;
-    -moz-box-shadow: 0px 1px 2px #7f8be3;
-    box-shadow: 0px 1px 2px #7f8be3;
+    background: #131722;
+    padding: 0 5px;
 }
 
 .main-table-header {
-    background: #0a1992;
-    color: #f7f7ff;
-    font-size: 1.15em;
+    text-transform: uppercase;
+    background: #2f3241;
+    color: #50819e;
+    font-size: 11px;
 }
 
 
