@@ -8,5 +8,6 @@
         ScriptSigModel ScriptSig { get; set; }
         long Sequence { get; set; }
         string CoinBase { get; set; }
+        decimal Amount { get; set; }
     }
 }

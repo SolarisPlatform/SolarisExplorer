@@ -5,5 +5,7 @@
         public decimal Value { get; set; }
         public long Index { get; set; }
         public ScriptPubKeyModel ScriptPubKey { get; set; }
+        public string RedeemedTxId { get; set; }
+        public long RedeemedIndex { get; set; }
     }
 }

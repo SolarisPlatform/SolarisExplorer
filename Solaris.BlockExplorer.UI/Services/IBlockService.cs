@@ -8,5 +8,6 @@ namespace Solaris.BlockExplorer.UI.Services
     {
         Task<IEnumerable<IBlockModel>> GetBlocks(int limit = 150);
         Task<IBlockModel> GetBlock(string blockHash);
+        Task<IBlockModel> GetLastBlock();
     }
 }

@@ -15,7 +15,9 @@ namespace Solaris.BlockExplorer.UI.Models
         public long VSize { get; set; }
         public long LockTime { get; set; }
         public string BlockHash { get; set; }
+        public IBlockModel Block { get; set; }
         public long Time { get; set; }
         public long BlockTime { get; set; }
+        public long Confirmations { get; set; }
     }
 }

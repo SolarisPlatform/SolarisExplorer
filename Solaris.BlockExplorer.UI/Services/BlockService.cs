@@ -38,6 +38,21 @@ namespace Solaris.BlockExplorer.UI.Services
             return result.FirstOrDefault();
         }
 
+        public async Task<IBlockModel> GetLastBlock()
+        {
+            var collection = GetCollection();
+            var findOptions = new FindOptions<BlockModel, BlockModel>
+            {
+                Limit = 1,
+                Sort = Builders<BlockModel>.Sort.Descending(block => block.Id)
+            };
+            var findResults = await collection.FindAsync(FilterDefinition<BlockModel>.Empty, findOptions);
+
+            var current = findResults.FirstOrDefault();
+
+            return current;
+        }
+
         private IMongoCollection<BlockModel> GetCollection()
         {
             var section = _configuration.GetSection("MongoDB");

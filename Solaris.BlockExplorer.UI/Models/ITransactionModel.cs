@@ -12,7 +12,9 @@
         long VSize { get; set; }
         long LockTime { get; set; }
         string BlockHash { get; set; }
+        IBlockModel Block { get; set; }
         long Time { get; set; }
         long BlockTime { get; set; }
+        long Confirmations { get; set; }
     }
 }
