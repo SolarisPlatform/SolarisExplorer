@@ -33,57 +33,54 @@
 <br />
 
 
-<div class="text-left transaction-table-width">
-    <div class="card">
-        <h1 class="table-title">Transactions</h1>
-        <div class="table-responsive">
-            <table class="table text-left table-borderless">
-                <thead class="main-table-header">
-                    <tr>
-                        <th>Transaction Hash</th>
-                        <th class="text-center">Value Out</th>
-                        <th class="text-center pl-4">From</th>
-                        <th class="text-center pl-4">To (amount)</th>
-                    </tr>
-                </thead>
+
+<div class="card" id="main-table-block">
+    <h1 class="table-title">Transactions</h1>
+    <div class="row row-header">
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 col-xxxl-4 row-header-column text-left">Transaction Hash</div>
+        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Value Out</div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-left">From</div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-left">To</div>
+        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">Amount</div>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 @foreach (var transaction in Model.Transactions)
                 {
-                    <tr>
-                        <td>
+                    <div class="row rows">
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 col-xxxl-4 row-column text-left">
                             <a href="@Url.Action("Index", "Transaction", new {transactionHash = transaction.Hash})"><code>@transaction.Hash</code></a>
-                        </td>
-                        <td class="text-center">@transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
-                        <td class="text-center">
-                            <table class="table table-borderless blocks-table-padding">
-                                @foreach (var input in transaction.Inputs)
-                                {
-                                    <tr>
-                                        <td>
-                                            @(string.Join("<br/>", input.From))
+                        </div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                            @transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker
+                        </div>
 
-                                            @if (!input.From.Any())
-                                            {
-                                                <span>Generation + Fees</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-                        <td class="text-right">
-                            <table class="table table-borderless blocks-table-padding">
-                                @foreach (var output in transaction.Outputs)
+                        @foreach (var input in transaction.Inputs)
+                        {
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-left">
+                                @(string.Join("<br/>", input.From))
+
+                                @if (!input.From.Any())
                                 {
-                                    <tr>
-                                        <td class="text-left">@(string.Join("<br/>", output.ScriptPubKey.Addresses))</td>
-                                        <td>@output.Value @ViewBag.Ticker</td>
-                                    </tr>
+                                    <span>Generation + Fees</span>
                                 }
-                            </table>
-                        </td>
-                    </tr>
+                            </div>
+                        }
+                        @foreach (var output in transaction.Outputs)
+                        {
+                            
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-left">
+                                @(string.Join("<br/>", output.ScriptPubKey.Addresses))
+                            </div>
+                            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                                @output.Value @ViewBag.Ticker
+                            </div>
+
+                        }
+
+                    </div>
                 }
-            </table>
+            </div>
         </div>
     </div>
-</div>
+
