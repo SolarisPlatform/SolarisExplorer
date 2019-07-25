@@ -80,27 +80,7 @@ a.navbar-brand {
     background: #FFC037;
 }
 
-@media (min-width: 220px) and (max-width:991px) {
 
-
-
-    .social-nav-bar {
-        padding-bottom: 15px;
-        padding-top: 15px;
-        flex-direction: row;
-    }
-
-    .social-nav-bar li {
-        padding: 0 5px;
-            
-    }
-
-    .social li {
-        display: inline-block;
-        margin: 0 2px;
-
-    }
-}
 
     /* Main tables and Home page styles
 -------------------------------------------------- */
@@ -242,6 +222,8 @@ a.navbar-brand {
     .row-column {
         padding-left: 0;
         padding-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
     .row-header-column {
