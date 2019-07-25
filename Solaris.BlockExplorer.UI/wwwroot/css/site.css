@@ -283,21 +283,27 @@ a.navbar-brand {
         margin: auto;
     }
 
-    .details-table th {
-        color: white;
-    }
+.details-row-title {
+    font-weight: bold;
+    padding-left: 5px;
+}
 
-
-    .transaction-table-width {
-        max-width: 70%;
-        margin: auto;
-    }
+.transaction-table-width {
+    max-width: 70%;
+    margin: auto;
+}
 
     .blocks-table-padding {
         margin-top: -9px;
     }
+
+
     /* Transaction page styles
 -------------------------------------------------- */
+
+
+
+
     /* Sticky footer styles
 -------------------------------------------------- */
     html {

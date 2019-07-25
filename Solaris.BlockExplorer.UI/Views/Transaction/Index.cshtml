@@ -10,7 +10,47 @@
     <div class="card">
         <h1 class="table-title">Details for Transaction</h1>
 
-        <table class="table text-left table-borderless details-table">
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Hash</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column text-info">@Model.Hash</div>
+        </div>
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Size</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@Math.Round((Model.Size / 1024m), 4) kB</div>
+        </div>
+        @if (Model.LockTime > 0)
+        {
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Lock Time</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@Model.LockTime</div>
+            </div>
+        }
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Block Height</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Block.Height (@Model.Confirmations Confirmations)</div>
+        </div>
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Block Time</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@DateTimeOffset.FromUnixTimeSeconds(Model.BlockTime)</div>
+        </div>
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Total Outputs</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Outputs.Sum(p => p.Value) @ViewBag.Ticker</div>
+        </div>
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Total Inputs</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Inputs.Sum(p => p.Amount) @ViewBag.Ticker</div>
+        </div>
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Fee</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@(Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) @ViewBag.Ticker</div>
+        </div>
+        <div class="row rows">
+            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 text-left row-column details-row-title">Fee per byte</div>
+            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-10 col-xxl-10 col-xxxl-10 text-left row-column">@(Math.Round((Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) / Model.Size * 100000000m, 4)) sat/B</div>
+        </div>
+
+        @*<table class="table text-left table-borderless details-table">
             <tr>
                 <th>Hash</th>
                 <td><code>@Model.Hash</code></td>
@@ -50,8 +90,11 @@
                 <th>Fee per byte</th>
                 <td>@(Math.Round((Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) / Model.Size * 100000000m, 4)) sat/B</td>
             </tr>
-        </table>
+        </table>*@
+
+
     </div>
+
 </div>
 
 <br />
@@ -89,7 +132,7 @@
                               </a>
                           }
                     </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-center">
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-center">
                         @string.Join("<br/>", input.From)
                     </div>
                     <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
@@ -140,7 +183,7 @@
                             </a>
                         }
                     </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-center">
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-center">
                         @string.Join("<br/>", output.ScriptPubKey.Addresses)
                     </div>
                     <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">

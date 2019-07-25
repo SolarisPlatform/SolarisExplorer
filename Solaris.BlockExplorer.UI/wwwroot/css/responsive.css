@@ -4,7 +4,10 @@
 
 
 @media (min-width: 992px) and (max-width:1199px) {
-
+    .details-table-width {
+        max-width: 70%;
+        margin: auto;
+    }
 }
 
 
@@ -28,7 +31,7 @@
     }
 
     .details-table-width {
-        max-width: 80%;
+        max-width: 90%;
         margin: auto;
     }
 
