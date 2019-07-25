@@ -6,138 +6,154 @@
 
 @model ITransactionModel
 
-    <div class="text-center details-table-width mt-4">
-        <div class="card">
-            <h1 class="table-title">Details for Transaction</h1>
-
-            <table class="table text-left table-borderless details-table">
-                <tr>
-                    <th>Hash</th>
-                    <td><code>@Model.Hash</code></td>
-                </tr>
-                <tr>
-                    <th>Size</th>
-                    <td>@Math.Round((Model.Size / 1024m), 4) kB</td>
-                </tr>
-                @if (Model.LockTime > 0)
-                {
-                    <tr>
-                        <th>Lock Time</th>
-                        <td>@Model.LockTime</td>
-                    </tr>
-                }
-                <tr>
-                    <th>Block Height</th>
-                    <td>@Model.Block.Height (@Model.Confirmations Confirmations)</td>
-                </tr>
-                <tr>
-                    <th>Block Time</th>
-                    <td>@DateTimeOffset.FromUnixTimeSeconds(Model.BlockTime)</td>
-                </tr>
-                <tr>
-                    <th>Total Outputs</th>
-                    <td>@Model.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
-                </tr>
-                <tr>
-                    <th>Total Inputs</th>
-                    <td>@Model.Inputs.Sum(p => p.Amount) @ViewBag.Ticker</td>
-                </tr>
-                <tr>
-                    <th>Fee</th>
-                    <td>@(Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) @ViewBag.Ticker</td>
-                </tr>
-                <tr>
-                    <th>Fee per byte</th>
-                    <td>@(Math.Round((Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) / Model.Size * 100000000m, 4)) sat/B</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-<br />
-<br />
-
-<div class="text-left transaction-table-width">
+<div class="text-center details-table-width mt-4">
     <div class="card">
-    <h1 class="table-title">Inputs</h1>
-    <table class="table text-left table-borderless">
-        <thead class="main-table-header">
+        <h1 class="table-title">Details for Transaction</h1>
+
+        <table class="table text-left table-borderless details-table">
             <tr>
-                <th>Index</th>
-                <th>Previous output</th>
-                <th>Address</th>
-                <th>Amount</th>
+                <th>Hash</th>
+                <td><code>@Model.Hash</code></td>
             </tr>
-        </thead>
-        @{ var i = 0L;}
-        @foreach (var input in Model.Inputs)
-        {
             <tr>
-                <td>@i</td>
-                <td>
-                    @if (string.IsNullOrEmpty(input.TxId))
-                    {
-                        <span>Generation + Fees</span>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Index", "Transaction", new {transactionHash = input.TxId})">
-                            <code><span class="text-truncate">@input.TxId</span>:<span>@input.Vout</span></code>
-                        </a>
-                    }
-                </td>
-                <td>
-                    @string.Join("<br/>", input.From)
-                </td>
-                <td>
-                    @if (string.IsNullOrEmpty(input.TxId))
-                    {
-                        @Model.Outputs.Sum(p => p.Value)
-                        @ViewBag.Ticker
-                    }
-                    else
-                    {
-                        @input.Amount
-                    }
-                </td>
+                <th>Size</th>
+                <td>@Math.Round((Model.Size / 1024m), 4) kB</td>
             </tr>
-            i++;
-        }
-        <tr>
-            <td colspan="4">
-                <h1 class="table-title">Outputs</h1>
-            </td>
-        </tr>
-        <thead class="main-table-header">
-        <tr>
-            <th>Index</th>
-            <th>Redeemed in</th>
-            <th>Address</th>
-            <th>Amount</th>
-        </tr>
-        </thead>
-        @foreach (var output in Model.Outputs)
-        {
+            @if (Model.LockTime > 0)
+            {
+                <tr>
+                    <th>Lock Time</th>
+                    <td>@Model.LockTime</td>
+                </tr>
+            }
             <tr>
-                <td>@output.Index</td>
-                <td>
-                    @if (string.IsNullOrEmpty(output.RedeemedTxId))
-                    {
-                        <span>Not yet redeemed</span>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Index", "Transaction", new {transactionHash = output.RedeemedTxId})">
-                            <code><span class="text-truncate">@output.RedeemedTxId</span>:<span>@output.RedeemedIndex</span></code>
-                        </a>
-                    }
-                </td>
-                <td>@string.Join("<br/>", output.ScriptPubKey.Addresses)</td>
-                <td>@output.Value @ViewBag.Ticker</td>
+                <th>Block Height</th>
+                <td>@Model.Block.Height (@Model.Confirmations Confirmations)</td>
             </tr>
-        }
-    </table>
+            <tr>
+                <th>Block Time</th>
+                <td>@DateTimeOffset.FromUnixTimeSeconds(Model.BlockTime)</td>
+            </tr>
+            <tr>
+                <th>Total Outputs</th>
+                <td>@Model.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
+            </tr>
+            <tr>
+                <th>Total Inputs</th>
+                <td>@Model.Inputs.Sum(p => p.Amount) @ViewBag.Ticker</td>
+            </tr>
+            <tr>
+                <th>Fee</th>
+                <td>@(Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) @ViewBag.Ticker</td>
+            </tr>
+            <tr>
+                <th>Fee per byte</th>
+                <td>@(Math.Round((Model.Inputs.Sum(p => p.Amount) - Model.Outputs.Sum(p => p.Value)) / Model.Size * 100000000m, 4)) sat/B</td>
+            </tr>
+        </table>
     </div>
 </div>
+
+<br />
+
+
+
+<div class="card" id="main-table-block">
+    <h1 class="table-title">Inputs</h1>
+    <div class="row row-header">
+        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Index</div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-header-column text-center">Previous output</div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-center">Address</div>
+        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Amount</div>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @{ var i = 0L;}
+            @foreach (var input in Model.Inputs)
+{
+
+                <div class="row rows">
+                    <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                        @i
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-center">
+                         @if (string.IsNullOrEmpty(input.TxId))
+                          {
+                              <span>Generation + Fees</span>
+                          }
+                          else
+                          {
+                              <a href="@Url.Action("Index", "Transaction", new {transactionHash = input.TxId})">
+                                  <code><span class="text-truncate">@input.TxId</span>:<span>@input.Vout</span></code>
+                              </a>
+                          }
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-center">
+                        @string.Join("<br/>", input.From)
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
+                        @if (string.IsNullOrEmpty(input.TxId))
+                        {
+                            @Model.Outputs.Sum(p => p.Value)
+                            @ViewBag.Ticker
+                        }
+                        else
+                        {
+                            @input.Amount
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<br/>
+<div class="card" id="main-table-block">
+    <h1 class="table-title">Outputs</h1>
+    <div class="row row-header">
+        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Index</div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-header-column text-center">Previous output</div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-center">Address</div>
+        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Amount</div>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @foreach (var output in Model.Outputs)
+            {
+
+                <div class="row rows">
+                    <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                        @output.Index
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-center">
+                        @if (string.IsNullOrEmpty(output.RedeemedTxId))
+                        {
+                            <span>Not yet redeemed</span>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Transaction", new {transactionHash = output.RedeemedTxId})">
+                                <code><span class="text-truncate">@output.RedeemedTxId</span>:<span>@output.RedeemedIndex</span></code>
+                            </a>
+                        }
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-center">
+                        @string.Join("<br/>", output.ScriptPubKey.Addresses)
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
+                        @output.Value @ViewBag.Ticker
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
 
 
 
