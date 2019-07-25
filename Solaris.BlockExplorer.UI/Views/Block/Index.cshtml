@@ -5,85 +5,85 @@
 }
 @model IBlockTransactionsModel
 
-    <div class="text-center details-table-width mt-4">
 
-        <div class="card">
-            <h1 class="table-title">Details for Block #@Model.Block.Height</h1><hr />
+<div class="text-center details-table-width mt-4">
 
-            <table class="table text-left table-borderless details-table">
-                <tr>
-                    <th>Hash</th>
-                    <td><code>@Model.Block.Hash</code></td>
-                </tr>
-                <tr>
-                    <th>Date/Time</th>
-                    <td>@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</td>
-                </tr>
-                <tr>
-                    <th>Transactions</th>
-                    <td>@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></td>
-                </tr>
-                <tr>
-                    <th>Value Out</th>
-                    <td>@Model.Block.ValueOut @ViewBag.Ticker</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-<br />
-
-
-<div class="text-left transaction-table-width">
     <div class="card">
-        <h1 class="table-title">Transactions</h1><hr />
-        <div class="table-responsive">
-            <table class="table text-left table-borderless">
-                <thead class="main-table-header">
-                    <tr>
-                        <th>Transaction Hash</th>
-                        <th class="text-right">Value Out</th>
-                        <th class="text-left pl-4">From</th>
-                        <th class="text-left pl-4">To (amount)</th>
-                    </tr>
-                </thead>
-                @foreach (var transaction in Model.Transactions)
-                {
-                    <tr>
-                        <td>
-                            <a href="@Url.Action("Index", "Transaction", new {transactionHash = transaction.Hash})"><code>@transaction.Hash</code></a>
-                        </td>
-                        <td class="text-right">@transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker</td>
-                        <td class="text-left">
-                            <table class="table table-borderless ">
-                                @foreach (var input in transaction.Inputs)
-                                {
-                                    <tr>
-                                        <td>
-                                            @(string.Join("<br/>", input.From))
+        <div class="card-body">
+            <h1 class="table-title">Details for Block #@Model.Block.Height</h1>
 
-                                            @if (!input.From.Any())
-                                            {
-                                                <span>Generation + Fees</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-                        <td class="text-right">
-                            <table class="table table-borderless">
-                                @foreach (var output in transaction.Outputs)
-                                {
-                                    <tr>
-                                        <td class="text-left">@(string.Join("<br/>", output.ScriptPubKey.Addresses))</td>
-                                        <td>@output.Value @ViewBag.Ticker</td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-                    </tr>
-                }
-            </table>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Hash</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding text-info">@Model.Block.Hash</div>
+            </div>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Date/Time</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding">@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</div>
+            </div>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Transactions</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding">@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></div>
+            </div>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Value Out</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding">@Model.Block.ValueOut @ViewBag.Ticker</div>
+            </div>
         </div>
     </div>
 </div>
+
+<br/>
+
+
+<div class="card" id="main-table-block">
+    <div class="card-body">
+    <h1 class="table-title">Transactions</h1>
+    <div class="row row-header">
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 col-xxxl-4 row-header-column text-left">Transaction Hash</div>
+        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Value Out</div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-left">From</div>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-left">To</div>
+        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">Amount</div>
+    </div>
+        <div class="row">
+            <div class="col-12">
+                @foreach (var transaction in Model.Transactions)
+                {
+                    <div class="row rows">
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 col-xxxl-4 row-column text-left">
+                            <a href="@Url.Action("Index", "Transaction", new {transactionHash = transaction.Hash})"><code>@transaction.Hash</code></a>
+                        </div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                            @transaction.Outputs.Sum(p => p.Value) @ViewBag.Ticker
+                        </div>
+
+                        @foreach (var input in transaction.Inputs)
+                        {
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-left">
+                                @(string.Join("<br/>", input.From))
+
+                                @if (!input.From.Any())
+                                {
+                                    <span>Generation + Fees</span>
+                                }
+                            </div>
+                        }
+                        @foreach (var output in transaction.Outputs)
+                        {
+
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-left">
+                                @(string.Join("<br/>", output.ScriptPubKey.Addresses))
+                            </div>
+                            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                                @output.Value @ViewBag.Ticker
+                            </div>
+
+                        }
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

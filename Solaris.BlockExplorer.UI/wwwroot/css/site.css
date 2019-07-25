@@ -15,155 +15,345 @@ a.navbar-brand {
     background: #2f3241;
 }
 
+
+
+
+/* Nav Bar
+-------------------------------------------------- */
+
+
 .nav-bar-bg {
     background: #131722;
 }
 
 .solaris-navbar-logo {
-    padding-left: 50px;
+    padding-left: 20px;
+    height: 30px;
 
 }
 
-hr {
-    border-top: 1px solid #2f3241;
-}
-/* Home page styles
--------------------------------------------------- */
-
-.info-box-container {
-    padding: 20px 0 10px 0;
-}
-
-.homepage-info-box {
-    border: 0px solid grey;
-    border-radius: 3px;
-    background: #131722;
-    color: white;
-}
-
-
-.homepage-info-box h4 {
-    padding: 10px 0;
+.nav-bar-icons {
     color: #FFC037;
+    padding: 0 5px 0 5px;
 }
 
-.homepage-info-box p {
-    padding: 10px 0 20px 0;
-    font-size: 1.4em;
-}
-
-
-
-#main-table-block {
-    max-width: 70%;
-    margin: auto;
-}
-
-.table-title {
+.nav-link {
+    font-size: 1.1em;
     text-transform: uppercase;
-    color: #387fe1;
+}
+
+.nav-link a:hover {
+    background: #FFC037;
+}
+
+#social-nav-bar {
+    padding-left: 20px;
+    padding-right: 50px;
+}
+
+.social li {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.social li a {
+    color: #3c3c3c;
+    background: #fff;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
     font-size: 16px;
-    font-weight: bold;
-    padding: 10px 0 0 10px;
+    text-align: center;
+    border-radius: 50%;
+    line-height: 30px;
 }
 
-table {
-    border-collapse: collapse;
-    overflow: hidden;
-    background: #131722;
+.social-nav-bar li a {
+    background: none;
+    padding: 0px;
+    margin: 0;
+    color: #FFC037;
+    font-size: 14px;
+    margin-right: -10px;
 }
 
-table td {
-    color: white;
-}
-
-.card {
-    border-radius: 4px;
-    background: #131722;
-    padding: 0 5px;
-}
-
-.main-table-header {
-    text-transform: uppercase;
-    background: #2f3241;
-    color: #50819e;
-    font-size: 11px;
+.social-nav-bar li a:hover {
+    color: #131722;
+    background: #FFC037;
 }
 
 
 
+    /* Main tables and Home page styles
+-------------------------------------------------- */
+    hr {
+        border-top: 1px solid #2f3241;
+    }
+
+    .rows {
+        padding: 2px;
+        border: solid 1px transparent;
+        border-bottom: dotted 1px #2f3241;
+    }
+
+    .info-box-container {
+        padding: 20px 0 10px 0;
+    }
+
+    .homepage-info-box {
+        border: 1px solid rgba(236, 236, 236, 0.180);
+        border-radius: 3px;
+        background: #131722;
+        color: white;
+        margin-bottom: 10px;
+    }
 
 
-/* Block page styles
+        .homepage-info-box h4 {
+            padding: 10px 0;
+            color: #FFC037;
+        }
+
+        .homepage-info-box p {
+            padding: 10px 0 20px 0;
+            font-size: 1.4em;
+        }
+
+    body {
+        background-color: #2F3241;
+        color: #FFFFFF;
+    }
+
+    .card {
+        background-color: #131722;
+        border: 1px solid #363C4E;
+    }
+
+    .card-body {
+        padding: 0.7rem;
+        font-size: 13px;
+    }
+
+    h4 {
+        margin-bottom: 0.05rem;
+    }
+
+    .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-button {
+        width: 0px;
+        height: 0px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #5385A3;
+        border: 0;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5385A3;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: #5385A3;
+        }
+
+    ::-webkit-scrollbar-track {
+        background: #2F3241;
+        border: 0;
+    }
+
+    .row-header {
+        border: 0;
+        text-align: center;
+        font-size: 9px;
+        padding: 5px;
+        background-color: #2F3241;
+        color: #50819E;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .rows {
+        padding: 2px;
+        border: solid 1px transparent;
+        border-bottom: dotted 1px #2F3241;
+    }
+
+        .rows:last-child {
+            border-bottom: 0;
+        }
+
+    .day-mode .rows {
+        border-bottom: dotted 1px #ECEFF2;
+    }
+
+    .rows:hover {
+        background-color: #2F3241 !important;
+    }
+
+    .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto, .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl, .col-xxl-auto, .col-xxxl-1, .col-xxxl-2, .col-xxxl-3, .col-xxxl-4, .col-xxxl-5, .col-xxxl-6, .col-xxxl-7, .col-xxxl-8, .col-xxxl-9, .col-xxxl-10, .col-xxxl-11, .col-xxxl-12, .col-xxxl, .col-xxxl-auto {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .row-column, .row-header-column {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .row-column {
+        padding-left: 0;
+        padding-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .row-header-column {
+        padding-left: 0;
+    }
+
+    #main-table-block {
+        max-width: 95%;
+        margin: auto;
+    }
+
+    .table-title {
+        text-transform: uppercase;
+        color: #387fe1;
+        font-size: 14px;
+        font-weight: bold;
+        border-bottom: solid 1px #363c4e;
+        padding-bottom: 5px;
+    }
+
+    table {
+        border-collapse: collapse;
+        overflow: hidden;
+        background: #131722;
+    }
+
+        table td {
+            color: white;
+        }
+
+        table tr {
+            border-bottom: 1px dotted #2f3241;
+        }
+
+    .card {
+        border-radius: 4px;
+        background: #131722;
+        border: 1px solid rgba(236, 236, 236, 0.180);
+    }
+
+    .main-table-header {
+        text-transform: uppercase;
+        background: #2f3241;
+        color: #50819e;
+        font-size: 9px;
+        font-weight: bold;
+    }
+
+
+    /* Block page styles
 -------------------------------------------------- */
 
-.details-table-width {
-    max-width: 50%;
-    margin: auto;
-}
+    .details-table-width {
+        max-width: 50%;
+        margin: auto;
+    }
 
-.details-table th {
-    color: white;
+.details-row-title {
+    font-weight: bold;
+    padding-left: 5px;
 }
-
 
 .transaction-table-width {
     max-width: 70%;
     margin: auto;
 }
 
+    .blocks-table-padding {
+        margin-top: -9px;
+    }
 
-/* Transaction page styles
+.px5-bottom-padding {
+    padding-bottom: 10px;
+}
+
+    /* Transaction page styles
 -------------------------------------------------- */
 
 
 
 
-
-/* Sticky footer styles
+    /* Sticky footer styles
 -------------------------------------------------- */
-html {
-    font-size: 13px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 13px;
-  }
-}
+    html {
+        font-size: 13px;
+    }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
+    @media (min-width: 768px) {
+        html {
+            font-size: 13px;
+        }
+    }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+    .border-top {
+        border-top: 1px solid #e5e5e5;
+    }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
+    .border-bottom {
+        border-bottom: 1px solid #e5e5e5;
+    }
 
-/* Sticky footer styles
+    .box-shadow {
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    }
+
+    button.accept-policy {
+        font-size: 1rem;
+        line-height: inherit;
+    }
+
+    /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
+    html {
+        position: relative;
+        min-height: 100%;
+    }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; /* Vertically center the text there */
-}
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        white-space: nowrap;
+        /* Set the fixed height of the footer here */
+        height: 60px;
+        line-height: 60px; /* Vertically center the text there */
+    }

@@ -6,19 +6,19 @@
 <div class="container info-box-container">
     <div class="row">
         <div class="col-4 text-center">
-            <div class="homepage-info-box mx-3">
+            <div class="homepage-info-box mx-1">
                 <h4>Current Block height</h4>
                 <p>145,241</p>
             </div>
         </div>
         <div class="col-4 text-center">
-            <div class="homepage-info-box mx-3">
+            <div class="homepage-info-box mx-1">
                 <h4>Circulating Supply</h4>
                 <p>145,241</p>
             </div>
         </div>
         <div class="col-4 text-center">
-            <div class="homepage-info-box mx-3">
+            <div class="homepage-info-box mx-1">
                 <h4>Current price</h4>
                 <p>145,241</p>
             </div>
@@ -27,37 +27,40 @@
     </div>
 </div>
 
-<div class="text-left" id="main-table-block">
-    <div class="card">
-    <h1 class="table-title">Blocks</h1><hr/>
-
- 
-        <div class="table-responsive">
-            <table class="table text-left table-borderless">
-                <thead class="main-table-header">
-                <tr>
-                    <th class="text-center">Block Height</th>
-                    <th class="text-center">Block Hash</th>
-                    <th class="text-center">Transactions</th>
-                    <th class="text-center">Amount</th>
-                    <th class="text-center">Time</th>
-                </tr>
-                </thead>
-
-
+<div class="card" id="main-table-block">
+    <div class="card-body">
+        <h1 class="table-title">Blocks</h1>
+        <div class="row row-header">
+            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Block Height</div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-header-column text-center">Block Hash</div>
+            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Transactions</div>
+            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Amount</div>
+            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Time</div>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 @foreach (var block in Model)
                 {
-                    <tr>
-                        <td class="text-center"><a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Height</a></td>
-                        <td class="text-center"><a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Hash</a></td>
-                        <td class="text-center">@block.TransactionCount</td>
-                        <td class="text-center">@block.ValueOut @ViewBag.Ticker</td>
-                        <td class="text-center">@block.Time</td>
-                    </tr>
+
+                    <div class="row rows">
+                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Height</a>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-center">
+                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Hash</a>
+                        </div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                            @block.TransactionCount
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
+                            @block.ValueOut @ViewBag.Ticker
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
+                            @block.Time
+                        </div>
+                    </div>
                 }
-            </table>
+            </div>
         </div>
     </div>
-    
-
 </div>
