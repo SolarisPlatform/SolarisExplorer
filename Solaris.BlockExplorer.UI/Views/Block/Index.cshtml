@@ -5,33 +5,34 @@
 }
 @model IBlockTransactionsModel
 
-    <div class="text-center details-table-width mt-4">
 
-        <div class="card">
+<div class="text-center details-table-width mt-4">
+
+    <div class="card">
+        <div class="card-body">
             <h1 class="table-title">Details for Block #@Model.Block.Height</h1>
 
-            <table class="table text-left table-borderless details-table">
-                <tr>
-                    <th>Hash</th>
-                    <td><code>@Model.Block.Hash</code></td>
-                </tr>
-                <tr>
-                    <th>Date/Time</th>
-                    <td>@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</td>
-                </tr>
-                <tr>
-                    <th>Transactions</th>
-                    <td>@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></td>
-                </tr>
-                <tr>
-                    <th>Value Out</th>
-                    <td>@Model.Block.ValueOut @ViewBag.Ticker</td>
-                </tr>
-            </table>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Hash</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding text-info">@Model.Block.Hash</div>
+            </div>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Date/Time</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding">@DateTimeOffset.FromUnixTimeSeconds(Model.Block.Time)</div>
+            </div>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Transactions</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding">@Model.Transactions.LongCount() <span class="badge badge-secondary">@(Model.Block.Size / 1024m) kB</span></div>
+            </div>
+            <div class="row rows">
+                <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column px5-bottom-padding details-row-title">Value Out</div>
+                <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column px5-bottom-padding">@Model.Block.ValueOut @ViewBag.Ticker</div>
+            </div>
         </div>
     </div>
-<br />
+</div>
 
+<br/>
 
 
 <div class="card" id="main-table-block">
