@@ -28,37 +28,39 @@
 </div>
 
 <div class="card" id="main-table-block">
-    <h1 class="table-title">Blocks</h1>
-    <div class="row row-header">
-        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Block Height</div>
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-header-column text-center">Block Hash</div>
-        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Transactions</div>
-        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Amount</div>
-        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Time</div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            @foreach (var block in Model)
-            {
+    <div class="card-body">
+        <h1 class="table-title">Blocks</h1>
+        <div class="row row-header">
+            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Block Height</div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-header-column text-center">Block Hash</div>
+            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Transactions</div>
+            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Amount</div>
+            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Time</div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @foreach (var block in Model)
+                {
 
-                <div class="row rows">
-                    <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
-                        <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Height</a>
+                    <div class="row rows">
+                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Height</a>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-center">
+                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Hash</a>
+                        </div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
+                            @block.TransactionCount
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
+                            @block.ValueOut @ViewBag.Ticker
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
+                            @block.Time
+                        </div>
                     </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-center">
-                        <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Hash</a>
-                    </div>
-                    <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
-                        @block.TransactionCount
-                    </div>
-                    <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
-                        @block.ValueOut @ViewBag.Ticker
-                    </div>
-                    <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
-                        @block.Time
-                    </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </div>

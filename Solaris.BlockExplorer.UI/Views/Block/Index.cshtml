@@ -35,6 +35,7 @@
 
 
 <div class="card" id="main-table-block">
+    <div class="card-body">
     <h1 class="table-title">Transactions</h1>
     <div class="row row-header">
         <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 col-xxxl-4 row-header-column text-left">Transaction Hash</div>
@@ -42,7 +43,7 @@
         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-left">From</div>
         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-header-column text-left">To</div>
         <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">Amount</div>
-        </div>
+    </div>
         <div class="row">
             <div class="col-12">
                 @foreach (var transaction in Model.Transactions)
@@ -68,7 +69,7 @@
                         }
                         @foreach (var output in transaction.Outputs)
                         {
-                            
+
                             <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-left">
                                 @(string.Join("<br/>", output.ScriptPubKey.Addresses))
                             </div>
@@ -83,4 +84,5 @@
             </div>
         </div>
     </div>
+</div>
 

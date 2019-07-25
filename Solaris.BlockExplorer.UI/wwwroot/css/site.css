@@ -16,6 +16,8 @@ a.navbar-brand {
 }
 
 
+
+
 /* Nav Bar
 -------------------------------------------------- */
 
@@ -262,7 +264,6 @@ a.navbar-brand {
     .card {
         border-radius: 4px;
         background: #131722;
-        padding: 0 10px;
         border: 1px solid rgba(236, 236, 236, 0.180);
     }
 
@@ -297,6 +298,9 @@ a.navbar-brand {
         margin-top: -9px;
     }
 
+.px5-bottom-padding {
+    padding-bottom: 10px;
+}
 
     /* Transaction page styles
 -------------------------------------------------- */
