@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solaris.BlockExplorer.Indexer", "Solaris.BlockExplorer.Indexer\Solaris.BlockExplorer.Indexer.csproj", "{23ECA92F-D4AD-4FCE-9AEE-9D410AE06340}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solaris.BlockExplorer.Indexer", "Solaris.BlockExplorer.Indexer\Solaris.BlockExplorer.Indexer.csproj", "{23ECA92F-D4AD-4FCE-9AEE-9D410AE06340}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solaris.BlockExplorer.Indexer.Domain", "Solaris.BlockExplorer.Indexer.Domain\Solaris.BlockExplorer.Indexer.Domain.csproj", "{00AACB7D-E602-441D-B899-CCEB0DD65EE0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solaris.BlockExplorer.Indexer.DataAccess", "Solaris.BlockExplorer.Indexer.DataAccess\Solaris.BlockExplorer.Indexer.DataAccess.csproj", "{77D86DE3-52B5-459C-AF93-285E2C4D385D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solaris.BlockExplorer.Indexer.Domain", "Solaris.BlockExplorer.Indexer.Domain\Solaris.BlockExplorer.Indexer.Domain.csproj", "{00AACB7D-E602-441D-B899-CCEB0DD65EE0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Indexer", "Indexer", "{9CC3158C-CB86-4AA6-AB2B-36B4F80E8C8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{78DE58D0-8644-421D-B6A9-D17C2054ADA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solaris.BlockExplorer.UI", "Solaris.BlockExplorer.UI\Solaris.BlockExplorer.UI.csproj", "{584CB6AF-68D4-4434-A800-A54FF3D92122}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solaris.BlockExplorer.UI", "Solaris.BlockExplorer.UI\Solaris.BlockExplorer.UI.csproj", "{584CB6AF-68D4-4434-A800-A54FF3D92122}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{84ED051B-D7E3-44DF-8C2D-8F9C98ED4D12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solaris.BlockExplorer.DataAccess", "Solaris.BlockExplorer.DataAccess\Solaris.BlockExplorer.DataAccess.csproj", "{091D6521-89F8-4969-B360-FD664701BC33}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Solaris.BlockExplorer.Database", "Solaris.BlockExplorer.Database\Solaris.BlockExplorer.Database.sqlproj", "{8F2FCBC5-850B-4757-A08D-54734001F12C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +33,20 @@ Global
 		{00AACB7D-E602-441D-B899-CCEB0DD65EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00AACB7D-E602-441D-B899-CCEB0DD65EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00AACB7D-E602-441D-B899-CCEB0DD65EE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77D86DE3-52B5-459C-AF93-285E2C4D385D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77D86DE3-52B5-459C-AF93-285E2C4D385D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77D86DE3-52B5-459C-AF93-285E2C4D385D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77D86DE3-52B5-459C-AF93-285E2C4D385D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{584CB6AF-68D4-4434-A800-A54FF3D92122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{584CB6AF-68D4-4434-A800-A54FF3D92122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584CB6AF-68D4-4434-A800-A54FF3D92122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{584CB6AF-68D4-4434-A800-A54FF3D92122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{091D6521-89F8-4969-B360-FD664701BC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{091D6521-89F8-4969-B360-FD664701BC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{091D6521-89F8-4969-B360-FD664701BC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{091D6521-89F8-4969-B360-FD664701BC33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F2FCBC5-850B-4757-A08D-54734001F12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2FCBC5-850B-4757-A08D-54734001F12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2FCBC5-850B-4757-A08D-54734001F12C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8F2FCBC5-850B-4757-A08D-54734001F12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2FCBC5-850B-4757-A08D-54734001F12C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F2FCBC5-850B-4757-A08D-54734001F12C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,8 +54,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{23ECA92F-D4AD-4FCE-9AEE-9D410AE06340} = {9CC3158C-CB86-4AA6-AB2B-36B4F80E8C8E}
 		{00AACB7D-E602-441D-B899-CCEB0DD65EE0} = {9CC3158C-CB86-4AA6-AB2B-36B4F80E8C8E}
-		{77D86DE3-52B5-459C-AF93-285E2C4D385D} = {9CC3158C-CB86-4AA6-AB2B-36B4F80E8C8E}
 		{584CB6AF-68D4-4434-A800-A54FF3D92122} = {78DE58D0-8644-421D-B6A9-D17C2054ADA8}
+		{091D6521-89F8-4969-B360-FD664701BC33} = {84ED051B-D7E3-44DF-8C2D-8F9C98ED4D12}
+		{8F2FCBC5-850B-4757-A08D-54734001F12C} = {84ED051B-D7E3-44DF-8C2D-8F9C98ED4D12}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5E1919F-C1A5-4F5B-9A9F-D5100A544C04}

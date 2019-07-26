@@ -4,7 +4,7 @@
     {
         string Asm { get; set; }
         string Hex { get; set; }
-        long ReqSigs { get; set; }
+        long RequestedSignatures { get; set; }
         string Type { get; set; }
         string[] Addresses { get; set; }
     }

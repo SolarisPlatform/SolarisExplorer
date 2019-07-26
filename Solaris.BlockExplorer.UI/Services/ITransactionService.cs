@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Solaris.BlockExplorer.UI.Models;
+﻿using System.Threading.Tasks;
+using Solaris.BlockExplorer.DataAccess.Models;
 
 namespace Solaris.BlockExplorer.UI.Services
 {
     public interface ITransactionService
     {
-        Task<IEnumerable<ITransactionModel>> GetTransactions(string blockHash);
-        Task<IEnumerable<ITransactionModel>> GetTransactionsForAddress(string address);
-        Task<ITransactionModel> GetTransaction(string transactionHash, bool recursive = false);
+        Task<Transaction[]> GetTransactions(string blockHash);
+        Task<Transaction[]> GetTransactionsForAddress(string address);
+        Task<Transaction> GetTransaction(string transactionHash);
 
     }
 }

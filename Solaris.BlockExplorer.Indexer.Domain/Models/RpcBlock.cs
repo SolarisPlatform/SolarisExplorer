@@ -8,6 +8,20 @@ namespace Solaris.BlockExplorer.Indexer.Domain.Models
         public long Height { get; set; }
         [JsonProperty("tx")]
         public string[] Transactions { get; set; }
+        [JsonProperty("bits")]
+        public string Bits { get; set; }
+        [JsonProperty("chainwork")]
+        public string Chainwork { get; set; }
+        [JsonProperty("mediantime")]
+        public long MedianTime { get; set; }
+        [JsonProperty("merkleroot")]
+        public string Merkleroot { get; set; }
+        [JsonProperty("nonce")]
+        public long Nonce { get; set; }
+        [JsonProperty("version")]
+        public long Version { get; set; }
+        [JsonProperty("weight")]
+        public long Weight { get; set; }
         [JsonProperty("hash")]
         public string Hash { get; set; }
         [JsonProperty("time")]
@@ -18,5 +32,7 @@ namespace Solaris.BlockExplorer.Indexer.Domain.Models
         public decimal Difficulty { get; set; }
         [JsonProperty("size")]
         public long Size { get; set; }
+        [JsonProperty("previousblockhash")]
+        public string PreviousBlock { get; set; }
     }
 }

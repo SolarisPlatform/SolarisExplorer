@@ -9,7 +9,7 @@ namespace Solaris.BlockExplorer.Indexer.Domain.Models
         [JsonProperty("hex")]
         public string Hex { get; set; }
         [JsonProperty("reqSigs")]
-        public long ReqSigs { get; set; }
+        public long RequestedSignatures { get; set; }
         [JsonProperty("type")]
         public string Type { get; set; }
         [JsonProperty("addresses")]

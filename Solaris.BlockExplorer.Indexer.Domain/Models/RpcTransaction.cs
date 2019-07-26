@@ -19,9 +19,9 @@ namespace Solaris.BlockExplorer.Indexer.Domain.Models
         [JsonProperty("size")]
         public long Size { get; set; }
         [JsonProperty("vsize")]
-        public long VSize { get; set; }
+        public long Vsize { get; set; }
         [JsonProperty("locktime")]
-        public long LockTime { get; set; }
+        public long Locktime { get; set; }
         [JsonProperty("blockhash")]
         public string BlockHash { get; set; }
         [JsonProperty("time")]

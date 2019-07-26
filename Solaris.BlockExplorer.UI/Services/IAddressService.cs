@@ -5,6 +5,6 @@ namespace Solaris.BlockExplorer.UI.Services
 {
     public interface IAddressService
     {
-        Task<IAddressModel> GetAddress(string address);
+        Task<AddressModel> GetAddress(string address);
     }
 }

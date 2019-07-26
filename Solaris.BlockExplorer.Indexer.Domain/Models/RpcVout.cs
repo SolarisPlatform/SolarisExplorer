@@ -7,8 +7,8 @@ namespace Solaris.BlockExplorer.Indexer.Domain.Models
         [JsonProperty("value")]
         public decimal Value { get; set; }
         [JsonProperty("n")]
-        public long Index { get; set; }
+        public long OutputIndex { get; set; }
         [JsonProperty("scriptPubKey")]
-        public RpcScriptPubKey ScriptPubKey { get; set; }
+        public RpcScriptPubKey ScriptPublicKey { get; set; }
     }
 }

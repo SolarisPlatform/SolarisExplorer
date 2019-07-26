@@ -7,12 +7,12 @@ namespace Solaris.BlockExplorer.Indexer.Domain.Models
         [JsonProperty("txid")]
         public string TxId { get; set; }
         [JsonProperty("vout")]
-        public long Vout { get; set; }
+        public long? Vout { get; set; }
         [JsonProperty("scriptSig")]
-        public RpcScriptSig ScriptSig { get; set; }
+        public RpcScriptSig ScriptSignature { get; set; }
         [JsonProperty("sequence")]
-        public long Sequence { get; set; }
+        public long? Sequence { get; set; }
         [JsonProperty("coinbase")]
-        public string CoinBase { get; set; }
+        public string Coinbase { get; set; }
     }
 }

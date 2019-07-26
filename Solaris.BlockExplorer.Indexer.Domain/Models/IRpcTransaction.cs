@@ -9,8 +9,8 @@
         string TxId { get; set; }
         long Version { get; set; }
         long Size { get; set; }
-        long VSize { get; set; }
-        long LockTime { get; set; }
+        long Vsize { get; set; }
+        long Locktime { get; set; }
         string BlockHash { get; set; }
         long Time { get; set; }
         long BlockTime { get; set; }

@@ -3,6 +3,6 @@
     public interface IRpcVout
     {
         decimal Value { get; set; }
-        long Index { get; set; }
+        long OutputIndex { get; set; }
     }
 }

@@ -1,40 +1,55 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Solaris.BlockExplorer.DataAccess.Models;
 using Solaris.BlockExplorer.UI.Models;
 
 namespace Solaris.BlockExplorer.UI.Services
 {
     public class AddressService : IAddressService
     {
-        private readonly ITransactionService _transactionService;
+        private readonly SolarisExplorerContext _solarisExplorerContext;
 
-        public AddressService(ITransactionService transactionService)
+        public AddressService(SolarisExplorerContext solarisExplorerContext)
         {
-            _transactionService = transactionService;
+            _solarisExplorerContext = solarisExplorerContext;
         }
 
-        public async Task<IAddressModel> GetAddress(string address)
+        public async Task<AddressModel> GetAddress(string address)
         {
-            var transactions = (await _transactionService.GetTransactionsForAddress(address)).ToArray();
-            var inputs = transactions.SelectMany(p => p.Inputs).ToArray();
-            var outputs = transactions.SelectMany(p => p.Outputs).ToArray();
-            var mints = transactions.SelectMany(p => p.Inputs).Where(p => string.IsNullOrEmpty(p.TxId)).ToArray();
+            var received = await _solarisExplorerContext.Outputs.Where(p => p.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Any(pp => pp.Address.Equals(address))).SumAsync(p => p.Value);
+            var receivedCount = await _solarisExplorerContext.Outputs.Where(p =>
+                    p.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Any(pp => pp.Address.Equals(address)))
+                .LongCountAsync();
 
-            var received = outputs.Sum(p => p.Value);
-            var sent = inputs.Sum(p => p.Amount);
-            var mined = mints.Sum(p => p.Amount);
+            //.Where(pp => pp.OutputIndex.Equals(p.OutputIndex))
+            var sent = await _solarisExplorerContext.Inputs.Where(p => p.Transaction.TransactionOutputs
+                    .Any(pp =>
+                        pp.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Any(ppp =>
+                            ppp.Address.Equals(address))))
+                .SumAsync(p => p.Transaction.TransactionOutputs.Sum(pp => pp.Output.Value));
+
+            var sentCount = await _solarisExplorerContext.Inputs.Where(p => p.Transaction.TransactionOutputs
+                .Where(pp => pp.OutputIndex.Equals(p.OutputIndex)).Any(pp =>
+                    pp.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Any(ppp =>
+                        ppp.Address.Equals(address)))).LongCountAsync();
+            
+                //In inputs kijken of er een Transaction is die wijst naar een vout waar dit address in voor komt
+
+
+                //await _solarisExplorerContext.Inputs.Where(p => p.Transaction.TransactionOutputs.Any(pp =>
+                //        pp.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Any(ppp =>
+                //            ppp.Address.Equals(address))))
+                //    .SumAsync(p => p.Transaction.TransactionOutputs.Sum(pp => pp.Output.Value));
 
             return new AddressModel
             {
-                Balance =  received - sent,
                 Received = received,
+                ReceivedCount = receivedCount,
                 Sent = sent,
-                Address = address,
-                Transactions = transactions,
-                Mined = mined,
-                MinedCount = mints.LongLength,
-                ReceivedCount = outputs.LongLength,
-                SentCount = inputs.LongLength
+                SentCount = sentCount,
+                Balance = received - sent,
+                Address = address
             };
         }
     }

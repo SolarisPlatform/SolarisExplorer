@@ -1,64 +1,117 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
-using Solaris.BlockExplorer.UI.Models;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Solaris.BlockExplorer.DataAccess.Models;
 
 namespace Solaris.BlockExplorer.UI.Services
 {
     public class BlockService : IBlockService
     {
-        private readonly IMongoDatabase _mongoDatabase;
-        private readonly IConfiguration _configuration;
-        public BlockService(IMongoDatabase mongoDatabase, IConfiguration configuration)
+        private readonly SolarisExplorerContext _solarisExplorerContext;
+
+        public BlockService(SolarisExplorerContext solarisExplorerContext)
         {
-            _mongoDatabase = mongoDatabase;
-            _configuration = configuration;
+            _solarisExplorerContext = solarisExplorerContext;
         }
 
-        public async Task<IEnumerable<IBlockModel>> GetBlocks(int limit = 150)
+        public Task<Block[]> GetBlocks(int limit = 150)
         {
-            var collection = GetCollection();
+            return
+                _solarisExplorerContext
+                    .Blocks
+                    .Include("Transactions.TransactionOutputs.Output")
+                    .OrderByDescending(p => p.Height)
+                    .Take(limit)
+                    .Select(p => new Block
+                    {
+                        Height = p.Height,
+                        Id = p.Id,
+                        Transactions = p.Transactions.Select(a => new Transaction
+                        {
+                            Id = a.Id,
+                            TransactionOutputs = a.TransactionOutputs.Select(t => new TransactionOutput
+                            {
+                                TransactionId = t.TransactionId,
+                                Output = new Output
+                                {
+                                    Value = t.Output.Value
+                                }
+                            }).ToArray()
+                        }).ToArray(),
+                        Time = p.Time
+                    })
+                    .ToArrayAsync();
+        }
 
-            var findOptions = new FindOptions<BlockModel, BlockModel>
+        public Task<Block> GetBlock(string blockHash)
+        {
+            return
+                _solarisExplorerContext
+                    .Blocks
+                    .Include("Transactions.TransactionOutputs.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses")
+                    .Include("Transactions.TransactionInputs.Input.TransactionOutput.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses")
+                    .Select(p => new Block
+                    {
+                        Id = p.Id,
+                        Time = p.Time,
+                        Size = p.Size,
+                        Height = p.Height,
+                        Transactions = p.Transactions.Select(a =>
+                            new Transaction
+                            {
+                                Id = a.Id,
+                                TransactionOutputs = a.TransactionOutputs.Select(t => new TransactionOutput
+                                {
+                                    TransactionId = t.TransactionId,
+                                    Output = new Output
+                                    {
+                                        Value = t.Output.Value,
+                                        OutputScriptPublicKey = new OutputScriptPublicKey
+                                        {
+                                            OutputScriptPublicKeyAddresses = t.Output.OutputScriptPublicKey
+                                                .OutputScriptPublicKeyAddresses
+                                        }
+                                    }
+                                }).ToArray(),
+                                TransactionInputs = a.TransactionInputs.Select(aa => new TransactionInput
+                                {
+                                    TransactionId = aa.TransactionId,
+                                    Input = new Input
+                                    {
+                                        Id = aa.Input.Id,
+                                        TransactionOutput = new TransactionOutput
+                                        {
+                                            Output = aa.Input.TransactionOutput.Output == null
+                                                ? null
+                                                : new Output
+                                                {
+                                                    Id = aa.Input.TransactionOutput.OutputId,
+                                                    OutputScriptPublicKey = new OutputScriptPublicKey
+                                                    {
+                                                        OutputScriptPublicKeyAddresses = aa.Input.TransactionOutput
+                                                            .Output.OutputScriptPublicKey
+                                                            .OutputScriptPublicKeyAddresses,
+                                                        OutputId = aa.Input.TransactionOutput.OutputId
+                                                    }
+                                                }
+                                        }
+                                    }
+                                }).ToArray(),
+                                BlockOrder = a.BlockOrder
+                            }).ToArray()
+                    })
+                    .FirstOrDefaultAsync(p => p.Id.Equals(blockHash));
+        }
+
+        public Task<Block> GetLastBlock()
+        {
+            return _solarisExplorerContext.Blocks.OrderByDescending(p => p.Height).Select(p => new Block
             {
-                Limit = limit,
-                Sort = Builders<BlockModel>.Sort.Ascending(block => block.Id)
-            };
-            var findResults = await collection.FindAsync(FilterDefinition<BlockModel>.Empty, findOptions);
-
-            return findResults.ToList();
-        }
-
-        public async Task<IBlockModel> GetBlock(string blockHash)
-        {
-            var collection = GetCollection();
-            var result = await collection.FindAsync(p => p.Hash.Equals(blockHash));
-
-            return result.FirstOrDefault();
-        }
-
-        public async Task<IBlockModel> GetLastBlock()
-        {
-            var collection = GetCollection();
-            var findOptions = new FindOptions<BlockModel, BlockModel>
-            {
-                Limit = 1,
-                Sort = Builders<BlockModel>.Sort.Descending(block => block.Id)
-            };
-            var findResults = await collection.FindAsync(FilterDefinition<BlockModel>.Empty, findOptions);
-
-            var current = findResults.FirstOrDefault();
-
-            return current;
-        }
-
-        private IMongoCollection<BlockModel> GetCollection()
-        {
-            var section = _configuration.GetSection("MongoDB");
-            var blockCollectionName = section.GetValue<string>("BlockCollectionName");
-
-            return _mongoDatabase.GetCollection<BlockModel>(blockCollectionName);
+                Id = p.Id,
+                Height = p.Height
+            }).FirstOrDefaultAsync();
         }
     }
 }

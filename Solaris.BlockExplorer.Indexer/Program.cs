@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
-using Solaris.BlockExplorer.Indexer.DataAccess.Models;
-using Solaris.BlockExplorer.Indexer.DataAccess.Repositories;
-using Solaris.BlockExplorer.Indexer.Domain.Models;
+using Solaris.BlockExplorer.DataAccess.Models;
 using Solaris.BlockExplorer.Indexer.Domain.Services;
 
 namespace Solaris.BlockExplorer.Indexer
@@ -19,7 +16,7 @@ namespace Solaris.BlockExplorer.Indexer
     public class Program
     {
         private static ServiceProvider _serviceProvider;
-
+        private const string GenesisBlock = "0000000000000000000000000000000000000000000000000000000000000000";
         private static void ConfigureServiceProvider()
         {
             var serviceCollection = new ServiceCollection();
@@ -32,24 +29,15 @@ namespace Solaris.BlockExplorer.Indexer
                 .AddSingleton<IRpcBlockCountService, RpcBlockCountService>()
                 .AddSingleton<IRpcBlockHashService, RpcBlockHashService>()
                 .AddSingleton<IRpcBlockService, RpcBlockService>()
-                .AddSingleton(provider =>
-                {
-                    var configuration = provider.GetService<IConfiguration>();
-                    var section = configuration.GetSection("MongoDB");
-                    var connectionString = section.GetValue<string>("ConnectionString");
-                    return new MongoClient(connectionString);
-                })
-                .AddSingleton(provider =>
-                {
-                    var configuration = provider.GetService<IConfiguration>();
-                    var section = configuration.GetSection("MongoDB");
-                    var databaseName = section.GetValue<string>("DatabaseName");
-                    var mongoClient = provider.GetService<MongoClient>();
-                    return mongoClient.GetDatabase(databaseName);
-                })
                 .AddSingleton<IRpcTransactionService, RpcTransactionService>()
-                .AddSingleton<IBlockRepository, BlockRepository>()
-                .AddSingleton<ITransactionRepository, TransactionRepository>();
+                .AddDbContext<SolarisExplorerContext>((provider, builder) =>
+                {
+                    var configuration = provider.GetService<IConfiguration>();
+                    var connectionString = configuration.GetConnectionString("SolarisExplorerDatabase");
+
+                    builder.UseSqlServer(connectionString);
+                });
+
 
             serviceCollection.AddHttpClient("Daemon", (provider, client) =>
             {
@@ -77,85 +65,123 @@ namespace Solaris.BlockExplorer.Indexer
             var transactionService = _serviceProvider.GetService<IRpcTransactionService>();
             var blockCount = await blockCountService.GetBlockCount();
 
-            var blockRepository = _serviceProvider.GetService<IBlockRepository>();
-            var transactionRepository = _serviceProvider.GetService<ITransactionRepository>();
+            var solarisExplorerContext = _serviceProvider.GetService<SolarisExplorerContext>();
 
-            var currentBlockHeight = await blockRepository.GetCurrent();
+            var currentBlockHeight = await solarisExplorerContext.Blocks.LongCountAsync();
 
-            Parallel.For(currentBlockHeight, blockCount, i =>
+            if (currentBlockHeight == blockCount)
+                Console.WriteLine("No update required");
+
+            for (var i = currentBlockHeight; i <= blockCount; i++)
             {
-                var task = Task.Run(async () =>
+                var rpcBlock = await blockService.GetBlock(i);
+
+                var block = new Block
                 {
-                    var block = await blockService.GetBlock(i);
+                    Id = rpcBlock.Hash,
+                    Bits = rpcBlock.Bits,
+                    Chainwork = rpcBlock.Chainwork,
+                    Difficulty = rpcBlock.Difficulty,
+                    Height = rpcBlock.Height,
+                    MedianTime = rpcBlock.MedianTime,
+                    Time = rpcBlock.Time,
+                    Merkleroot = rpcBlock.Merkleroot,
+                    Nonce = rpcBlock.Nonce,
+                    Size = rpcBlock.Size,
+                    Version = rpcBlock.Version,
+                    Weight = rpcBlock.Weight,
+                    PreviousBlock = rpcBlock.PreviousBlock == GenesisBlock ? null : rpcBlock.PreviousBlock
+                };
 
-                    var transactions = new List<IRpcTransaction>();
+                await solarisExplorerContext.Blocks.AddAsync(block);
 
-                    if (i > 0)
-                        foreach (var blockTransaction in block.Transactions)
+                var blockOrder = 0L;
+
+                if (block.Height > 0)
+                    foreach (var rpcBlockTransaction in rpcBlock.Transactions)
+                    {
+                        var rpcTransaction = await transactionService.GetTransaction(rpcBlockTransaction);
+                        var transaction = new Transaction
                         {
-                            var transaction = await transactionService.GetTransaction(blockTransaction);
-                            transactions.Add(transaction);
+                            BlockTime = rpcTransaction.BlockTime,
+                            Hash = rpcTransaction.Hash,
+                            Id = rpcTransaction.TxId,
+                            Locktime = rpcTransaction.Locktime,
+                            Size = rpcTransaction.Size,
+                            Time = rpcTransaction.Time,
+                            Version = rpcTransaction.Version,
+                            Vsize = rpcTransaction.Vsize,
+                            BlockId = rpcBlock.Hash,
+                            BlockOrder = blockOrder
+                        };
+
+                        foreach (var rpcTransactionOutput in rpcTransaction.Outputs)
+                        {
+                            var output = new Output
+                            {
+                                Value = rpcTransactionOutput.Value
+                            };
+                            if (rpcTransactionOutput.ScriptPublicKey != null)
+                                output.OutputScriptPublicKey = new OutputScriptPublicKey
+                                {
+                                    Asm = rpcTransactionOutput.ScriptPublicKey.Asm,
+                                    Hex = rpcTransactionOutput.ScriptPublicKey.Hex,
+                                    RequestedSignatures = rpcTransactionOutput.ScriptPublicKey.RequestedSignatures,
+                                    Type = rpcTransactionOutput.ScriptPublicKey.Type,
+                                    OutputScriptPublicKeyAddresses = rpcTransactionOutput.ScriptPublicKey.Addresses.Select(
+                                        address => new OutputScriptPublicKeyAddress
+                                        {
+                                            Address = address
+                                        }).ToArray()
+                                };
+                            var transactionOutput = new TransactionOutput
+                            {
+                                OutputIndex = rpcTransactionOutput.OutputIndex,
+                                Output = output
+                            };
+
+                            transaction.TransactionOutputs.Add(transactionOutput);
                         }
 
-                    await blockRepository.Insert(new Block
-                    {
-                        Hash = block.Hash,
-                        Height = block.Height,
-                        Id = block.Height,
-                        Transactions = block.Transactions,
-                        Difficulty = block.Difficulty,
-                        Time = block.Time,
-                        TransactionCount = block.TransactionCount,
-                        ValueOut = transactions.SelectMany(p => p.Outputs).Sum(p => p.Value)
-                    });
-
-                    foreach (var transaction in transactions)
-                    {
-                        await transactionRepository.Insert(new Transaction
+                        foreach (var rpcTransactionInput in rpcTransaction.Inputs)
                         {
-                            BlockHash = transaction.BlockHash,
-                            BlockTime = transaction.BlockTime,
-                            Hash = transaction.Hash,
-                            Hex = transaction.Hex,
-                            Outputs = transaction.Outputs.Select(p => new Vout
+                            var input = new Input
                             {
-                                Index = p.Index,
-                                ScriptPubKey = new ScriptPubKey
+                                Coinbase = rpcTransactionInput.Coinbase,
+                                OutputIndex = rpcTransactionInput.Vout,
+                                Sequence = rpcTransactionInput.Sequence,
+                                TransactionId = rpcTransaction.TxId,
+                                InputScriptSignature = rpcTransactionInput.ScriptSignature == null ? null : new InputScriptSignature
                                 {
-                                    Addresses = p.ScriptPubKey.Addresses,
-                                    Asm = p.ScriptPubKey.Asm,
-                                    Hex = p.ScriptPubKey.Hex,
-                                    ReqSigs = p.ScriptPubKey.ReqSigs,
-                                    Type = p.ScriptPubKey.Type
-                                },
-                                Value = p.Value
-                            }).ToArray(),
-                            Inputs = transaction.Inputs.Select(p => new Vin
+                                    Asm = rpcTransactionInput.ScriptSignature.Asm,
+                                    Hex = rpcTransactionInput.ScriptSignature.Hex
+                                }
+                            };
+                            var transactionInput = new TransactionInput
                             {
-                                ScriptSig = p.ScriptSig == null ? null : new ScriptSig
-                                {
-                                    Asm = p.ScriptSig.Asm,
-                                    Hex = p.ScriptSig.Hex
-                                },
-                                Sequence = p.Sequence,
-                                TxId = p.TxId,
-                                Vout = p.Vout,
-                                CoinBase = p.CoinBase
-                            }).ToArray(), 
-                            Time = transaction.Time,
-                            LockTime = transaction.LockTime, 
-                            Size = transaction.Size, 
-                            TxId = transaction.TxId,
-                            VSize = transaction.VSize, 
-                            Version = transaction.Version
+                                Input = input,
+                                TransactionId = transaction.Id
+                            };
+
+                            await solarisExplorerContext.TransactionInputs.AddAsync(transactionInput);
+                        }
+                        await solarisExplorerContext.Transactions.AddAsync(transaction);
+                        await solarisExplorerContext.BlockTransactions.AddAsync(new BlockTransaction
+                        {
+                            BlockId = rpcBlock.Hash,
+                            TransactionId = rpcTransaction.TxId
                         });
+
+                        blockOrder++;
                     }
+                
+                if (i % 100 == 1 && i > 0)
+                    await solarisExplorerContext.SaveChangesAsync();
 
-                    Console.WriteLine(i);
-                });
-                Task.WaitAll(task);
-            });
+                Console.WriteLine($"{block.Height} - {block.Id}");
+            }
 
+            await solarisExplorerContext.SaveChangesAsync();
 
             stopWatch.Stop();
             Console.WriteLine("Ready in {0} seconds", stopWatch.Elapsed.TotalSeconds);

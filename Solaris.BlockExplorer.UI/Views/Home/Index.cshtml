@@ -1,65 +1,84 @@
 ﻿@{
     ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
 }
-@model IEnumerable<IBlockModel>
+@using System.Globalization
+@model IEnumerable<Solaris.BlockExplorer.DataAccess.Models.Block>
 
-<div class="container info-box-container">
-    <div class="row">
-        <div class="col-4 text-center">
-            <div class="homepage-info-box mx-1">
-                <h4>Current Block height</h4>
-                <p>145,241</p>
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12 col-md-4 mb-2">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="title-bottom-border mb-2">
+                            Current Block height
+                        </h4>
+                        <p>145,241</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 mb-2">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="title-bottom-border mb-2">
+                            Circulating Supply
+                        </h4>
+                        <p>145,241</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 mb-2">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="title-bottom-border mb-2">
+                            Current price
+                        </h4>
+                        <p>145,241</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-4 text-center">
-            <div class="homepage-info-box mx-1">
-                <h4>Circulating Supply</h4>
-                <p>145,241</p>
-            </div>
-        </div>
-        <div class="col-4 text-center">
-            <div class="homepage-info-box mx-1">
-                <h4>Current price</h4>
-                <p>145,241</p>
-            </div>
-        </div>
-
     </div>
 </div>
-
-<div class="card" id="main-table-block">
-    <div class="card-body">
-        <h1 class="table-title">Blocks</h1>
-        <div class="row row-header">
-            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Block Height</div>
-            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-header-column text-center">Block Hash</div>
-            <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-header-column text-center">Transactions</div>
-            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Amount</div>
-            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-header-column text-center">Time</div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                @foreach (var block in Model)
-                {
-
-                    <div class="row rows">
-                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
-                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Height</a>
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-center">
-                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Hash})">@block.Hash</a>
-                        </div>
-                        <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1 col-xxxl-1 row-column text-center">
-                            @block.TransactionCount
-                        </div>
-                        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
-                            @block.ValueOut @ViewBag.Ticker
-                        </div>
-                        <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-center">
-                            @block.Time
-                        </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="title-bottom-border mb-2">
+                    Blocks
+                </h4>
+                <div class="row row-header">
+                    <div class="col-1 d-lg-none row-header-column text-left">#</div>
+                    <div class="col-1 d-none d-lg-block row-header-column text-left">Block Height</div>
+                    <div class="col d-none d-md-block row-header-column text-left">Block Hash</div>
+                    <div class="col d-none d-sm-block row-header-column text-right">Transactions</div>
+                    <div class="col row-header-column text-right">Amount</div>
+                    <div class="col row-header-column text-right">Time</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach (var block in Model)
+                        {
+                            <div class="row rows">
+                                <div class="col-1 row-column text-left">
+                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
+                                </div>
+                                <div class="col d-none d-md-block row-column text-left">
+                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
+                                </div>
+                                <div class="col d-none d-sm-block row-column text-right">
+                                    @block.Transactions.Count
+                                </div>
+                                <div class="col row-column text-right">
+                                    @block.Transactions.Sum(p => p.TransactionOutputs.Sum(to => to.Output.Value)) @ViewBag.Ticker
+                                </div>
+                                <div class="col row-column text-right">
+                                    @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
+                                </div>
+                            </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
         </div>
     </div>
