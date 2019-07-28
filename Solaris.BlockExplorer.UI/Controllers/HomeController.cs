@@ -9,14 +9,18 @@ namespace Solaris.BlockExplorer.UI.Controllers
     {
         private readonly IBlockService _blockService;
 
-        public HomeController(IBlockService blockService, IConfiguration configuration) : base(configuration)
+        private readonly ICoinDataService _coinDataService;
+
+        public HomeController(IBlockService blockService, IConfiguration configuration, ICoinDataService coinDataService) : base(configuration)
         {
             _blockService = blockService;
+            _coinDataService = coinDataService;
         }
 
         public async Task<IActionResult> Index()
         {
             var blocks = await _blockService.GetBlocks();
+            ViewBag.CoinData = await _coinDataService.GetCoinData();
             return View(blocks);
         }
     }

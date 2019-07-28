@@ -25,6 +25,7 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<IBlockService, BlockService>()
                 .AddScoped<ITransactionService, TransactionService>()
                 .AddScoped<IAddressService, AddressService>()
+                .AddScoped<ICoinDataService, CoinDataService>()
                 .AddDbContext<SolarisExplorerContext>((provider, builder) =>
                 {
                     var configuration = provider.GetService<IConfiguration>();
@@ -33,6 +34,7 @@ namespace Solaris.BlockExplorer.UI
                     builder.UseSqlServer(connectionString);
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -31,9 +31,30 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h4 class="title-bottom-border mb-2">
-                            Current price
+                            Market Data
                         </h4>
-                        <p>145,241</p>
+                        <div class="display-4 text-center">
+                            <strong>@ViewBag.Ticker</strong> $@Math.Round(ViewBag.CoinData.MarketData.CurrentPrice.Usd, 2)
+                            <div class="text-lightblue lead">@ViewBag.CoinData.MarketData.CurrentPrice.Btc BTC
+                                @if (ViewBag.CoinData.MarketData.PriceChangePercentage24H > 0)
+                                {
+                                    <span class="text-success"><i class="fas fa-arrow-up"></i> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fas fa-arrow-down"></i> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
+                                }
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="text-blue lead text-center col-6">
+                                <strong>Marketcap:</strong> $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
+                            </div>
+                            <div class="text-blue lead text-center col-6">
+                                <strong>Volume:</strong> $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
+                            </div>
+                        </div>
+                        <div class="text-muted text-center" style="font-size:0.8em">Powered by CoinGecko API</div>
                     </div>
                 </div>
             </div>
