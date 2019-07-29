@@ -40,8 +40,8 @@ namespace Solaris.BlockExplorer.UI
                 var configuration = provider.GetService<IConfiguration>();
                 var section = configuration.GetSection("CoinData");
                 var url = section.GetValue<string>("Url");
-                var coinSelector = section.GetValue<string>("CoinName");
-                var baseAddress = url + coinSelector;
+                var coinName = section.GetValue<string>("CoinName");
+                var baseAddress = url + coinName;
 
                 client.BaseAddress= new Uri(baseAddress);
             });
