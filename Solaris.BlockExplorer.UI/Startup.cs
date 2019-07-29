@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,16 @@ namespace Solaris.BlockExplorer.UI
                     builder.UseSqlServer(connectionString);
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddHttpClient();
+            services.AddHttpClient("CoinGecko", (provider, client) =>
+            {
+                var configuration = provider.GetService<IConfiguration>();
+                var section = configuration.GetSection("CoinData");
+                var url = section.GetValue<string>("Url");
+                var coinSelector = section.GetValue<string>("CoinName");
+                var baseAddress = url + coinSelector;
+
+                client.BaseAddress= new Uri(baseAddress);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
