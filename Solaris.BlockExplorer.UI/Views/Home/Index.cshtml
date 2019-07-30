@@ -2,7 +2,7 @@
     ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
 }
 @using System.Globalization
-@model IEnumerable<Solaris.BlockExplorer.DataAccess.Models.Block>
+@model Solaris.BlockExplorer.UI.Models.ViewModels.IBlocksViewModel
 
 <div class="row mt-2">
     <div class="col-12">
@@ -48,10 +48,10 @@
                         </div>
                         <div class="row">
                             <div class="text-blue lead text-center col-6" style="font-size: 1.2em;">
-                                <strong>Marketcap:</strong> $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
+                                <strong>Marketcap:</strong> $@string.Format("{0:C}", ViewBag.CoinData.MarketData.MarketCap.Usd)
                             </div>
                             <div class="text-blue lead text-center col-6" style="font-size: 1.2em;">
-                                <strong>Volume:</strong> $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
+                                <strong>Volume:</strong> $@string.Format("{0:C}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
                             </div>
                         </div>
                         <div class="text-muted text-center" style="font-size:0.8em">Powered by CoinGecko API</div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        @foreach (var block in Model)
+                        @foreach (var block in Model.Blocks)
                         {
                             <div class="row rows">
                                 <div class="col-1 row-column text-left">
@@ -88,10 +88,10 @@
                                     <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
                                 </div>
                                 <div class="col d-none d-sm-block row-column text-right">
-                                    @block.Transactions.Count
+                                    @block.Transactions
                                 </div>
                                 <div class="col row-column text-right">
-                                    @block.Transactions.Sum(p => p.TransactionOutputs.Sum(to => to.Output.Value)) @ViewBag.Ticker
+                                    @block.OutputValue @ViewBag.Ticker
                                 </div>
                                 <div class="col row-column text-right">
                                     @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)

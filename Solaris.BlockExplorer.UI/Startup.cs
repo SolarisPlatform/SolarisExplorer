@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Solaris.BlockExplorer.DataAccess.Models;
+using Solaris.BlockExplorer.DataAccess.Repositories;
+using Solaris.BlockExplorer.Domain.Factories;
+using Solaris.BlockExplorer.Domain.Mappings;
+using Solaris.BlockExplorer.Domain.Services;
+using Solaris.BlockExplorer.UI.Mappings;
 using Solaris.BlockExplorer.UI.Services;
 
 namespace Solaris.BlockExplorer.UI
@@ -21,17 +25,35 @@ namespace Solaris.BlockExplorer.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddScoped<IBlockService, BlockService>()
-                .AddScoped<ITransactionService, TransactionService>()
-                .AddScoped<IAddressService, AddressService>()
-                .AddScoped<ICoinDataService, CoinDataService>()
-                .AddDbContext<SolarisExplorerContext>((provider, builder) =>
-                {
-                    var configuration = provider.GetService<IConfiguration>();
-                    var connectionString = configuration.GetConnectionString("SolarisExplorerDatabase");
+            var mapperConfiguration = new MapperConfiguration(configurationExpression =>
+            {
+                configurationExpression.AddProfile(new DomainObjectsProfile());
+                configurationExpression.AddProfile(new PresentationObjectsProfile());
+            });
+            services.AddSingleton(provider => mapperConfiguration.CreateMapper());
 
-                    builder.UseSqlServer(connectionString);
+            services
+                .AddScoped<IBlockRepository, BlockRepository>()
+                .AddScoped<IBlockService, BlockService>()
+                .AddScoped<IBlockModelService, BlockModelService>()
+                .AddScoped<IBlockTransactionRepository, BlockTransactionRepository>()
+                .AddScoped<IBlockTransactionService, BlockTransactionService>()
+                .AddScoped<IBlockTransactionModelService, BlockTransactionModelService>()
+                .AddScoped<ICoinDataService, CoinDataService>()
+                .AddScoped<ITransactionRepository, TransactionRepository>()
+                .AddScoped<ITransactionService, TransactionService>()
+                .AddScoped<ITransactionModelService, TransactionModelService>()
+                .AddScoped<ITransactionInputRepository, TransactionInputRepository>()
+                .AddScoped<ITransactionInputService, TransactionInputService>()
+                .AddScoped<ITransactionInputModelService, TransactionInputModelService>()
+                .AddScoped<ITransactionOutputRepository, TransactionOutputRepository>()
+                .AddScoped<ITransactionOutputService, TransactionOutputService>()
+                .AddScoped<ITransactionOutputModelService, TransactionOutputModelService>()
+                .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
+                .AddScoped(provider =>
+                {
+                    var dbConnectionFactory = provider.GetService<IDbConnectionFactory>();
+                    return dbConnectionFactory.CreateConnection();
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddHttpClient();

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Solaris.BlockExplorer.UI.Models;
+using Solaris.BlockExplorer.UI.Models.CoinDataService;
 
 namespace Solaris.BlockExplorer.UI.Services
 {
@@ -19,14 +16,14 @@ namespace Solaris.BlockExplorer.UI.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<CoinData.RootObject> GetCoinData()
+        public async Task<ICoinData> GetCoinData()
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://api.coingecko.com/api/v3/coins/");
             var queryString = $"solaris?tickers=true&market_data=true";
             var result = await client.GetStringAsync(queryString);
 
-            return JsonConvert.DeserializeObject<CoinData.RootObject>(result);
+            return JsonConvert.DeserializeObject<CoinData>(result);
         }
     }
 }

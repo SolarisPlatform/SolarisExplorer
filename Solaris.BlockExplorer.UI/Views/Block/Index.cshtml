@@ -5,7 +5,7 @@
 }
 @using System.Globalization
 @using Solaris.BlockExplorer.UI.HtmlHelpers
-@model BlockTransactionsModel
+@model Solaris.BlockExplorer.UI.Models.ViewModels.IBlockViewModel
 
 
 <div class="row mt-2">
@@ -27,11 +27,11 @@
                 </div>
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column">Transactions</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Transactions.LongCount() <span class="badge badge-primary">@(Math.Round(Model.Block.Size / 1024m, 4)) kB</span></div>
+                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Block.Transactions <span class="badge badge-primary">@(Math.Round(Model.Block.Size / 1024m, 4)) kB</span></div>
                 </div>
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column">Value Out</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Block.Transactions.Sum(p => p.TransactionOutputs.Sum(to => to.Output.Value)) @ViewBag.Ticker</div>
+                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Block.OutputValue @ViewBag.Ticker</div>
                 </div>
             </div>
         </div>
@@ -52,43 +52,40 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        @foreach (var transaction in Model.Transactions.OrderBy(p => p.BlockOrder))
-                        {
-                            <div class="row rows">
-                                <div class="col-lg-1 col-xl-2 col-xxl-4 row-column text-left">
-                                    <a href="@Url.Action("Index", "Transaction", new {transactionHash = transaction.Id})">@transaction.Id</a>
-                                </div>
-                                <div class="col-lg-3 col-xl-3 col-xxl-2 row-column text-left">
-                                    @foreach (var input in transaction.TransactionInputs)
-                                    {
-                                        @if (input.Input.TransactionOutput.Output == null)
+                        @foreach (var transaction in Model.Transactions)
+                            {
+                                <div class="row rows">
+                                    <div class="col-lg-1 col-xl-2 col-xxl-4 row-column text-left">
+                                        <a href="@Url.Action("Index", "Transaction", new { transactionHash = transaction.TransactionId })">@transaction.TransactionId</a>
+                                    </div>
+                                    <div class="col-lg-3 col-xl-3 col-xxl-2 row-column text-left">
+                                        @if (transaction.From.Any())
                                         {
-                                            <span>Generation + Fees</span>
+                                            <span>@Url.AddressLink(transaction.From)</span>
                                         }
                                         else
                                         {
-                                            <span>@Url.AddressLink(input.Input.TransactionOutput.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Select(p => p.Address).ToArray())</span>
+                                            <span>Generation + Fees</span>
                                         }
-                                    }
-                                </div>
-                                <div class="col-lg-2 col-xl-2 col-xxl-2 row-column text-right">
-                                    @transaction.TransactionOutputs.Sum(p => p.Output.Value) @ViewBag.Ticker
-                                </div>
-                                <div class="col-lg-6 col-xl-5 col-xxl-4 row-column text-right">
-                                    @foreach (var output in transaction.TransactionOutputs)
-                                    {
-                                        <div class="row">
-                                            <div class="col-6 text-left">
-                                                @Url.AddressLink(output.Output.OutputScriptPublicKey.OutputScriptPublicKeyAddresses.Select(p => p.Address).ToArray())
+                                    </div>
+                                    <div class="col-lg-2 col-xl-2 col-xxl-2 row-column text-right">
+                                        @transaction.FromValue @if (transaction.FromValue != null) { <span>@ViewBag.Ticker</span> }
+                                    </div>
+                                    <div class="col-lg-6 col-xl-5 col-xxl-4 row-column text-right">
+                                        @foreach (var to in transaction.To)
+                                        {
+                                            <div class="row">
+                                                <div class="col-6 text-left">
+                                                    @Url.AddressLink(to.Address)
+                                                </div>
+                                                <div class="col-6">
+                                                    @to.Amount @ViewBag.Ticker
+                                                </div>
                                             </div>
-                                            <div class="col-6">
-                                                @output.Output.Value @ViewBag.Ticker
-                                            </div>
-                                        </div>
-                                    }
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        }
+                            }
                     </div>
                 </div>
             </div>

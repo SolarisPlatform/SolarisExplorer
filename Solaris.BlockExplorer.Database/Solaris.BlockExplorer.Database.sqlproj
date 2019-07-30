@@ -61,18 +61,37 @@
     <Folder Include="tables\" />
     <Folder Include="tables\Tables\" />
     <Folder Include="Security\" />
+    <Folder Include="storedprocedures" />
+    <Folder Include="storedprocedures\StoredProcedures" />
+    <Folder Include="functions" />
+    <Folder Include="functions\Functions" />
+    <Folder Include="storedprocedures\StoredProcedures\Read" />
+    <Folder Include="storedprocedures\StoredProcedures\Create" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="tables\Tables\OutputScriptPublicKeyAddresses.sql" />
     <Build Include="tables\Tables\Transactions.sql" />
-    <Build Include="tables\Tables\Blocks.sql" />
-    <Build Include="tables\Tables\BlockTransactions.sql" />
     <Build Include="tables\Tables\Inputs.sql" />
-    <Build Include="tables\Tables\TransactionInputs.sql" />
     <Build Include="tables\Tables\Outputs.sql" />
-    <Build Include="tables\Tables\TransactionOutputs.sql" />
+    <Build Include="tables\Tables\Blocks.sql" />
     <Build Include="tables\Tables\InputScriptSignature.sql" />
     <Build Include="tables\Tables\OutputScriptPublicKey.sql" />
     <Build Include="Security\tables.sql" />
+    <Build Include="Security\storedprocedures.sql" />
+    <Build Include="Security\functions.sql" />
+    <Build Include="functions\Functions\GetBlockHeight.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetBlock.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetBlocks.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetBlockTransactions.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetTransaction.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetTransactionInputs.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetTransactionOutputs.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertBlock.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertTransaction.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertOutput.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertOutputScriptPublicKey.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertOutputScriptPublicKeyAddress.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertInput.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Create\InsertInputScriptSignature.sql" />
   </ItemGroup>
 </Project>

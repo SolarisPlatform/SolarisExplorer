@@ -10,14 +10,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Solaris.BlockExplorer.DataAccess\Solaris.BlockExplorer.DataAccess.csproj" />
-    <ProjectReference Include="..\Solaris.BlockExplorer.Indexer.Domain\Solaris.BlockExplorer.Indexer.Domain.csproj" />
+    <ProjectReference Include="..\Solaris.BlockExplorer.Domain\Solaris.BlockExplorer.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
