@@ -18,7 +18,7 @@ namespace Solaris.BlockExplorer.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var blocks = await _blockModelService.GetBlocks();
+            var blocks = await _blockService.GetBlocks();
             ViewBag.CoinData = await _coinDataService.GetCoinData();
             return View(new BlocksViewModel
             {

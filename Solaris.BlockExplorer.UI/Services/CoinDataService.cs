@@ -18,9 +18,8 @@ namespace Solaris.BlockExplorer.UI.Services
 
         public async Task<ICoinData> GetCoinData()
         {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://api.coingecko.com/api/v3/coins/");
-            var queryString = $"solaris?tickers=true&market_data=true";
+            var client = _httpClientFactory.CreateClient("CoinGecko");
+            var queryString = $"?tickers=true&market_data=true";
             var result = await client.GetStringAsync(queryString);
 
             return JsonConvert.DeserializeObject<CoinData>(result);

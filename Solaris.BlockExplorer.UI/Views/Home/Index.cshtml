@@ -7,54 +7,84 @@
 <div class="row mt-2">
     <div class="col-12">
         <div class="row">
-            <div class="col-12 col-md-4 mb-2">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
                 <div class="card h-100">
                     <div class="card-body">
                         <h4 class="title-bottom-border mb-2">
-                            Current Block height
+                            Block height
                         </h4>
-                        <p>145,241</p>
+                        <div class="display-4 text-center" style="font-size: 1.8rem;">
+                            @String.Format("{0:#,##0}", ViewBag.LastBlock.Height)
+                            <div class="text-lightblue lead">
+                                Last found block
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-4 mb-2">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
                 <div class="card h-100">
                     <div class="card-body">
                         <h4 class="title-bottom-border mb-2">
-                            Circulating Supply
+                            Total Supply
                         </h4>
-                        <p>145,241</p>
+                        <div class="display-4 text-center" style="font-size: 1.8rem;">
+                            1,921,651
+                            <div class="text-lightblue lead">
+                                Current supply of @ViewBag.Name
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-4 mb-2">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="title-bottom-border mb-2">
+                            Current Price
+                        </h4>
+                        <div class="display-4 text-center" style="font-size: 1.8rem;">
+                            <strong>@ViewBag.Ticker</strong> $@Math.Round(ViewBag.CoinData.MarketData.CurrentPrice.Usd, 2)
+                            <div class="text-lightblue lead">@ViewBag.CoinData.MarketData.CurrentPrice.Btc BTC
+                                @if (ViewBag.CoinData.MarketData.PriceChangePercentage24H > 0)
+                                {
+                                    <span class="text-success"> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
                 <div class="card h-100">
                     <div class="card-body">
                         <h4 class="title-bottom-border mb-2">
                             Market Data
                         </h4>
-                        <div class="display-4 text-center">
-                            <strong>@ViewBag.Ticker</strong> $@Math.Round(ViewBag.CoinData.MarketData.CurrentPrice.Usd, 2)
-                            <div class="text-lightblue lead">@ViewBag.CoinData.MarketData.CurrentPrice.Btc BTC
-                                @if (ViewBag.CoinData.MarketData.PriceChangePercentage24H > 0)
-                                {
-                                    <span class="text-success"><i class="fas fa-arrow-up"></i> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
-                                }
-                                else
-                                {
-                                    <span class="text-danger"><i class="fas fa-arrow-down"></i> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
-                                }
-                                </div>
-                        </div>
                         <div class="row">
-                            <div class="text-blue lead text-center col-6" style="font-size: 1.2em;">
-                                <strong>Marketcap:</strong> $@string.Format("{0:C}", ViewBag.CoinData.MarketData.MarketCap.Usd)
+                            <div class="text-center col-6">
+                                <div class="display-4 text-center" style="font-size: 1.8rem;">
+                                    $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
+                                    <div class="text-lightblue lead">
+                                        Marketcap
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-blue lead text-center col-6" style="font-size: 1.2em;">
-                                <strong>Volume:</strong> $@string.Format("{0:C}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
+                            <div class="text-center col-6">
+                                
+                                <div class="display-4 text-center" style="font-size: 1.8rem;">
+                                    $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
+                                    <div class="text-lightblue lead">
+                                        Volume
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="text-muted text-center" style="font-size:0.8em">Powered by CoinGecko API</div>
+
                     </div>
                 </div>
             </div>
