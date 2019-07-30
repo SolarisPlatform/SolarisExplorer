@@ -8,5 +8,6 @@ namespace Solaris.BlockExplorer.UI.Services
     {
         Task<IEnumerable<IBlockModel>> GetBlocks();
         Task<IBlockModel> GetBlock(string blockId);
+        Task<long> GetBlockHeight();
     }
 }

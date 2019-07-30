@@ -28,5 +28,10 @@ namespace Solaris.BlockExplorer.UI.Services
             var block = await _blockService.GetBlock(blockId);
             return _mapper.Map<BlockModel>(block);
         }
+
+        public Task<long> GetBlockHeight()
+        {
+            return _blockService.GetBlockHeight();
+        }
     }
 }

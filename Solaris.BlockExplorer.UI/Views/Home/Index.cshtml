@@ -14,7 +14,7 @@
                             Block height
                         </h4>
                         <div class="display-4 text-center" style="font-size: 1.8rem;">
-                            @String.Format("{0:#,##0}", ViewBag.LastBlock.Height)
+                            @ViewBag.BlockHeight
                             <div class="text-lightblue lead">
                                 Last found block
                             </div>
@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="text-center col-6">
                                 <div class="display-4 text-center" style="font-size: 1.8rem;">
-                                    $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
+                                    $@string.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
                                     <div class="text-lightblue lead">
                                         Marketcap
                                     </div>
@@ -77,7 +77,7 @@
                             <div class="text-center col-6">
                                 
                                 <div class="display-4 text-center" style="font-size: 1.8rem;">
-                                    $@String.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
+                                    $@string.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
                                     <div class="text-lightblue lead">
                                         Volume
                                     </div>
