@@ -99,34 +99,43 @@
                     Blocks
                 </h4>
                 <div class="row row-header">
-                    <div class="col-1 d-lg-none row-header-column text-left">#</div>
-                    <div class="col-1 d-none d-lg-block row-header-column text-left">Block Height</div>
-                    <div class="col d-none d-md-block row-header-column text-left">Block Hash</div>
-                    <div class="col d-none d-sm-block row-header-column text-right">Transactions</div>
-                    <div class="col row-header-column text-right">Amount</div>
+                    <div class="col-2 d-md-none row-header-column text-left">#</div>
+                    <div class="col-1 d-none d-md-block row-header-column text-left">Block Height</div>
+                    <div class="col-5 col-xl-4 d-none d-md-block row-header-column text-left">Block Hash</div>
+
+                    <div class="col d-none d-xl-block row-header-column text-center"></div>
+                    <div class="col d-none d-sm-block row-header-column text-center">Transactions</div>
+                    <div class="col row-header-column text-left">Amount</div>
                     <div class="col row-header-column text-right">Time</div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         @foreach (var block in Model.Blocks)
                         {
-                            <div class="row rows">
-                                <div class="col-1 row-column text-left">
-                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
-                                </div>
-                                <div class="col d-none d-md-block row-column text-left">
-                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
-                                </div>
-                                <div class="col d-none d-sm-block row-column text-right">
-                                    @block.Transactions
-                                </div>
-                                <div class="col row-column text-right">
-                                    @block.OutputValue @ViewBag.Ticker
-                                </div>
-                                <div class="col row-column text-right">
-                                    @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
-                                </div>
+                        <div class="row rows">
+                            <div class="col-2 d-md-none row-header-column text-left">
+                                <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
                             </div>
+                            <div class="col-1 d-none d-md-block row-header-column text-left">
+                                <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
+                            </div>
+                            <div class="col-5 col-xl-4 d-none d-md-block row-column text-left">
+                                <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
+                            </div>
+
+                            <div class="col d-none d-xl-block row-column text-center">
+                                <span class="badge badge-primary">@(Math.Round(block.Size / 1024m, 4)) kB</span>
+                            </div>
+                            <div class="col d-none d-sm-block row-column text-center">
+                                @block.Transactions
+                            </div>
+                            <div class="col row-column text-left">
+                                @block.OutputValue @ViewBag.Ticker
+                            </div>
+                            <div class="col row-column text-right">
+                                @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
+                            </div>
+                        </div>
                         }
                     </div>
                 </div>
