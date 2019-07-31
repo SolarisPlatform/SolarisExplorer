@@ -12,7 +12,6 @@
     [Difficulty]    DECIMAL (28, 8) NOT NULL,
     [Chainwork]     CHAR (64)       NOT NULL,
     [PreviousBlock] CHAR (64)       NULL,
-    CONSTRAINT [PK_Blocks] PRIMARY KEY ([Id] ASC),
-    CONSTRAINT [FK_Blocks_Blocks] FOREIGN KEY ([PreviousBlock]) REFERENCES [tables].[Blocks] ([Id])
+    CONSTRAINT [PK_Blocks] PRIMARY KEY ([Id])
 );
 

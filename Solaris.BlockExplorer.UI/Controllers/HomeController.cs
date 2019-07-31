@@ -10,9 +10,11 @@ namespace Solaris.BlockExplorer.UI.Controllers
     {
         private readonly IBlockModelService _blockModelService;
         private readonly ICoinDataService _coinDataService;
+        private readonly IConfiguration _configuration;
         public HomeController(IBlockModelService blockModelService, IConfiguration configuration, ICoinDataService coinDataService) : base(configuration)
         {
             _blockModelService = blockModelService;
+            _configuration = configuration;
             _coinDataService = coinDataService;
         }
 
@@ -20,7 +22,13 @@ namespace Solaris.BlockExplorer.UI.Controllers
         {
             var blocks = await _blockModelService.GetBlocks();
 
-            ViewBag.CoinData = await _coinDataService.GetCoinData();
+            var coinDataEnabled = _configuration.GetSection("CoinGecko")?.GetValue<bool?>("IsEnabled") ?? false;
+
+            if (coinDataEnabled)
+                ViewBag.CoinData = await _coinDataService.GetCoinData();
+
+            ViewBag.CoinDataEnabled = coinDataEnabled;
+
             ViewBag.BlockHeight = await _blockModelService.GetBlockHeight();
             return View(new BlocksViewModel
             {

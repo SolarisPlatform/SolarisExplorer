@@ -5,8 +5,8 @@
     [OutputTransactionId] CHAR (64)        NULL,
     [OutputIndex]         BIGINT           NULL,
     [TransactionId]       CHAR (64)        NOT NULL,
-    CONSTRAINT [PK_Inputs] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Inputs_Transactions] FOREIGN KEY ([TransactionId]) REFERENCES [tables].[Transactions] ([Id]),
+    CONSTRAINT [PK_Inputs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Inputs_Transactions] FOREIGN KEY ([TransactionId]) REFERENCES [tables].[Transactions] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_Inputs_Transactions_Output] FOREIGN KEY ([OutputTransactionId]) REFERENCES [tables].[Transactions] ([Id])
 );
 

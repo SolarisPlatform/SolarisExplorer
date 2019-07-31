@@ -93,5 +93,8 @@
     <Build Include="storedprocedures\StoredProcedures\Create\InsertOutputScriptPublicKeyAddress.sql" />
     <Build Include="storedprocedures\StoredProcedures\Create\InsertInput.sql" />
     <Build Include="storedprocedures\StoredProcedures\Create\InsertInputScriptSignature.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetAddress.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetBlockTransactionInputs.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetBlockTransactionOutputs.sql" />
   </ItemGroup>
 </Project>

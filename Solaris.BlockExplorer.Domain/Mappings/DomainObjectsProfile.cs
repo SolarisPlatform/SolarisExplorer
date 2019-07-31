@@ -9,10 +9,11 @@ namespace Solaris.BlockExplorer.Domain.Mappings
         {
             CreateMap<Block, Models.Block>();
             CreateMap<BlockTransaction, Models.BlockTransaction>();
-            CreateMap<BlockTransactionTo, Models.BlockTransactionTo>();
+            CreateMap<BlockTransactionDetail, Models.BlockTransactionDetail>();
             CreateMap<Transaction, Models.Transaction>();
             CreateMap<TransactionInput, Models.TransactionInput>();
             CreateMap<TransactionOutput, Models.TransactionOutput>();
+            CreateMap<Address, Models.Address>();
         }  
     }
 }

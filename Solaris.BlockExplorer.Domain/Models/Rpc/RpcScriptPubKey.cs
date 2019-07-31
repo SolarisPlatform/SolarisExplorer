@@ -13,6 +13,6 @@ namespace Solaris.BlockExplorer.Domain.Models.Rpc
         [JsonProperty("type")]
         public string Type { get; set; }
         [JsonProperty("addresses")]
-        public string[] Addresses { get; set; }
+        public string[] Addresses { get; set; } = new string[0];
     }
 }

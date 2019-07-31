@@ -37,57 +37,61 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h4 class="title-bottom-border mb-2">
-                            Current Price
-                        </h4>
-                        <div class="display-4 text-center" style="font-size: 1.8rem;">
-                            <strong>@ViewBag.Ticker</strong> $@Math.Round(ViewBag.CoinData.MarketData.CurrentPrice.Usd, 2)
-                            <div class="text-lightblue lead">@ViewBag.CoinData.MarketData.CurrentPrice.Btc BTC
-                                @if (ViewBag.CoinData.MarketData.PriceChangePercentage24H > 0)
-                                {
-                                    <span class="text-success"> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
-                                }
-                                else
-                                {
-                                    <span class="text-danger"> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
-                                }
+            @if (ViewBag.CoinDataEnabled)
+            {
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="title-bottom-border mb-2">
+                                Current Price
+                            </h4>
+                            <div class="display-4 text-center" style="font-size: 1.8rem;">
+                                <strong>@ViewBag.Ticker</strong> $@Math.Round(ViewBag.CoinData.MarketData.CurrentPrice.Usd, 2)
+                                <div class="text-lightblue lead">
+                                    @ViewBag.CoinData.MarketData.CurrentPrice.Btc BTC
+                                    @if (ViewBag.CoinData.MarketData.PriceChangePercentage24H > 0)
+                                    {
+                                        <span class="text-success"> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger"> @Math.Round(ViewBag.CoinData.MarketData.PriceChangePercentage24HInCurrency.Btc, 2)%</span>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h4 class="title-bottom-border mb-2">
-                            Market Data
-                        </h4>
-                        <div class="row">
-                            <div class="text-center col-6">
-                                <div class="display-4 text-center" style="font-size: 1.8rem;">
-                                    $@string.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
-                                    <div class="text-lightblue lead">
-                                        Marketcap
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="title-bottom-border mb-2">
+                                Market Data
+                            </h4>
+                            <div class="row">
+                                <div class="text-center col-6">
+                                    <div class="display-4 text-center" style="font-size: 1.8rem;">
+                                        $@string.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.MarketCap.Usd)
+                                        <div class="text-lightblue lead">
+                                            Marketcap
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="text-center col-6">
-                                
-                                <div class="display-4 text-center" style="font-size: 1.8rem;">
-                                    $@string.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
-                                    <div class="text-lightblue lead">
-                                        Volume
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                <div class="text-center col-6">
 
+                                    <div class="display-4 text-center" style="font-size: 1.8rem;">
+                                        $@string.Format("{0:#,##0.##}", ViewBag.CoinData.MarketData.TotalVolume.Usd)
+                                        <div class="text-lightblue lead">
+                                            Volume
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </div>

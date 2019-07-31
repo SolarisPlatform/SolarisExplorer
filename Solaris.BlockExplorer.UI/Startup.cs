@@ -50,6 +50,9 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<ITransactionOutputRepository, TransactionOutputRepository>()
                 .AddScoped<ITransactionOutputService, TransactionOutputService>()
                 .AddScoped<ITransactionOutputModelService, TransactionOutputModelService>()
+                .AddScoped<IAddressRepository, AddressRepository>()
+                .AddScoped<IAddressService, AddressService>()
+                .AddScoped<IAddressModelService, AddressModelService>()
                 .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
                 .AddScoped(provider =>
                 {
@@ -60,13 +63,14 @@ namespace Solaris.BlockExplorer.UI
             services.AddHttpClient("CoinGecko", (provider, client) =>
             {
                 var configuration = provider.GetService<IConfiguration>();
-                var section = configuration.GetSection("CoinData");
+                var section = configuration.GetSection("CoinGecko");
                 var url = section.GetValue<string>("Url");
                 var coinName = section.GetValue<string>("CoinName");
                 var baseAddress = url + coinName;
 
                 client.BaseAddress= new Uri(baseAddress);
             });
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

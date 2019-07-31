@@ -1,9 +1,9 @@
 ﻿
-@*@{
+@{
     ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model AddressModel
+@model Solaris.BlockExplorer.UI.Models.ViewModels.IAddressViewModel
 
 <div class="row mt-2">
     <div class="col-12">
@@ -15,35 +15,34 @@
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Address</div>
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        <a href="@Url.Action("Index", new { address = Model.Address })">@Model.Address</a>
+                        <a href="@Url.Action("Index", new { address = Model.Address.PublicKey })">@Model.Address.PublicKey</a>
                     </div>
                 </div>
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Balance</div>
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Balance @ViewBag.Ticker
+                        @Model.Address.Balance @ViewBag.Ticker
                     </div>
                 </div>
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Received</div>
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Received @ViewBag.Ticker (in @Model.ReceivedCount transactions)
+                        @Model.Address.Received @ViewBag.Ticker (in @Model.Address.ReceivedCount transactions)
                     </div>
                 </div>
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Sent</div>
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Sent @ViewBag.Ticker (in @Model.SentCount transactions)
+                        @Model.Address.Sent @ViewBag.Ticker (in @Model.Address.SentCount transactions)
                     </div>
                 </div>
                 <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Staked/Mined</div>
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Mined @ViewBag.Ticker (in @Model.MinedCount transactions)
+                        @Model.Address.Mined @ViewBag.Ticker (in @Model.Address.MinedCount transactions)
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>*@
-
+</div>

@@ -9,7 +9,7 @@
     [Time]       BIGINT    NOT NULL,
     [BlockTime]  BIGINT    NOT NULL,
     [BlockOrder] BIGINT    NOT NULL,
-    CONSTRAINT [PK_Transactions] PRIMARY KEY ([Id] ASC),
-    CONSTRAINT [FK_Transactions_Blocks] FOREIGN KEY ([BlockId]) REFERENCES [tables].[Blocks] ([Id])
+    CONSTRAINT [PK_Transactions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Transactions_Blocks] FOREIGN KEY ([BlockId]) REFERENCES [tables].[Blocks] ([Id]) ON DELETE CASCADE
 );
 

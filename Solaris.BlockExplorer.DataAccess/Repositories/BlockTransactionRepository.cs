@@ -16,42 +16,47 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
             _dbConnection = dbConnection;
         }
 
-        public async Task<IEnumerable<BlockTransaction>> GetBlockTransactions(string blockId)
+        private Task<IEnumerable<string>> GetBlockTransactionIds(string blockId)
         {
-            var blockTransactionItems = (await
-                _dbConnection.QueryAsync<BlockTransactionItem>(
+            return _dbConnection.QueryAsync<string>(
                     "storedprocedures.GetBlockTransactions", new
                     {
                         blockId
                     },
-                    commandType: CommandType.StoredProcedure)).ToArray();
+                    commandType: CommandType.StoredProcedure);
+        }
 
+        private Task<IEnumerable<BlockTransactionDetail>> GetBlockTransactionInputs(string transactionId)
+        {
+            return _dbConnection.QueryAsync<BlockTransactionDetail>(
+                "storedprocedures.GetBlockTransactionInputs", new
+                {
+                    transactionId
+                },
+                commandType: CommandType.StoredProcedure);
+        }
+        private Task<IEnumerable<BlockTransactionDetail>> GetBlockTransactionOutputs(string transactionId)
+        {
+            return _dbConnection.QueryAsync<BlockTransactionDetail>(
+                "storedprocedures.GetBlockTransactionOutputs", new
+                {
+                    transactionId
+                },
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<BlockTransaction>> GetBlockTransactions(string blockId)
+        {
+            var blockTransactionIds = await GetBlockTransactionIds(blockId);
             var blockTransactions = new List<BlockTransaction>();
 
-            foreach (var transaction in blockTransactionItems.GroupBy(p => p.TransactionId))
+            foreach (var blockTransactionId in blockTransactionIds)
             {
-                var transactionId = transaction.Key;
-                var items = blockTransactionItems.Where(blockTransactionItem => blockTransactionItem.TransactionId.Equals(transaction.Key) && !string.IsNullOrEmpty(blockTransactionItem.FromAddress)).ToArray();
-                var from = items.Select(blockTransactionItem => blockTransactionItem.FromAddress).Distinct().ToArray();
-                var fromValue = items.FirstOrDefault()?.FromValue;
-                var to = blockTransactionItems.Where(blockTransactionItem => blockTransactionItem.TransactionId.Equals(transaction.Key))
-                    .Select(p => new BlockTransactionTo
-                    {
-                        Address =
-                            blockTransactionItems
-                                .Where(blockTransactionItem =>
-                                    blockTransactionItem.TransactionId.Equals(transaction.Key) &&
-                                    blockTransactionItem.Index.Equals(p.Index))
-                                .Select(address => address.ToAddress).ToArray(),
-                        Amount = p.ToValue
-                    }).ToArray();
-
                 blockTransactions.Add(new BlockTransaction
                 {
-                    TransactionId = transactionId,
-                    From = from,
-                    FromValue = fromValue,
-                    To = to
+                    TransactionId = blockTransactionId,
+                    Inputs = await GetBlockTransactionInputs(blockTransactionId),
+                    Outputs = await GetBlockTransactionOutputs(blockTransactionId)
                 });
             }
 

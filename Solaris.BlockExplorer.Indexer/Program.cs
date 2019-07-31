@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http.Headers;
@@ -32,12 +33,12 @@ namespace Solaris.BlockExplorer.Indexer
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", true, true)
                     .Build())
-                .AddSingleton(typeof(IWalletRpcService<>), typeof(WalletRpcService<>))
-                .AddSingleton<IRpcBlockCountService, RpcBlockCountService>()
-                .AddSingleton<IRpcBlockHashService, RpcBlockHashService>()
-                .AddSingleton<IRpcBlockService, RpcBlockService>()
-                .AddSingleton<IRpcTransactionService, RpcTransactionService>()
-                .AddSingleton<IDbConnectionFactory>(provider =>
+                .AddScoped(typeof(IWalletRpcService<>), typeof(WalletRpcService<>))
+                .AddScoped<IRpcBlockCountService, RpcBlockCountService>()
+                .AddScoped<IRpcBlockHashService, RpcBlockHashService>()
+                .AddScoped<IRpcBlockService, RpcBlockService>()
+                .AddScoped<IRpcTransactionService, RpcTransactionService>()
+                .AddScoped<IDbConnectionFactory>(provider =>
                 {
                     var configuration = provider.GetService<IConfiguration>();
                     return new DbConnectionFactory
@@ -48,13 +49,13 @@ namespace Solaris.BlockExplorer.Indexer
                     var dbConnectionFactory = provider.GetService<IDbConnectionFactory>();
                     return dbConnectionFactory.CreateConnection();
                 })
-                .AddSingleton<IBlockRepository, BlockRepository>()
-                .AddSingleton<ITransactionRepository, TransactionRepository>()
-                .AddSingleton<ITransactionOutputRepository, TransactionOutputRepository>()
-                .AddSingleton<IOutputScriptPublicKeyRepository, OutputScriptPublicKeyRepository>()
-                .AddSingleton<IOutputScriptPublicKeyAddressRepository, OutputScriptPublicKeyAddressRepository>()
-                .AddSingleton<ITransactionInputRepository, TransactionInputRepository>()
-                .AddSingleton<IInputScriptSignatureRepository, InputScriptSignatureRepository>();
+                .AddScoped<IBlockRepository, BlockRepository>()
+                .AddScoped<ITransactionRepository, TransactionRepository>()
+                .AddScoped<ITransactionOutputRepository, TransactionOutputRepository>()
+                .AddScoped<IOutputScriptPublicKeyRepository, OutputScriptPublicKeyRepository>()
+                .AddScoped<IOutputScriptPublicKeyAddressRepository, OutputScriptPublicKeyAddressRepository>()
+                .AddScoped<ITransactionInputRepository, TransactionInputRepository>()
+                .AddScoped<IInputScriptSignatureRepository, InputScriptSignatureRepository>();
 
 
             serviceCollection.AddHttpClient("Daemon", (provider, client) =>
@@ -83,131 +84,142 @@ namespace Solaris.BlockExplorer.Indexer
             var rpcTransactionService = _serviceProvider.GetService<IRpcTransactionService>();
             var rpcBlockCount = await rpcBlockCountService.GetBlockCount();
 
-            var blockRepository = _serviceProvider.GetService<IBlockRepository>();
-            var transactionRepository = _serviceProvider.GetService<ITransactionRepository>();
-            var transactionOutputRepository = _serviceProvider.GetService<ITransactionOutputRepository>();
-            var outputScriptPublicKeyRepository = _serviceProvider.GetService<IOutputScriptPublicKeyRepository>();
-            var outputScriptPublicKeyAddressRepository = _serviceProvider.GetService<IOutputScriptPublicKeyAddressRepository>();
-            var transactionInputRepository = _serviceProvider.GetService<ITransactionInputRepository>();
-            var inputScriptSignatureRepository = _serviceProvider.GetService<IInputScriptSignatureRepository>();
+            var blockCountRepository = _serviceProvider.GetService<IBlockRepository>();
 
-            var blockCount = await blockRepository.GetBlockHeight();
+
+            var blockCount = await blockCountRepository.GetBlockHeight();
+
+            if (blockCount > 0)
+                blockCount++;
 
             if (rpcBlockCount == blockCount && rpcBlockCount > 0)
                 Console.WriteLine("No update required");
 
+
             for (var i = blockCount; i < rpcBlockCount; i++)
             {
-                var rpcBlock = await rpcBlockService.GetBlock(i);
-
-                var block = new Block
+                using (var scope = _serviceProvider.CreateScope())
                 {
-                    Id = rpcBlock.Hash,
-                    Bits = rpcBlock.Bits,
-                    Chainwork = rpcBlock.Chainwork,
-                    Difficulty = rpcBlock.Difficulty,
-                    Height = rpcBlock.Height,
-                    MedianTime = rpcBlock.MedianTime,
-                    Time = rpcBlock.Time,
-                    Merkleroot = rpcBlock.Merkleroot,
-                    Nonce = rpcBlock.Nonce,
-                    Size = rpcBlock.Size,
-                    Version = rpcBlock.Version,
-                    Weight = rpcBlock.Weight,
-                    PreviousBlock = rpcBlock.PreviousBlock == GenesisBlock ? null : rpcBlock.PreviousBlock
-                };
+                    var transactionRepository = scope.ServiceProvider.GetService<ITransactionRepository>();
+                    var transactionOutputRepository = scope.ServiceProvider.GetService<ITransactionOutputRepository>();
+                    var outputScriptPublicKeyRepository =
+                        scope.ServiceProvider.GetService<IOutputScriptPublicKeyRepository>();
+                    var outputScriptPublicKeyAddressRepository =
+                        scope.ServiceProvider.GetService<IOutputScriptPublicKeyAddressRepository>();
+                    var transactionInputRepository = scope.ServiceProvider.GetService<ITransactionInputRepository>();
+                    var inputScriptSignatureRepository =
+                        scope.ServiceProvider.GetService<IInputScriptSignatureRepository>();
+                    var blockRepository = scope.ServiceProvider.GetService<IBlockRepository>();
 
-                await blockRepository.Insert(block);
+                    var rpcBlock = await rpcBlockService.GetBlock(i);
 
-                var blockOrder = 0L;
-                foreach (var rpcBlockTransaction in rpcBlock.Transactions)
-                {
-                    var rpcTransaction = await rpcTransactionService.GetTransaction(rpcBlockTransaction);
-
-                    if (rpcTransaction == null)
-                        continue;
-
-                    var transaction = new Transaction
+                    var block = new Block
                     {
-                        BlockTime = rpcTransaction.BlockTime,
-                        Hash = rpcTransaction.Hash,
-                        Id = rpcTransaction.TxId,
-                        Locktime = rpcTransaction.Locktime,
-                        Size = rpcTransaction.Size,
-                        Time = rpcTransaction.Time,
-                        Version = rpcTransaction.Version,
-                        Vsize = rpcTransaction.Vsize,
-                        BlockId = rpcBlock.Hash,
-                        BlockOrder = blockOrder
+                        Id = rpcBlock.Hash,
+                        Bits = rpcBlock.Bits,
+                        Chainwork = rpcBlock.Chainwork,
+                        Difficulty = rpcBlock.Difficulty,
+                        Height = rpcBlock.Height,
+                        MedianTime = rpcBlock.MedianTime,
+                        Time = rpcBlock.Time,
+                        Merkleroot = rpcBlock.Merkleroot,
+                        Nonce = rpcBlock.Nonce,
+                        Size = rpcBlock.Size,
+                        Version = rpcBlock.Version,
+                        Weight = rpcBlock.Weight,
+                        PreviousBlock = rpcBlock.PreviousBlock == GenesisBlock ? null : rpcBlock.PreviousBlock
                     };
 
-                    await transactionRepository.Insert(transaction);
+                    await blockRepository.Insert(block);
 
-                    blockOrder++;
-
-                    foreach (var rpcTransactionOutput in rpcTransaction.Outputs)
+                    var blockOrder = 0L;
+                    foreach (var rpcBlockTransaction in rpcBlock.Transactions)
                     {
-                        var output = new Output
+                        var rpcTransaction = await rpcTransactionService.GetTransaction(rpcBlockTransaction);
+
+                        if (rpcTransaction == null)
+                            continue;
+
+                        var transaction = new Transaction
                         {
-                            Value = rpcTransactionOutput.Value,
-                            Index = rpcTransactionOutput.Index,
-                            TransactionId = rpcTransaction.TxId
+                            BlockTime = rpcTransaction.BlockTime,
+                            Hash = rpcTransaction.Hash,
+                            Id = rpcTransaction.TxId,
+                            Locktime = rpcTransaction.Locktime,
+                            Size = rpcTransaction.Size,
+                            Time = rpcTransaction.Time,
+                            Version = rpcTransaction.Version,
+                            Vsize = rpcTransaction.Vsize,
+                            BlockId = rpcBlock.Hash,
+                            BlockOrder = blockOrder
                         };
 
-                        var outputId = await transactionOutputRepository.Insert(output);
+                        await transactionRepository.Insert(transaction);
 
-                        var outputScriptPublicKey = new OutputScriptPublicKey
+                        blockOrder++;
+
+                        foreach (var rpcTransactionOutput in rpcTransaction.Outputs)
                         {
-                            OutputId = outputId,
-                            Asm = rpcTransactionOutput.ScriptPublicKey.Asm,
-                            Hex = rpcTransactionOutput.ScriptPublicKey.Hex,
-                            RequestedSignatures = rpcTransactionOutput.ScriptPublicKey.RequestedSignatures,
-                            Type = rpcTransactionOutput.ScriptPublicKey.Type
-                        };
-
-                        await outputScriptPublicKeyRepository.Insert(outputScriptPublicKey);
-
-                        foreach (var rpcScriptPublicKeyAddresses in rpcTransactionOutput.ScriptPublicKey.Addresses)
-                        {
-                            await outputScriptPublicKeyAddressRepository.Insert(new OutputScriptPublicKeyAddress
+                            var output = new Output
                             {
-                                Address = rpcScriptPublicKeyAddresses,
-                                OutputId = outputId
-                            });
-                        }
-
-                    }
-
-                    foreach (var rpcTransactionInput in rpcTransaction.Inputs)
-                    {
-                        var input = new Input
-                        {
-                            Coinbase = rpcTransactionInput.Coinbase,
-                            OutputIndex = rpcTransactionInput.Vout,
-                            Sequence = rpcTransactionInput.Sequence,
-                            TransactionId = rpcTransaction.TxId,
-                            OutputTransactionId = rpcTransactionInput.TxId
-                        };
-
-                        var inputId = await transactionInputRepository.Insert(input);
-
-                        if (rpcTransactionInput.ScriptSignature != null)
-                        {
-                            var inputScriptSignature = new InputScriptSignature
-                            {
-                                InputId = inputId,
-                                Asm = rpcTransactionInput.ScriptSignature.Asm,
-                                Hex = rpcTransactionInput.ScriptSignature.Hex
+                                Value = rpcTransactionOutput.Value,
+                                Index = rpcTransactionOutput.Index,
+                                TransactionId = rpcTransaction.TxId
                             };
 
-                            await inputScriptSignatureRepository.Insert(inputScriptSignature);
+                            var outputId = await transactionOutputRepository.Insert(output);
+
+                            var outputScriptPublicKey = new OutputScriptPublicKey
+                            {
+                                OutputId = outputId,
+                                Asm = rpcTransactionOutput.ScriptPublicKey.Asm,
+                                Hex = rpcTransactionOutput.ScriptPublicKey.Hex,
+                                RequestedSignatures = rpcTransactionOutput.ScriptPublicKey.RequestedSignatures,
+                                Type = rpcTransactionOutput.ScriptPublicKey.Type
+                            };
+
+                            await outputScriptPublicKeyRepository.Insert(outputScriptPublicKey);
+
+                            foreach (var rpcScriptPublicKeyAddresses in rpcTransactionOutput.ScriptPublicKey.Addresses)
+                            {
+                                await outputScriptPublicKeyAddressRepository.Insert(new OutputScriptPublicKeyAddress
+                                {
+                                    Address = rpcScriptPublicKeyAddresses,
+                                    OutputId = outputId
+                                });
+                            }
+                        }
+
+                        foreach (var rpcTransactionInput in rpcTransaction.Inputs)
+                        {
+                            var input = new Input
+                            {
+                                Coinbase = rpcTransactionInput.Coinbase,
+                                OutputIndex = rpcTransactionInput.Vout,
+                                Sequence = rpcTransactionInput.Sequence,
+                                TransactionId = rpcTransaction.TxId,
+                                OutputTransactionId = rpcTransactionInput.TxId
+                            };
+
+                            var inputId = await transactionInputRepository.Insert(input);
+
+                            if (rpcTransactionInput.ScriptSignature != null)
+                            {
+                                var inputScriptSignature = new InputScriptSignature
+                                {
+                                    InputId = inputId,
+                                    Asm = rpcTransactionInput.ScriptSignature.Asm,
+                                    Hex = rpcTransactionInput.ScriptSignature.Hex
+                                };
+
+                                await inputScriptSignatureRepository.Insert(inputScriptSignature);
+                            }
                         }
                     }
+
+                    Console.WriteLine($"{block.Height} - {block.Id}");
                 }
-
-                Console.WriteLine($"{block.Height} - {block.Id}");
             }
-
 
             stopWatch.Stop();
             Console.WriteLine("Ready in {0} seconds", stopWatch.Elapsed.TotalSeconds);
