@@ -11,7 +11,8 @@
 	@Size BIGINT,
 	@Version BIGINT,
 	@Weight BIGINT,
-	@PreviousBlock CHAR(64)
+	@PreviousBlock CHAR(64),
+	@Json VARCHAR(MAX)
 AS
 INSERT INTO
 	tables.Blocks
@@ -28,7 +29,8 @@ INSERT INTO
 		Size,
 		Version,
 		Weight,
-		PreviousBlock
+		PreviousBlock,
+		Json
 	)
 VALUES
 	(
@@ -44,5 +46,6 @@ VALUES
 		@Size,
 		@Version,
 		@Weight,
-		@PreviousBlock
+		@PreviousBlock,
+		@Json
 	)

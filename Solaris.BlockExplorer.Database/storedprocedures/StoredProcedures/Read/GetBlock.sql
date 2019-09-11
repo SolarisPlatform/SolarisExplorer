@@ -12,21 +12,26 @@ SELECT
 		WHERE
 			tables.Transactions.BlockId = tables.Blocks.Id
 	) AS Transactions,
-	ISNULL(
 	(
 		SELECT
-			SUM(tables.Outputs.[Value])
+			SUM(tables.Transactions.OutputSum)
 		FROM
 			tables.Transactions
-		INNER JOIN
-			tables.Outputs
-		ON
-			tables.Outputs.TransactionId = tables.Transactions.Id
 		WHERE
 			tables.Transactions.BlockId = tables.Blocks.Id
-	), 0) AS [OutputValue],
+	) AS [OutputValue],
+	(
+		SELECT
+			SUM(tables.Transactions.InputSum)
+		FROM
+			tables.Transactions
+		WHERE
+			tables.Transactions.BlockId = tables.Blocks.Id
+	) AS [InputValue],
 	tables.Blocks.Size,
-	Time
+	Time,
+	Difficulty,
+	Json
 FROM
 	tables.Blocks
 WHERE

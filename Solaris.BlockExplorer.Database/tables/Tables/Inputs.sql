@@ -1,12 +1,12 @@
 ﻿CREATE TABLE [tables].[Inputs] (
     [Id]                  UNIQUEIDENTIFIER CONSTRAINT [DF_Inputs_Id] DEFAULT (newsequentialid()) NOT NULL,
-    [Coinbase]            VARCHAR (1024)   NULL,
+    [Coinbase]            VARCHAR (2048)   NULL,
     [Sequence]            BIGINT           NULL,
-    [OutputTransactionId] CHAR (64)        NULL,
-    [OutputIndex]         BIGINT           NULL,
-    [TransactionId]       CHAR (64)        NOT NULL,
-    CONSTRAINT [PK_Inputs] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Inputs_Transactions] FOREIGN KEY ([TransactionId]) REFERENCES [tables].[Transactions] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Inputs_Transactions_Output] FOREIGN KEY ([OutputTransactionId]) REFERENCES [tables].[Transactions] ([Id])
+    [OutputId]			  UNIQUEIDENTIFIER	       NULL,
+    [TransactionId] CHAR(64) NOT NULL, 
+	[Asm]     VARCHAR (2048)   NULL,
+    [Hex]     VARCHAR (2048)   NULL,
+    CONSTRAINT [PK_Inputs] PRIMARY KEY ([Id]), 
+    CONSTRAINT [FK_Inputs_Outputs] FOREIGN KEY ([OutputId]) REFERENCES [tables].[Outputs]([Id]) ON DELETE CASCADE
 );
-
+GO

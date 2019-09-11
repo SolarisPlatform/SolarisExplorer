@@ -9,7 +9,13 @@
     [Time]       BIGINT    NOT NULL,
     [BlockTime]  BIGINT    NOT NULL,
     [BlockOrder] BIGINT    NOT NULL,
+    [InputSum] DECIMAL(28, 8) NOT NULL, 
+    [OutputSum] DECIMAL(28, 8) NOT NULL, 
+    [Json] VARCHAR(MAX) NOT NULL, 
     CONSTRAINT [PK_Transactions] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_Transactions_Blocks] FOREIGN KEY ([BlockId]) REFERENCES [tables].[Blocks] ([Id]) ON DELETE CASCADE
 );
-
+GO
+CREATE NONCLUSTERED INDEX [IX_Transactions_BlockId]
+ON [tables].[Transactions] ([BlockId])
+GO

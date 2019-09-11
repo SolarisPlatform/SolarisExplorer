@@ -34,5 +34,7 @@ namespace Solaris.BlockExplorer.Domain.Models.Rpc
         public long Size { get; set; }
         [JsonProperty("previousblockhash")]
         public string PreviousBlock { get; set; }
+        [JsonIgnore]
+        public string Json { get; set; }
     }
 }

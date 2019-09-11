@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Solaris.BlockExplorer.Domain.Models;
 using Solaris.BlockExplorer.Domain.Services;
 using Solaris.BlockExplorer.UI.Models;
 
@@ -17,10 +18,10 @@ namespace Solaris.BlockExplorer.UI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<IBlockModel>> GetBlocks()
+        public async Task<PagedResultModel<IEnumerable<BlockModel>>> GetBlocks(PagingModel paging)
         {
-            var blocks = await _blockService.GetBlocks();
-            return _mapper.Map<IEnumerable<BlockModel>>(blocks);
+            var blocks = await _blockService.GetBlocks(_mapper.Map<Paging>(paging));
+            return _mapper.Map<PagedResultModel<IEnumerable<BlockModel>>>(blocks);
         }
 
         public async Task<IBlockModel> GetBlock(string blockId)

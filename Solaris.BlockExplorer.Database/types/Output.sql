@@ -1,0 +1,10 @@
+﻿CREATE TYPE [types].[Output]
+AS TABLE(
+	[Value] DECIMAL(28, 8) NOT NULL,
+	[Index] BIGINT NOT NULL,
+	[Asm] VARCHAR(2048) NOT NULL,
+	[Hex] VARCHAR(2048) NOT NULL,
+	[RequestedSignatures] BIGINT NOT NULL,
+	[Type] VARCHAR(255) NOT NULL,
+	[Addresses] VARCHAR(MAX) NOT NULL
+)

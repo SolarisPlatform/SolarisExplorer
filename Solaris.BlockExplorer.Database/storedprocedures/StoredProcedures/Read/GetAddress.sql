@@ -9,24 +9,33 @@ DECLARE @Mined DECIMAL(28, 8)
 DECLARE @MinedCount BIGINT
 
 SELECT
-	@Received = ISNULL(SUM(tables.Outputs.[Value]), 0),
-	@ReceivedCount = COUNT(DISTINCT OutputTransactions.Id)
+	@ReceivedCount = COUNT(DISTINCT BlockTransactions.Id),
+	@Received = SUM(BlockTransactionOutputs.Value)
 FROM
-	tables.Outputs
+	tables.Blocks
 LEFT JOIN
-	tables.Transactions OutputTransactions
+	tables.Transactions BlockTransactions
 ON
-	OutputTransactions.Id = tables.Outputs.TransactionId
+	BlockTransactions.BlockId = tables.Blocks.Id
 LEFT JOIN
-	tables.OutputScriptPublicKey 
+	tables.Inputs BlockTransactionInputs
 ON
-	tables.OutputScriptPublicKey.OutputId = tables.Outputs.Id
+	BlockTransactionInputs.TransactionId = BlockTransactions.Id
 LEFT JOIN
-	tables.OutputScriptPublicKeyAddresses
+	tables.Outputs BlockTransactionOutputs
 ON
-	tables.OutputScriptPublicKeyAddresses.OutputId = tables.OutputScriptPublicKey.OutputId
+	BlockTransactionOutputs.TransactionId = BlockTransactions.Id
+LEFT JOIN
+	tables.Outputs BlockTransactionInputOutput
+ON
+	BlockTransactionInputOutput.Id = BlockTransactionInputs.OutputId
 WHERE
-	tables.OutputScriptPublicKeyAddresses.Address = @PublicKey
+	BlockTransactionOutputs.[Addresses] LIKE '%' + @PublicKey + '%'
+AND NOT
+	BlockTransactionInputOutput.[Addresses] = BlockTransactionOutputs.[Addresses]
+AND NOT
+	BlockTransactionInputs.OutputId IS NULL
+
 
 SELECT
 	@Sent = ISNULL(SUM(tables.Outputs.[Value]), 0),
@@ -40,45 +49,37 @@ ON
 LEFT JOIN
 	tables.Outputs
 ON
-	tables.Outputs.TransactionId = tables.Inputs.OutputTransactionId
-AND
-	tables.Outputs.[Index] = tables.Inputs.OutputIndex
-LEFT JOIN
-	tables.OutputScriptPublicKey 
-ON
-	tables.OutputScriptPublicKey.OutputId = tables.Outputs.Id
-LEFT JOIN
-	tables.OutputScriptPublicKeyAddresses
-ON
-	tables.OutputScriptPublicKeyAddresses.OutputId = tables.OutputScriptPublicKey.OutputId
+	tables.Outputs.Id = tables.Inputs.OutputId
 WHERE
-	tables.OutputScriptPublicKeyAddresses.Address = @PublicKey
+	tables.Outputs.[Addresses] LIKE '%' + @PublicKey + '%'
 
 SELECT
-	@Mined = SUM(tables.Outputs.Value),
-	@MinedCount = COUNT(*)
+	@MinedCount = COUNT(DISTINCT BlockTransactions.Id),
+	@Mined = SUM(BlockTransactionOutputs.[Value])
 FROM
-	tables.Transactions
-INNER JOIN
-	tables.Inputs
+	tables.Blocks
+LEFT JOIN
+	tables.Transactions BlockTransactions
 ON
-	tables.Inputs.TransactionId = tables.Transactions.Id
-INNER JOIN
-	tables.Outputs
+	BlockTransactions.BlockId = tables.Blocks.Id
+LEFT JOIN
+	tables.Inputs BlockTransactionInputs
 ON
-	tables.Outputs.TransactionId = tables.Transactions.Id
-INNER JOIN
-	tables.OutputScriptPublicKey
+	BlockTransactionInputs.TransactionId = BlockTransactions.Id
+LEFT JOIN
+	tables.Outputs BlockTransactionOutputs
 ON
-	tables.OutputScriptPublicKey.OutputId = tables.Outputs.Id
-INNER JOIN
-	tables.OutputScriptPublicKeyAddresses
+	BlockTransactionOutputs.TransactionId = BlockTransactions.Id
+LEFT JOIN
+	tables.Outputs BlockTransactionInputOutput
 ON
-	tables.OutputScriptPublicKeyAddresses.OutputId = tables.OutputScriptPublicKey.OutputId
+	BlockTransactionInputOutput.Id = BlockTransactionInputs.OutputId
 WHERE
-	tables.OutputScriptPublicKeyAddresses.Address = @PublicKey
+	BlockTransactionOutputs.[Addresses] LIKE '%' + @PublicKey + '%'
 AND
-	tables.Inputs.OutputTransactionId IS NULL
+	BlockTransactionInputOutput.[Addresses] = BlockTransactionOutputs.[Addresses]
+AND
+	BlockTransactionInputs.OutputId IS NULL
 
 SELECT
 	@Sent AS [Sent],

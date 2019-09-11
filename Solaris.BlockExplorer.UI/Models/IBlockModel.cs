@@ -9,5 +9,7 @@
         decimal? OutputValue { get; set; }
         decimal? InputValue { get; set; }
         long Size { get; set; }
+        decimal Difficulty { get; set; }
+        string Json { get; set; }
     }
 }

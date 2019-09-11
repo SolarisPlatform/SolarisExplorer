@@ -15,5 +15,6 @@
         public decimal Difficulty { get; set; }
         public string Chainwork { get; set; }
         public string PreviousBlock { get; set; }
+        public string Json { get; set; }
     }
 }

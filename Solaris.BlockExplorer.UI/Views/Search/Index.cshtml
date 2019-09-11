@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Solaris.BlockExplorer.UI.HtmlHelpers
+@model Solaris.BlockExplorer.UI.Models.ViewModels.ISearchViewModel
+<div class="row mt-2 mb-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="title-bottom-border mb-2">
+                    Search
+                </h4>
+
+                @if (!Model.SearchResults.Any())
+                {
+                    <span>No matching results&#8230;</span>
+                }
+
+                @if (Model.SearchResults.Any(p => p.Type == "Block"))
+                {
+                    <h4 class="title-bottom-border mb-2">
+                        Blocks
+                    </h4>
+                }
+                @foreach (var block in Model.SearchResults.Where(p => p.Type == "Block"))
+                {
+                    <div class="row rows">
+                        <div class="col-3 col-md-2">
+                            <i class="fas fa-th-large mr-2"></i> Block @block.Height
+                        </div>
+                        <div class="col-9 col-md-10 text-truncate">
+                            <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
+                        </div>
+                    </div>
+                }
+                @if (Model.SearchResults.Any(p => p.Type == "Transaction"))
+                {
+                    <h4 class="title-bottom-border mb-2 mt-2">
+                        Transactions
+                    </h4>
+                }
+                @foreach (var transaction in Model.SearchResults.Where(p => p.Type == "Transaction"))
+                {
+                    <div class="row rows">
+                        <div class="col-3 col-md-2">
+                            <i class="fas fa-exchange-alt mr-2"></i> Transaction
+                        </div>
+                        <div class="col-9 col-md-10 text-truncate">
+                            <a href="@Url.Action("Index", "Transaction", new { transactionHash = transaction.Id })">@transaction.Id</a>
+                        </div>
+                    </div>
+                }
+                @if (Model.SearchResults.Any(p => p.Type == "Address"))
+                {
+                    <h4 class="title-bottom-border mb-2 mt-2">
+                        Addresses
+                    </h4>
+                }
+                @foreach (var address in Model.SearchResults.Where(p => p.Type == "Address"))
+                {
+                    <div class="row rows">
+                        <div class="col-3 col-md-2">
+                            <i class="fas fa-map mr-2"></i> Address
+                        </div>
+                        <div class="col-9 col-md-10 text-truncate">
+                            @Url.AddressLink(address.Id.Split(','))
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

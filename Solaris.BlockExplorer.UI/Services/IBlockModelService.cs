@@ -6,7 +6,7 @@ namespace Solaris.BlockExplorer.UI.Services
 {
     public interface IBlockModelService
     {
-        Task<IEnumerable<IBlockModel>> GetBlocks();
+        Task<PagedResultModel<IEnumerable<BlockModel>>> GetBlocks(PagingModel paging);
         Task<IBlockModel> GetBlock(string blockId);
         Task<long> GetBlockHeight();
     }

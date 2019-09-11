@@ -28,5 +28,7 @@ namespace Solaris.BlockExplorer.Domain.Models.Rpc
         public long Time { get; set; }
         [JsonProperty("blocktime")]
         public long BlockTime { get; set; }
+        [JsonIgnore]
+        public string Json { get; set; }
     }
 }

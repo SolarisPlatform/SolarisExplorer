@@ -9,40 +9,7 @@
     <link rel="stylesheet" href="~/lib/fontawesome-free-5.2.0-web/css/fontawesome.min.css" />
     <link rel="stylesheet" href="~/lib/fontawesome-free-5.2.0-web/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
-
-</head>
-<body class="night-mode h-100">
-<header>
-    
-<partial name="Navbar"/>
-
-</header>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 side-columns">
-                @RenderBody()
-            </div>
-        </div>
-    </div>
-    
-    <footer class="d-flex justify-content-center mt-auto">
-        <div class="container">
-            <div class="row mt-2">
-                <div class="col-sm-12 col-md-12 text-center">
-                    <a href="https://solarisplatform.com" class="text-white" target="_blank"><i class="fas fa-globe mr-2"></i></a>
-                    <a href="https://twitter.com/SolarisCoin" class="text-white" target="_blank"><i class="fab fa-twitter mr-2"></i></a>
-                    <a href="https://t.me/solariscoin" class="text-white" target="_blank"><i class="fab fa-telegram-plane mr-2"></i></a>
-                    <a href="https://discordapp.com/invite/wMcqapP" class="text-white" target="_blank"><i class="fab fa-discord mr-2"></i></a>
-                    <a href="https://www.reddit.com/r/solarisxlr/" class="text-white" target="_blank"><i class="fab fa-reddit-alien mr-2"></i></a>
-                    <a href="https://bitcointalk.org/index.php?topic=1831629.0" class="text-white" target="_blank"><i class="fab fa-bitcoin mr-2"></i></a>
-                    <a href="https://medium.com/@@solarisxlr" class="text-white" target="_blank"><i class="fab fa-medium-m mr-2"></i></a>
-                    <a href="https://github.com/SolarisPlatform" class="text-white" target="_blank"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-    </footer>
+    <link rel="icon" href="~/favicon.ico" type="image/ico">
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -62,8 +29,55 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
     </environment>
+
+    <script src="~/lib/clipboardjs/clipboard.min.js"></script>
+    <script src="~/lib/highlight/highlight.pack.js"></script>
+    <link rel="stylesheet" href="~/lib/highlight/styles/default.css" />
+    <link rel="stylesheet" href="~/lib/highlight/styles/vs2015.css" />
+</head>
+<body class="night-mode h-100">
+    <header>
+        <partial name="Navbar" />
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 side-columns">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <footer class="d-flex justify-content-center mt-auto">
+        <div class="container">
+            <div class="row mt-2 pt-2 pb-2">
+                <div class="col-sm-12 col-md-12 text-center">
+                    <a href="https://solarisplatform.com" class="text-white" target="_blank"><i class="fas fa-globe mr-2"></i></a>
+                    <a href="https://twitter.com/SolarisCoin" class="text-white" target="_blank"><i class="fab fa-twitter mr-2"></i></a>
+                    <a href="https://t.me/solariscoin" class="text-white" target="_blank"><i class="fab fa-telegram-plane mr-2"></i></a>
+                    <a href="https://discordapp.com/invite/wMcqapP" class="text-white" target="_blank"><i class="fab fa-discord mr-2"></i></a>
+                    <a href="https://www.reddit.com/r/solarisxlr/" class="text-white" target="_blank"><i class="fab fa-reddit-alien mr-2"></i></a>
+                    <a href="https://bitcointalk.org/index.php?topic=1831629.0" class="text-white" target="_blank"><i class="fab fa-bitcoin mr-2"></i></a>
+                    <a href="https://medium.com/@@solarisxlr" class="text-white" target="_blank"><i class="fab fa-medium-m mr-2"></i></a>
+                    <a href="https://github.com/SolarisPlatform" class="text-white" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+        var clipboard = new ClipboardJS('.clipboard');
+        clipboard.on('success', function(e) {
+            $(".clipboard-success").fadeIn("slow", function() {
+                setTimeout(function() {
+                    $(".clipboard-success").fadeOut("slow");
+                }, 3000);
+            });
+        });
+    </script>
 </body>
 </html>

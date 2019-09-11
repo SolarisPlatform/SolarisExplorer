@@ -89,6 +89,10 @@ a {
     border: 1px solid #363C4E;
 }
 
+.hljs {
+    background-color: #131722 !important;
+}
+
 .day-mode .card {
     background-color: #FFFFFF;
     border: 1px solid #DADDE0;

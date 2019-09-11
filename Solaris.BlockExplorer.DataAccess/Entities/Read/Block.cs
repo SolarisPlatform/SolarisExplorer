@@ -9,5 +9,7 @@
         public decimal? OutputValue { get; set; }
         public decimal? InputValue { get; set; }
         public long Size { get; set; }
+        public decimal Difficulty { get; set; }
+        public string Json { get; set; }
     }
 }

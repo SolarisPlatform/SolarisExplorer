@@ -17,7 +17,7 @@ namespace Solaris.BlockExplorer.Domain.Services.Rpc
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<T> Request(string method, params object[] parameters)
+        public async Task<IWalletRpcResponseWrapper<T>> Request(string method, params object[] parameters)
         {
             var httpClient = _httpClientFactory.CreateClient("Daemon");
 
@@ -41,7 +41,7 @@ namespace Solaris.BlockExplorer.Domain.Services.Rpc
             return await MakeRequest(method, jsonRpcObject, httpClient);
         }
 
-        private static async Task<T> MakeRequest(string method, JObject jsonRpcObject, HttpClient httpClient)
+        private static async Task<IWalletRpcResponseWrapper<T>> MakeRequest(string method, JObject jsonRpcObject, HttpClient httpClient)
         {
             var requestJson = JsonConvert.SerializeObject(jsonRpcObject);
 
@@ -54,10 +54,14 @@ namespace Solaris.BlockExplorer.Domain.Services.Rpc
             var responseMessage = await httpClient.SendAsync(httpRequestMessage);
 
             responseMessage.EnsureSuccessStatusCode();
-
+            var walletRpcResultString = await responseMessage.Content.ReadAsStringAsync();
             var walletRpcResult = await responseMessage.Content.ReadAsAsync<WalletRpcResult<T>>();
 
-            return walletRpcResult.Result;
+            return new WalletRpcResponseWrapper<T>
+            {
+                Result = walletRpcResult.Result,
+                Json = walletRpcResultString
+            };
         }
     }
 }

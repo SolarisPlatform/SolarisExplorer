@@ -7,5 +7,6 @@
         public long? Sequence { get; set; }
         public string TransactionId { get; set; }
         public string OutputTransactionId { get; set; }
+        public InputScriptSignature InputScriptSignature { get; set; }
     }
 }

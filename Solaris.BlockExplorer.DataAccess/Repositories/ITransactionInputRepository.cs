@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Solaris.BlockExplorer.DataAccess.Repositories
@@ -7,6 +6,5 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
     public interface ITransactionInputRepository
     {
         Task<IEnumerable<Entities.Read.TransactionInput>> GetTransactionInputs(string transactionId);
-        Task<Guid> Insert(Entities.Create.Input input);
     }
 }

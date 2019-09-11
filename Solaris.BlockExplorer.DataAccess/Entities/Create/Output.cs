@@ -2,8 +2,8 @@
 {
     public class Output
     {
-        public string TransactionId { get; set; }
         public long Index { get; set; }
         public decimal Value { get; set; }
+        public OutputScriptPublicKey OutputScriptPublicKey { get; set; }
     }
 }

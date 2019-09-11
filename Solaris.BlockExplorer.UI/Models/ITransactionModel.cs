@@ -14,5 +14,6 @@
         long Confirmations { get; set; }
         long BlockHeight { get; set; }
         string BlockId { get; set; }
+        string Json { get; set; }
     }
 }

@@ -16,10 +16,10 @@ namespace Solaris.BlockExplorer.Domain.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Block>> GetBlocks()
+        public async Task<PagedResult<IEnumerable<Block>>> GetBlocks(Paging paging)
         {
-            var blocks = await _blockRepository.GetBlocks();
-            return _mapper.Map<IEnumerable<Block>>(blocks);
+            var blocks = await _blockRepository.GetBlocks(_mapper.Map<DataAccess.Entities.Read.Paging>(paging));
+            return _mapper.Map<PagedResult<IEnumerable<Block>>>(blocks);
         }
 
         public async Task<Block> GetBlock(string blockId)

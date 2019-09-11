@@ -4,7 +4,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model Solaris.BlockExplorer.UI.Models.ViewModels.IAddressViewModel
-
+<div class="row mt-2 mb-2 collapse clipboard-success">
+    <div class="col-12">
+        <div class="alert alert-success" role="alert">
+            <span class="align-middle">
+                <i class="fas fa-check-circle fa-2x mr-2"></i>
+            </span>
+            <span class="align-middle">
+                The address has been copied to the clipboard
+            </span>
+        </div>
+    </div>
+</div>
 <div class="row mt-2">
     <div class="col-12">
         <div class="card">
@@ -12,34 +23,42 @@
                 <h4 class="title-bottom-border mb-2">
                     Details for Address
                 </h4>
-                <div class="row rows">
-                    <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Address</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        <a href="@Url.Action("Index", new { address = Model.Address.PublicKey })">@Model.Address.PublicKey</a>
+                <div class="row">
+                    <div class="col-8 col-md-10 col-xxl-11">
+                        <div class="row rows">
+                            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Address</div>
+                            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
+                                <a href="@Url.Action("Index", new { address = Model.Address.PublicKey })">@Model.Address.PublicKey</a>
+                                <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="@Model.Address.PublicKey"></i>
+                            </div>
+                        </div>
+                        <div class="row rows">
+                            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Balance</div>
+                            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
+                                @Model.Address.Balance @ViewBag.Ticker
+                            </div>
+                        </div>
+                        <div class="row rows">
+                            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Received</div>
+                            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
+                                @Model.Address.Received @ViewBag.Ticker (in @Model.Address.ReceivedCount transactions)
+                            </div>
+                        </div>
+                        <div class="row rows">
+                            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Sent</div>
+                            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
+                                @Model.Address.Sent @ViewBag.Ticker (in @Model.Address.SentCount transactions)
+                            </div>
+                        </div>
+                        <div class="row rows">
+                            <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Staked/Mined</div>
+                            <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
+                                @Model.Address.Mined @ViewBag.Ticker (in @Model.Address.MinedCount transactions)
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row rows">
-                    <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Balance</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Address.Balance @ViewBag.Ticker
-                    </div>
-                </div>
-                <div class="row rows">
-                    <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Received</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Address.Received @ViewBag.Ticker (in @Model.Address.ReceivedCount transactions)
-                    </div>
-                </div>
-                <div class="row rows">
-                    <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Sent</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Address.Sent @ViewBag.Ticker (in @Model.Address.SentCount transactions)
-                    </div>
-                </div>
-                <div class="row rows">
-                    <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column text-lightblue">Staked/Mined</div>
-                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                        @Model.Address.Mined @ViewBag.Ticker (in @Model.Address.MinedCount transactions)
+                    <div class="col-4 col-md-2 col-xxl-1 text-right">
+                        <img src="@Url.Action("Index", "Qr", new { Address = Model.Address.PublicKey })" alt="@Model.Address.PublicKey" height="128" class="img-fluid"/>
                     </div>
                 </div>
             </div>

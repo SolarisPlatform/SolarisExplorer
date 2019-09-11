@@ -4,6 +4,6 @@ namespace Solaris.BlockExplorer.UI.Models.ViewModels
 {
     public class BlocksViewModel : IBlocksViewModel
     {
-        public IEnumerable<IBlockModel> Blocks { get; set; }
+        public PagedResultModel<IEnumerable<BlockModel>> Blocks { get; set; }
     }
 }

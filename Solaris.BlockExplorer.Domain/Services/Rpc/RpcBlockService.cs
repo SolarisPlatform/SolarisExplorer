@@ -16,8 +16,10 @@ namespace Solaris.BlockExplorer.Domain.Services.Rpc
         public async Task<IRpcBlock> GetBlock(long height)
         {
             var blockHash = await _blockHashService.GetBlockHash(height);
-            var block = await _walletRpcService.Request(RpcMethods.GetBlock, blockHash);
-            return block;
+            var result = await _walletRpcService.Request(RpcMethods.GetBlock, blockHash);
+
+            result.Result.Json = result.Json;
+            return result.Result;
         }
     }
 }

@@ -2,12 +2,7 @@
 {
     public class BlockTransactionDetail
     {
-        public string AddressList
-        {
-            set => Addresses = value?.Split(',');
-        }
-
-        public string[] Addresses { get; set; } = new string[0];
+        public string Addresses { get; set; }
         public decimal? Amount { get; set; }
     }
 }

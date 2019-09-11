@@ -67,15 +67,13 @@
     <Folder Include="functions\Functions" />
     <Folder Include="storedprocedures\StoredProcedures\Read" />
     <Folder Include="storedprocedures\StoredProcedures\Create" />
+    <Folder Include="types" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="tables\Tables\OutputScriptPublicKeyAddresses.sql" />
     <Build Include="tables\Tables\Transactions.sql" />
     <Build Include="tables\Tables\Inputs.sql" />
     <Build Include="tables\Tables\Outputs.sql" />
     <Build Include="tables\Tables\Blocks.sql" />
-    <Build Include="tables\Tables\InputScriptSignature.sql" />
-    <Build Include="tables\Tables\OutputScriptPublicKey.sql" />
     <Build Include="Security\tables.sql" />
     <Build Include="Security\storedprocedures.sql" />
     <Build Include="Security\functions.sql" />
@@ -88,13 +86,13 @@
     <Build Include="storedprocedures\StoredProcedures\Read\GetTransactionOutputs.sql" />
     <Build Include="storedprocedures\StoredProcedures\Create\InsertBlock.sql" />
     <Build Include="storedprocedures\StoredProcedures\Create\InsertTransaction.sql" />
-    <Build Include="storedprocedures\StoredProcedures\Create\InsertOutput.sql" />
-    <Build Include="storedprocedures\StoredProcedures\Create\InsertOutputScriptPublicKey.sql" />
-    <Build Include="storedprocedures\StoredProcedures\Create\InsertOutputScriptPublicKeyAddress.sql" />
-    <Build Include="storedprocedures\StoredProcedures\Create\InsertInput.sql" />
-    <Build Include="storedprocedures\StoredProcedures\Create\InsertInputScriptSignature.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetAddress.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetBlockTransactionInputs.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetBlockTransactionOutputs.sql" />
+    <Build Include="Security\types.sql" />
+    <Build Include="types\Input.sql" />
+    <Build Include="types\Output.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetSearch.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetCurrentTotalSupply.sql" />
   </ItemGroup>
 </Project>

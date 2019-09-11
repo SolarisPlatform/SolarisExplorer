@@ -17,5 +17,6 @@
         decimal Difficulty { get; set; }
         long Size { get; set; }
         string PreviousBlock { get; set; }
+        string Json { get; set; }
     }
 }

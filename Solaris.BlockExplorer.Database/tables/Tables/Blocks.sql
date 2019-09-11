@@ -12,6 +12,8 @@
     [Difficulty]    DECIMAL (28, 8) NOT NULL,
     [Chainwork]     CHAR (64)       NOT NULL,
     [PreviousBlock] CHAR (64)       NULL,
-    CONSTRAINT [PK_Blocks] PRIMARY KEY ([Id])
+    [Json] VARCHAR(MAX) NOT NULL, 
+    CONSTRAINT [PK_Blocks] PRIMARY KEY ([Id]), 
+    CONSTRAINT [FK_Blocks_PreviousBlocks] FOREIGN KEY ([PreviousBlock]) REFERENCES [tables].[Blocks]([Id])
 );
 

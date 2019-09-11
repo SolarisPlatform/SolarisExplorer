@@ -14,5 +14,6 @@
         string BlockHash { get; set; }
         long Time { get; set; }
         long BlockTime { get; set; }
+        string Json { get; set; }
     }
 }

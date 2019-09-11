@@ -8,7 +8,10 @@
 	@Version BIGINT,
 	@Vsize BIGINT,
 	@BlockId CHAR(64),
-	@BlockOrder BIGINT
+	@BlockOrder BIGINT,
+	@Inputs types.Input READONLY,
+	@Outputs types.[Output] READONLY,
+	@Json VARCHAR(MAX)
 AS
 	INSERT INTO
 		tables.Transactions
@@ -22,7 +25,10 @@ AS
 			Version,
 			VSize,
 			BlockId,
-			BlockOrder
+			BlockOrder,
+			OutputSum,
+			InputSum,
+			Json
 		)
 	VALUES
 		(
@@ -35,5 +41,78 @@ AS
 			@Version,
 			@Vsize,
 			@BlockId,
-			@BlockOrder
+			@BlockOrder,
+			ISNULL(
+			(
+				SELECT 
+					SUM(Outputs.[Value]) 
+				FROM 
+					@Outputs Outputs
+			), 0.00000000),
+			ISNULL(
+			(
+				SELECT 
+					SUM(tables.Outputs.[Value]) 
+				FROM 
+					@Inputs Inputs
+				INNER JOIN
+					tables.Outputs
+				ON
+					tables.Outputs.TransactionId = Inputs.OutputTransactionId
+				AND
+					tables.Outputs.[Index] = Inputs.OutputIndex
+			), 0.00000000),
+			@Json
 		)
+	INSERT INTO 
+		tables.Inputs
+		(
+			Coinbase,
+			Sequence,
+			OutputId,
+			TransactionId,
+			Asm,
+			Hex
+		)
+	SELECT
+		Inputs.Coinbase,
+		Inputs.Sequence,
+		(
+			SELECT 
+				tables.Outputs.Id 
+			FROM 
+				tables.Outputs 
+			WHERE 
+				tables.Outputs.TransactionId = Inputs.OutputTransactionId 
+			AND 
+				tables.Outputs.[Index] = Inputs.OutputIndex
+		),
+		@Id,
+		Inputs.Asm,
+		Inputs.Hex
+	FROM
+		@Inputs Inputs
+
+	INSERT INTO 
+		tables.Outputs
+		(
+			[Value],
+			[Index],
+			[TransactionId],
+			[Asm],
+			[Hex],
+			[RequestedSignatures],
+			[Type],
+			[Addresses]
+		)
+	SELECT
+		Outputs.[Value],
+		Outputs.[Index],
+		@Id,
+		Outputs.Asm,
+		Outputs.Hex,
+		Outputs.RequestedSignatures,
+		Outputs.[Type],
+		Outputs.Addresses
+	FROM
+		@Outputs Outputs

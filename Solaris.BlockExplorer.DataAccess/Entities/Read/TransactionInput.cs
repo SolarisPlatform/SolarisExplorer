@@ -4,16 +4,7 @@
     {
         public string PreviousOutputTransactionId { get; set; }
         public long PreviousOutputIndex { get; set; }
-
- 
-        public string[] Addresses { get; set; }
-
-        public string AddressList
-        {
-            set => Addresses = value?.Split(',');
-        }
-
-
+        public string Addresses { get; set; }
         public decimal Amount { get; set; }
     }
 }

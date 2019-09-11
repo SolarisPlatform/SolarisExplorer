@@ -12,9 +12,10 @@ namespace Solaris.BlockExplorer.Domain.Services.Rpc
             _walletRpcService = walletRpcService;
         }
 
-        public Task<string> GetBlockHash(long height)
+        public async Task<string> GetBlockHash(long height)
         {
-            return _walletRpcService.Request(RpcMethods.GetBlockHash, height);
+            var result = await _walletRpcService.Request(RpcMethods.GetBlockHash, height);
+            return result.Result;
         }
     }
 }

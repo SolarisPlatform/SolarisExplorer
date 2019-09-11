@@ -3,6 +3,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 
+
 namespace Solaris.BlockExplorer.DataAccess.Repositories
 {
     public class BlockRepository : IBlockRepository
@@ -14,9 +15,22 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
             _dbConnection = dbConnection;
         }
 
-        public Task<IEnumerable<Entities.Read.Block>> GetBlocks()
+        public async Task<Entities.Read.PagedResult<IEnumerable<Entities.Read.Block>>> GetBlocks(Entities.Read.Paging paging)
         {
-            return _dbConnection.QueryAsync<Entities.Read.Block>("storedprocedures.GetBlocks", commandType: CommandType.StoredProcedure);
+            var parameters = new DynamicParameters();
+            parameters.Add("@ReturnValue", dbType: DbType.Int64, direction: ParameterDirection.Output);
+            parameters.Add("@PageSize", value: paging.PageSize, dbType: DbType.Int64, direction: ParameterDirection.Input);
+            parameters.Add("@PageNumber", value: paging.PageNumber, dbType: DbType.Int64, direction: ParameterDirection.Input);
+
+            var result = _dbConnection.QueryAsync<Entities.Read.Block>("storedprocedures.GetBlocks", parameters, commandType: CommandType.StoredProcedure);
+
+            return new Entities.Read.PagedResult<IEnumerable<Entities.Read.Block>>
+            {
+                Result = await result,
+                CurrentPage = paging.PageNumber,
+                PageSize = paging.PageSize,
+                PageCount = parameters.Get<long>("@ReturnValue")
+            };
         }
 
         public Task<Entities.Read.Block> GetBlock(string blockId)

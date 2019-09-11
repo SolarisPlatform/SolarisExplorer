@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,12 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<IAddressRepository, AddressRepository>()
                 .AddScoped<IAddressService, AddressService>()
                 .AddScoped<IAddressModelService, AddressModelService>()
+                .AddScoped<ISearchRepository, SearchRepository>()
+                .AddScoped<ISearchService, SearchService>()
+                .AddScoped<ISearchModelService, SearchModelService>()
+                .AddScoped<ICurrentTotalSupplyRepository, CurrentTotalSupplyRepository>()
+                .AddScoped<ICurrentTotalSupplyService, CurrentTotalSupplyService>()
+                .AddScoped<ICurrentTotalSupplyModelService, CurrentTotalSupplyModelService>()
                 .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
                 .AddScoped(provider =>
                 {
@@ -76,6 +83,43 @@ namespace Solaris.BlockExplorer.UI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseHsts(new HstsOptions(TimeSpan.FromDays(365*2), includeSubDomains: true, preload: true));
+            //app.UseCsp(csp =>
+            //{
+            //    //csp.ByDefaultAllow
+            //    //    .FromNowhere();
+            //    //csp.AllowScripts
+            //    //    .FromSelf().AllowUnsafeInline();
+            //    //csp.AllowStyles
+            //    //    .FromSelf().AllowUnsafeInline();
+            //    //csp.AllowImages
+            //    //    .FromSelf();
+            //    //csp.AllowAudioAndVideo
+            //    //    .FromNowhere();
+            //    //csp.AllowFrames
+            //    //    .FromNowhere();
+            //    //csp.AllowConnections
+            //    //    .ToNowhere();
+            //    //csp.AllowFonts
+            //    //    .FromSelf();
+            //    //csp.AllowPlugins
+            //    //    .FromNowhere();
+            //    //csp.AllowFraming
+            //    //    .FromNowhere();
+            //});
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("x-frame-options", "DENY");
+                context.Response.Headers.Add("x-xss-protection", "1; mode=block");
+                context.Response.Headers.Add("x-content-type-options", "nosniff");
+                context.Response.Headers.Add("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
+                context.Response.Headers.Add("pragma", "no-cache");
+                context.Response.Headers.Add("expires", "0");
+                context.Response.Headers.Add("referrer-policy", "same-origin");
+
+                await next();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

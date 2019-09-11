@@ -1,4 +1,7 @@
 ﻿CREATE PROCEDURE [storedprocedures].[GetBlocks]
+	@PageSize BIGINT = 25,
+	@PageNumber BIGINT = 1,
+	@ReturnValue BIGINT OUTPUT
 AS
 SELECT
 	Height,
@@ -31,3 +34,15 @@ FROM
 ORDER BY
 	tables.Blocks.Height
 DESC
+OFFSET 
+	@PageSize * (@PageNumber - 1) 
+ROWS
+FETCH NEXT 
+	@PageSize 
+ROWS ONLY;
+
+
+SELECT
+	@ReturnValue = CEILING(COUNT_BIG(*) / @PageSize)
+FROM
+	tables.Blocks

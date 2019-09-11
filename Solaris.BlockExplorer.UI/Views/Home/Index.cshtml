@@ -22,21 +22,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h4 class="title-bottom-border mb-2">
-                            Total Supply
-                        </h4>
-                        <div class="display-4 text-center" style="font-size: 1.8rem;">
-                            1,921,651
-                            <div class="text-lightblue lead">
-                                Current supply of @ViewBag.Name
+            @if (ViewBag.CurrentTotalSupplyEnabled)
+            {
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="title-bottom-border mb-2">
+                                Total Supply
+                            </h4>
+                            <div class="display-4 text-center" style="font-size: 1.8rem;">
+                                @ViewBag.CurrentTotalSupply @ViewBag.Ticker
+                                <div class="text-lightblue lead">
+                                    Current supply of @ViewBag.Name
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
             @if (ViewBag.CoinDataEnabled)
             {
                 <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
@@ -87,7 +90,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -95,6 +97,10 @@
         </div>
     </div>
 </div>
+<form id="pagingForm" method="post">
+    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.Blocks.CurrentPage" />
+    <input type="hidden" name="pageSize" id="pageSize" value="@Model.Blocks.PageSize" />
+</form>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -102,6 +108,50 @@
                 <h4 class="title-bottom-border mb-2">
                     Blocks
                 </h4>
+                <div class="float-right">
+                    <select onchange="setPageSize(this);" class="form-control mt-2 ml-2 pageSizeControl" style="width: 100px;">
+                        <option value="10">
+                            10
+                        </option>
+                        <option value="25">
+                            25
+                        </option>
+                        <option value="100">
+                            100
+                        </option>
+                        <option value="250">
+                            250
+                        </option>
+                        <option value="500">
+                            500
+                        </option>
+                        <option value="1000">
+                            1000
+                        </option>
+                    </select>
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-12">
+                        <div class="col-12 d-flex justify-content-center">
+                            <ul class="pagination mt-3">
+                                @if (Model.Blocks.CurrentPage > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage-1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
+                                }
+                                @for (var i = Model.Blocks.PagingStart; i <= Model.Blocks.PagingEnd; i++)
+                                {
+                                    <li class="page-item d-none d-md-block @(Model.Blocks.CurrentPage == i ? "active" : "")"><a class="page-link" href="#" onclick="return setPage(@i);">@i</a></li>
+                                }
+                                @if (Model.Blocks.CurrentPage < Model.Blocks.PageCount)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage+1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@Model.Blocks.PageCount);"><i class="fas fa-step-forward"></i></a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="row row-header">
                     <div class="col-2 d-md-none row-header-column text-left">#</div>
                     <div class="col-1 d-none d-md-block row-header-column text-left">Block Height</div>
@@ -114,36 +164,81 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        @foreach (var block in Model.Blocks)
+                        @foreach (var block in Model.Blocks.Result)
                         {
-                        <div class="row rows">
-                            <div class="col-2 d-md-none row-header-column text-left">
-                                <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
-                            </div>
-                            <div class="col-1 d-none d-md-block row-header-column text-left">
-                                <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
-                            </div>
-                            <div class="col-5 col-xl-4 d-none d-md-block row-column text-left">
-                                <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
-                            </div>
+                            <div class="row rows">
+                                <div class="col-2 d-md-none row-header-column text-left">
+                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
+                                </div>
+                                <div class="col-1 d-none d-md-block row-header-column text-left">
+                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Height</a>
+                                </div>
+                                <div class="col-5 col-xl-4 d-none d-md-block row-column text-left">
+                                    <a href="@Url.Action("Index", "Block", new {blockHash = block.Id})">@block.Id</a>
+                                </div>
 
-                            <div class="col d-none d-xl-block row-column text-center">
-                                <span class="badge badge-primary">@(Math.Round(block.Size / 1024m, 4)) kB</span>
+                                <div class="col d-none d-xl-block row-column text-center">
+                                    <span class="badge badge-primary">@(Math.Round(block.Size / 1024m, 4)) kB</span>
+                                </div>
+                                <div class="col d-none d-sm-block row-column text-center">
+                                    @block.Transactions
+                                </div>
+                                <div class="col row-column text-left">
+                                    @block.OutputValue @ViewBag.Ticker
+                                </div>
+                                <div class="col row-column text-right">
+                                    @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
+                                </div>
                             </div>
-                            <div class="col d-none d-sm-block row-column text-center">
-                                @block.Transactions
-                            </div>
-                            <div class="col row-column text-left">
-                                @block.OutputValue @ViewBag.Ticker
-                            </div>
-                            <div class="col row-column text-right">
-                                @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
-                            </div>
-                        </div>
                         }
+                    </div>
+                </div>
+                <div class="float-right">
+                    <select onchange="setPageSize(this);" class="form-control mt-2 ml-2 pageSizeControl" style="width: 100px;">
+                        <option value="10">
+                            10
+                        </option>
+                        <option value="25">
+                            25
+                        </option>
+                        <option value="100">
+                            100
+                        </option>
+                        <option value="250">
+                            250
+                        </option>
+                        <option value="500">
+                            500
+                        </option>
+                        <option value="1000">
+                            1000
+                        </option>
+                    </select>
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-12">
+                        <div class="col-12 d-flex justify-content-center">
+                            <ul class="pagination mt-3">
+                                @if (Model.Blocks.CurrentPage > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage-1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
+                                }
+                                @for (var i = Model.Blocks.PagingStart; i <= Model.Blocks.PagingEnd; i++)
+                                {
+                                    <li class="page-item d-none d-md-block @(Model.Blocks.CurrentPage == i ? "active" : "")"><a class="page-link" href="#" onclick="return setPage(@i);">@i</a></li>
+                                }
+                                @if (Model.Blocks.CurrentPage < Model.Blocks.PageCount)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage+1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@Model.Blocks.PageCount);"><i class="fas fa-step-forward"></i></a></li>
+                                }
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="js/home.js"></script>

@@ -14,5 +14,6 @@
         public long Confirmations { get; set; }
         public long BlockHeight { get; set; }
         public string BlockId { get; set; }
+        public string Json { get; set; }
     }
 }

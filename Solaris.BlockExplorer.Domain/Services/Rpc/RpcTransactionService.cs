@@ -14,8 +14,12 @@ namespace Solaris.BlockExplorer.Domain.Services.Rpc
 
         public async Task<IRpcTransaction> GetTransaction(string txId)
         {
-            var transaction = await _walletRpcService.Request(RpcMethods.GetRawTransaction, txId, 1);
-            return transaction;
+            var result = await _walletRpcService.Request(RpcMethods.GetRawTransaction, txId, 1);
+            if (result?.Result == null)
+                return null;
+
+            result.Result.Json = result.Json;
+            return result.Result;
         }
     }
 }

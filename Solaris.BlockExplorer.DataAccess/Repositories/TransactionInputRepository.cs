@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
@@ -19,12 +18,6 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
         {
             return _dbConnection.QueryAsync<Entities.Read.TransactionInput>("storedprocedures.GetTransactionInputs",
                 new {transactionId}, commandType: CommandType.StoredProcedure);
-        }
-
-        public Task<Guid> Insert(Entities.Create.Input input)
-        {
-            return _dbConnection.QuerySingleAsync<Guid>("storedprocedures.InsertInput", input,
-                commandType: CommandType.StoredProcedure);
         }
     }
 }

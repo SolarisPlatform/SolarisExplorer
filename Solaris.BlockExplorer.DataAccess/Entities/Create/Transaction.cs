@@ -12,5 +12,6 @@
         public long Time { get; set; }
         public long BlockTime { get; set; }
         public long BlockOrder { get; set; }
+        public string Json { get; set; }
     }
 }

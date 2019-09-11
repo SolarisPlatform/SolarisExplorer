@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 
 namespace Solaris.BlockExplorer.UI.Mappings
 {
@@ -13,6 +14,9 @@ namespace Solaris.BlockExplorer.UI.Mappings
             CreateMap<Domain.Models.TransactionInput, Models.TransactionInputModel>();
             CreateMap<Domain.Models.TransactionOutput, Models.TransactionOutputModel>();
             CreateMap<Domain.Models.Address, Models.AddressModel>();
+            CreateMap<Domain.Models.Paging, Models.PagingModel>().ReverseMap();
+            CreateMap<Domain.Models.Search, Models.SearchModel>();
+            CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.Block>>, Models.PagedResultModel<IEnumerable<Models.BlockModel>>>();
         }
     }
 }

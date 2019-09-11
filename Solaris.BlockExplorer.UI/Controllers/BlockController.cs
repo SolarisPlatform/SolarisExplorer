@@ -24,8 +24,6 @@ namespace Solaris.BlockExplorer.UI.Controllers
             var block = await _blockModelService.GetBlock(blockHash);
             var transactions = await _blockTransactionModelService.GetBlockTransactions(blockHash);
 
-            var tx = JsonConvert.SerializeObject(transactions);
-
             return View(new BlockViewModel
             {
                 Block = block,
