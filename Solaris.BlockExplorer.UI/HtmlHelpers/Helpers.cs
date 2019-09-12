@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Solaris.BlockExplorer.UI.HtmlHelpers
 {
@@ -38,6 +39,12 @@ namespace Solaris.BlockExplorer.UI.HtmlHelpers
 
 
             return new HtmlString(stringBuilder.ToString());
+        }
+
+        public static string ViewMode(this IHtmlHelper source)
+        {
+            var viewModel = source.ViewContext.HttpContext.Request.Cookies["day-night-view-mode"] ?? "night-mode";
+            return viewModel;
         }
     }
 }
