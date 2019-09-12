@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Solaris.BlockExplorer.Domain.Services;
 using Solaris.BlockExplorer.UI.Models;
@@ -17,9 +16,9 @@ namespace Solaris.BlockExplorer.UI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SearchModel>> Search(string query)
+        public async Task<SearchModel[]> Search(string query)
         {
-            return _mapper.Map<IEnumerable<SearchModel>>(await _searchService.Search(query));
+            return _mapper.Map<SearchModel[]>(await _searchService.Search(query));
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using AutoMapper;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,6 +87,7 @@ namespace Solaris.BlockExplorer.UI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHsts(new HstsOptions(TimeSpan.FromDays(365*2), includeSubDomains: true, preload: true));
+            //TODO Set correct CSP rules
             //app.UseCsp(csp =>
             //{
             //    //csp.ByDefaultAllow
@@ -120,6 +124,23 @@ namespace Solaris.BlockExplorer.UI
                 await next();
             });
 
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(new CultureInfo("en-US")),
+                SupportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US")
+                },
+                SupportedUICultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en")
+                },
+                RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new AcceptLanguageHeaderRequestCultureProvider()
+                }
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -137,6 +158,15 @@ namespace Solaris.BlockExplorer.UI
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "Address",
+                    template: "Address/{Id}");
+                routes.MapRoute(
+                    name: "Block",
+                    template: "Block/{Id}");
+                routes.MapRoute(
+                    name: "Transaction",
+                    template: "Transaction/{Id}");
             });
         }
     }

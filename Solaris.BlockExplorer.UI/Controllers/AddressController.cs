@@ -15,11 +15,12 @@ namespace Solaris.BlockExplorer.UI.Controllers
             _addressModelService = addressModelService;
         }
 
-        public async Task<IActionResult> Index(string address)
+        [Route("Address/{Id}", Name = "Address")]
+        public async Task<IActionResult> Index(string id)
         {
             return View(new AddressViewModel
             {
-                Address = await _addressModelService.GetAddress(address)
+                Address = await _addressModelService.GetAddress(id)
             });
         }
     }

@@ -19,14 +19,19 @@ namespace Solaris.BlockExplorer.UI.HtmlHelpers
 
         public static IHtmlContent AddressLink(this IUrlHelper url, string[] addresses)
         {
-            var baseUrl = url.Action("Index", "Address");
-
             var stringBuilder = new StringBuilder();
 
             for (long i = 0; i < addresses.LongLength; i++)
             {
-                stringBuilder.Append($"<a href=\"{baseUrl}/?address={addresses[i]}\">{addresses[i]}</a>");
-                
+                var targetUrl = url.RouteUrl("Address", new {
+                    Id = addresses[i]
+                });
+
+                if (string.IsNullOrWhiteSpace(targetUrl)) continue;
+
+
+                stringBuilder.Append($"<a href=\"{targetUrl}\">{addresses[i]}</a>");
+
                 if (i < addresses.LongLength)
                     stringBuilder.Append("<br/>");
             }

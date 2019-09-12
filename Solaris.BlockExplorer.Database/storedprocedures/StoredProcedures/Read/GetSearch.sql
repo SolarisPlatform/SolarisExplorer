@@ -38,7 +38,7 @@ AS
 	OR
 		tables.Transactions.Id LIKE @Query + '%'
 	UNION ALL
-	SELECT
+	SELECT DISTINCT
 		TOP 10
 			0 AS Height,
 			tables.Outputs.Addresses,

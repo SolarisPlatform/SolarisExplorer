@@ -7,10 +7,10 @@ namespace Solaris.BlockExplorer.UI.Controllers
 {
     public class QrController : Controller
     {
-        public IActionResult Index(string address)
+        public IActionResult Index(string id)
         {
             using (var qrGenerator = new QRCodeGenerator())
-            using (var qrCodeData = qrGenerator.CreateQrCode(address, QRCodeGenerator.ECCLevel.Q))
+            using (var qrCodeData = qrGenerator.CreateQrCode(id, QRCodeGenerator.ECCLevel.Q))
             using (var qrCode = new QRCode(qrCodeData))
             using (var qrCodeAsBitmap = qrCode.GetGraphic(20))
             {

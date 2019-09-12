@@ -18,11 +18,12 @@ namespace Solaris.BlockExplorer.UI.Controllers
             _transactionOutputModelService = transactionOutputModelService;
         }
 
-        public async Task<IActionResult> Index(string transactionHash)
+        [Route("Transaction/{Id}", Name = "Transaction")]
+        public async Task<IActionResult> Index(string id)
         {
-            var transaction = await _transactionModelService.GetTransaction(transactionHash);
-            var transactionInputs = await _transactionInputModelService.GetTransactionInputs(transactionHash);
-            var transactionOutputs = await _transactionOutputModelService.GetTransactionOutputs(transactionHash);
+            var transaction = await _transactionModelService.GetTransaction(id);
+            var transactionInputs = await _transactionInputModelService.GetTransactionInputs(id);
+            var transactionOutputs = await _transactionOutputModelService.GetTransactionOutputs(id);
 
             return View(new TransactionViewModel
             {

@@ -19,10 +19,11 @@ namespace Solaris.BlockExplorer.UI.Controllers
             _blockTransactionModelService = blockTransactionModelService;
         }
 
-        public async Task<IActionResult> Index(string blockHash)
+        [Route("Block/{Id}", Name = "Block")]
+        public async Task<IActionResult> Index(string id)
         {
-            var block = await _blockModelService.GetBlock(blockHash);
-            var transactions = await _blockTransactionModelService.GetBlockTransactions(blockHash);
+            var block = await _blockModelService.GetBlock(id);
+            var transactions = await _blockTransactionModelService.GetBlockTransactions(id);
 
             return View(new BlockViewModel
             {
