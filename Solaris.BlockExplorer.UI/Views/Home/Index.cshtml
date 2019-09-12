@@ -109,7 +109,7 @@
                     Blocks
                 </h4>
                 <div class="float-right">
-                    <select onchange="setPageSize(this);" class="form-control mt-2 ml-2 pageSizeControl" style="width: 100px;">
+                    <select onchange="setPageSize(this);" class="form-control mt-1 ml-2 pageSizeControl" style="width: 100px;">
                         <option value="10">
                             10
                         </option>
@@ -130,10 +130,10 @@
                         </option>
                     </select>
                 </div>
-                <div class="row mt-2 mb-2">
+                <div class="row mt-1 mb-2">
                     <div class="col-12">
-                        <div class="col-12 d-flex justify-content-center">
-                            <ul class="pagination mt-3">
+                        <div class="col-11 offset-1 d-flex justify-content-center">
+                            <ul class="pagination mt-2">
                                 @if (Model.Blocks.CurrentPage > 1)
                                 {
                                     <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
@@ -217,7 +217,7 @@
                 </div>
                 <div class="row mt-2 mb-2">
                     <div class="col-12">
-                        <div class="col-12 d-flex justify-content-center">
+                        <div class="col-11 offset-1 d-flex justify-content-center">
                             <ul class="pagination mt-3">
                                 @if (Model.Blocks.CurrentPage > 1)
                                 {
