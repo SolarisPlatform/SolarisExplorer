@@ -1,5 +1,5 @@
 ﻿var _endpoints = new Endpoints();
-
+var _settings = new Settings();
 var PageViewModel =
     function() {
         var self = this;
@@ -52,4 +52,7 @@ var _cookieFunctions = {
 
 var _pageViewModel = new PageViewModel();
 
-ko.applyBindings(_pageViewModel);
+$(document).ready(function() {
+    ko.applyBindings(_pageViewModel);
+    _pageViewModel.viewMode(_settings.viewMode);
+});
