@@ -105,53 +105,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                
                 <h4 class="title-bottom-border mb-2">
                     Blocks
                 </h4>
-                <div class="float-right">
-                    <select onchange="setPageSize(this);" class="form-control mt-1 ml-2 pageSizeControl" style="width: 100px;">
-                        <option value="10">
-                            10
-                        </option>
-                        <option value="25">
-                            25
-                        </option>
-                        <option value="100">
-                            100
-                        </option>
-                        <option value="250">
-                            250
-                        </option>
-                        <option value="500">
-                            500
-                        </option>
-                        <option value="1000">
-                            1000
-                        </option>
-                    </select>
-                </div>
-                <div class="row mt-1 mb-2">
-                    <div class="col-12">
-                        <div class="col-11 offset-1 d-flex justify-content-center">
-                            <ul class="pagination mt-2">
-                                @if (Model.Blocks.CurrentPage > 1)
-                                {
-                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
-                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage-1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
-                                }
-                                @for (var i = Model.Blocks.PagingStart; i <= Model.Blocks.PagingEnd; i++)
-                                {
-                                    <li class="page-item d-none d-md-block @(Model.Blocks.CurrentPage == i ? "active" : "")"><a class="page-link" href="#" onclick="return setPage(@i);">@i</a></li>
-                                }
-                                @if (Model.Blocks.CurrentPage < Model.Blocks.PageCount)
-                                {
-                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage+1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
-                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@Model.Blocks.PageCount);"><i class="fas fa-step-forward"></i></a></li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="row row-header">
                     <div class="col-2 d-md-none row-header-column text-left">#</div>
                     <div class="col-1 d-none d-md-block row-header-column text-left">Block Height</div>
@@ -194,7 +152,7 @@
                     </div>
                 </div>
                 <div class="float-right">
-                    <select onchange="setPageSize(this);" class="form-control mt-2 ml-2 pageSizeControl" style="width: 100px;">
+                    <select onchange="setPageSize(this);" class="form-control mt-3 ml-2 pageSizeControl" style="width: 80px;">
                         <option value="10">
                             10
                         </option>
@@ -218,11 +176,11 @@
                 <div class="row mt-2 mb-2">
                     <div class="col-12">
                         <div class="col-11 offset-1 d-flex justify-content-center">
-                            <ul class="pagination mt-3">
+                            <ul class="pagination mt-3 mb-0">
                                 @if (Model.Blocks.CurrentPage > 1)
                                 {
                                     <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
-                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage-1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage - 1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
                                 }
                                 @for (var i = Model.Blocks.PagingStart; i <= Model.Blocks.PagingEnd; i++)
                                 {
@@ -230,7 +188,7 @@
                                 }
                                 @if (Model.Blocks.CurrentPage < Model.Blocks.PageCount)
                                 {
-                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage+1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Blocks.CurrentPage + 1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
                                     <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@Model.Blocks.PageCount);"><i class="fas fa-step-forward"></i></a></li>
                                 }
                             </ul>
