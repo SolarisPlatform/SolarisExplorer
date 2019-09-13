@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -8,11 +9,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NBitcoin;
 using Solaris.BlockExplorer.DataAccess.Entities.Create;
 using Solaris.BlockExplorer.DataAccess.Repositories;
 using Solaris.BlockExplorer.Domain.Factories;
 using Solaris.BlockExplorer.Domain.Mappings;
+using Solaris.BlockExplorer.Domain.Models.Rpc;
 using Solaris.BlockExplorer.Domain.Services.Rpc;
+using Solaris.BlockExplorer.Indexer.ColdStaking;
+using Solaris.BlockExplorer.Indexer.Networks;
+
+
+using Transaction = Solaris.BlockExplorer.DataAccess.Entities.Create.Transaction;
 
 namespace Solaris.BlockExplorer.Indexer
 {
@@ -50,7 +58,7 @@ namespace Solaris.BlockExplorer.Indexer
                     return dbConnectionFactory.CreateConnection();
                 })
                 .AddScoped<IBlockRepository, BlockRepository>()
-                .AddScoped<ITransactionRepository, TransactionRepository>()
+                .AddScoped<DataAccess.Repositories.ITransactionRepository, TransactionRepository>()
                 .AddScoped<ITransactionOutputRepository, TransactionOutputRepository>()
                 .AddScoped<ITransactionInputRepository, TransactionInputRepository>();
 
@@ -68,34 +76,26 @@ namespace Solaris.BlockExplorer.Indexer
                 client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
             });
             _serviceProvider = serviceCollection.BuildServiceProvider();
+
+            StandardScripts.RegisterStandardScriptTemplate(ColdStakingScriptTemplate.Instance);
         }
+
+        private static readonly Network Network = GetNetwork();
 
         public static async Task Main(string[] args)
         {
-
-            try
-            {
-                Console.SetWindowSize(100, 45);
-            }
-            catch (Exception)
-            {
-                
-            }
-
-            var ascii = File.ReadAllText("Ascii.txt");
-            Console.WriteLine(ascii);
-
+            ShowAscii();
             ConfigureServiceProvider();
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
+
             var rpcBlockCountService = _serviceProvider.GetService<IRpcBlockCountService>();
             var rpcBlockService = _serviceProvider.GetService<IRpcBlockService>();
             var rpcTransactionService = _serviceProvider.GetService<IRpcTransactionService>();
             var rpcBlockCount = await rpcBlockCountService.GetBlockCount();
 
             var blockCountRepository = _serviceProvider.GetService<IBlockRepository>();
-
 
             var blockCount = await blockCountRepository.GetBlockHeight();
 
@@ -105,17 +105,16 @@ namespace Solaris.BlockExplorer.Indexer
             if (rpcBlockCount == blockCount && rpcBlockCount > 0)
                 Console.WriteLine("No update required");
 
-
             for (var i = blockCount; i < rpcBlockCount; i++)
             {
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var blockRepository = scope.ServiceProvider.GetService<IBlockRepository>();
-                    var transactionRepository = scope.ServiceProvider.GetService<ITransactionRepository>();
+                    var transactionRepository = scope.ServiceProvider.GetService<DataAccess.Repositories.ITransactionRepository>();
 
                     var rpcBlock = await rpcBlockService.GetBlock(i);
 
-                    var block = new Block
+                    var block = new DataAccess.Entities.Create.Block
                     {
                         Id = rpcBlock.Hash,
                         Bits = rpcBlock.Bits,
@@ -172,22 +171,7 @@ namespace Solaris.BlockExplorer.Indexer
                             }
                         });
 
-                        var outputs = rpcTransaction.Outputs.Select(p => new Output
-                        {
-                            Value = p.Value,
-                            Index = p.Index,
-                            OutputScriptPublicKey = new OutputScriptPublicKey
-                            {
-                                Asm = p.ScriptPublicKey.Asm,
-                                Hex = p.ScriptPublicKey.Hex,
-                                RequestedSignatures = p.ScriptPublicKey.RequestedSignatures,
-                                Type = p.ScriptPublicKey.Type,
-                                OutputScriptPublicKeyAddresses = p.ScriptPublicKey.Addresses.Select(a => new OutputScriptPublicKeyAddress
-                                {
-                                    Address = a
-                                })
-                            }
-                        });
+                        var outputs = GetTransactionOutputs(rpcTransaction);
 
                         await transactionRepository.Insert(transaction, inputs, outputs);
 
@@ -202,7 +186,89 @@ namespace Solaris.BlockExplorer.Indexer
 
             stopWatch.Stop();
             Console.WriteLine("Ready in {0} seconds", stopWatch.Elapsed.TotalSeconds);
-            
+
+        }
+
+        private static IEnumerable<Output> GetTransactionOutputs(IRpcTransaction rpcTransaction)
+        {
+            foreach (var output in rpcTransaction.Outputs)
+            {
+                var addresses = new string[0];
+
+                if (!string.IsNullOrEmpty(output.ScriptPublicKey.Hex))
+                {
+                    addresses = GetAddress(Network, DecodeScriptHex(output.ScriptPublicKey.Hex));
+                }
+
+                yield return new Output
+                {
+                    Value = output.Value,
+                    Index = output.Index,
+                    OutputScriptPublicKey = new OutputScriptPublicKey
+                    {
+                        Asm = output.ScriptPublicKey.Asm,
+                        Hex = output.ScriptPublicKey.Hex,
+                        RequestedSignatures = output.ScriptPublicKey.RequestedSignatures,
+                        Type = output.ScriptPublicKey.Type,
+                        OutputScriptPublicKeyAddresses = addresses.Select(address => new OutputScriptPublicKeyAddress
+                        {
+                            Address = address
+                        })
+                    }
+                };
+            }
+        }
+
+        private static Script DecodeScriptHex(string scriptHex)
+        {
+            return new Script(NBitcoin.DataEncoders.Encoders.Hex.DecodeData(scriptHex));
+        }
+
+        private static void ShowAscii()
+        {
+            if (!Environment.UserInteractive)
+                return;
+
+            var ascii = File.ReadAllText("Ascii.txt");
+
+            Console.SetWindowSize(100, 45);
+            Console.WriteLine(ascii);
+        }
+
+        private static Network GetNetwork()
+        {
+            return new ExplorerNetwork();
+        }
+
+        public static string[] GetAddress(Network network, Script script)
+        {
+            var template = StandardScripts.GetTemplateFromScriptPubKey(script);
+
+            switch (template?.Type)
+            {
+                case TxOutType.TX_PUBKEY:
+                    var pubkeys = script.GetDestinationPublicKeys(network);
+                    return pubkeys.Select(p => p.GetAddress(network).ToString()).ToArray();
+                case TxOutType.TX_PUBKEYHASH: case TxOutType.TX_SCRIPTHASH: case TxOutType.TX_SEGWIT:
+                    var bitcoinAddress = script.GetDestinationAddress(network);
+                    return bitcoinAddress != null ? new[] { bitcoinAddress.ToString() } : new string[0];
+                case TxOutType.TX_MULTISIG:
+                    //TODO
+                    return new string[0];
+                case TxOutType.TX_COLDSTAKE:
+                    if (ColdStakingScriptTemplate.Instance.ExtractScriptPubKeyParameters(script, out var hotPubKeyHash, out var coldPubKeyHash))
+                    {
+                        return new[]
+                        {
+                            hotPubKeyHash.GetAddress(network).ToString(),
+                            coldPubKeyHash.GetAddress(network).ToString(),
+                        };
+                    }
+
+                    return new string[0];
+                default:
+                    return new string[0];
+            }
         }
     }
 }

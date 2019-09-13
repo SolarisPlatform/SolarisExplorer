@@ -9,6 +9,5 @@ namespace Solaris.BlockExplorer.DataAccess.Entities.Read
         public IEnumerable<BlockTransactionDetail> Inputs { get; set; } = new BlockTransactionDetail[0];
         public IEnumerable<BlockTransactionDetail> Outputs { get; set; } = new BlockTransactionDetail[0];
         public decimal? Value => Outputs.Sum(output => output.Amount);
-
     }
 }

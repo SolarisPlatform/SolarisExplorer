@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Solaris.BlockExplorer.UI.Models
 {
@@ -10,6 +9,5 @@ namespace Solaris.BlockExplorer.UI.Models
         IEnumerable<BlockTransactionDetailModel> Outputs { get; set; }
         decimal Value { get; set; }
         decimal OutputSum { get; }
-        decimal? Mined { get; }
     }
 }

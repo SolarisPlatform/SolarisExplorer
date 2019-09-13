@@ -12,7 +12,14 @@ SELECT
 			tables.Inputs
 		WHERE
 			tables.Inputs.OutputId = tables.Outputs.Id
-	) AS RedeemedTransactionId
+	) AS RedeemedTransactionId,
+	CAST(
+		CASE WHEN 
+			tables.Outputs.[Type] = 'nulldata' 
+		THEN 1 
+		ELSE 0 
+		END AS BIT
+	) AS IsNullData
 FROM
 	tables.Transactions
 INNER JOIN

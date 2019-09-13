@@ -55,6 +55,10 @@
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@DateTimeOffset.FromUnixTimeSeconds(Model.Transaction.BlockTime).DateTime.ToString(CultureInfo.CurrentUICulture)</div>
                 </div>
                 <div class="row rows">
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column">Total Inputs</div>
+                    <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Transaction.TotalInputs @ViewBag.Ticker</div>
+                </div>
+                <div class="row rows">
                     <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column">Total Outputs</div>
                     <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">@Model.Transaction.TotalOutputs @ViewBag.Ticker</div>
                 </div>
@@ -78,7 +82,7 @@
                     <div class="row rows">
                         <div class="col-sm-3 col-md-2 col-lg-2 col-xl-3 col-xxl-2 col-xxxl-2 text-left row-column">Reward for block</div>
                         <div class="col-sm-9 col-md-10 col-lg-10 col-xl-9 col-xxl-10 col-xxxl-10 text-left row-column">
-                            <a href="@Url.Action("Index", "Block", new {id = Model.Transaction.BlockId})">@Model.Transaction.BlockHeight</a>
+                            @(Model.Transaction.TotalOutputs - Model.Transaction.TotalInputs) @ViewBag.Ticker
                         </div>
                     </div>
                 }
@@ -175,7 +179,11 @@
                                     @output.Index
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-xxxl-6 row-column text-left">
-                                    @if (string.IsNullOrEmpty(output.RedeemedTransactionId))
+                                    @if (output.Addresses.All(string.IsNullOrEmpty))
+                                    {
+                                        <span>None-redeemable</span>
+                                    }
+                                    else if (string.IsNullOrEmpty(output.RedeemedTransactionId))
                                     {
                                         <span>Not yet redeemed</span>
                                     }
@@ -187,7 +195,19 @@
                                     }
                                 </div>
                                 <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 col-xxxl-3 row-column text-left">
-                                    @Url.AddressLink(output.Addresses)
+                                    @if (output.IsNullData)
+                                    {
+                                        <span>No data</span>
+                                    }
+                                    else if (!output.IsNullData && output.Addresses.All(string.IsNullOrEmpty))
+                                    {
+                                        <span>Included in another output</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Url.AddressLink(output.Addresses)</span>
+                                    }
+
                                 </div>
                                 <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-xxxl-2 row-column text-right">
                                     @output.Amount @ViewBag.Ticker

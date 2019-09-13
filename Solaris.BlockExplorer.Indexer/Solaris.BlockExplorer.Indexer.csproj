@@ -14,12 +14,14 @@
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="nStratis" Version="4.0.0.76" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NStratis\NBitcoin\NBitcoin.csproj" />
     <ProjectReference Include="..\Solaris.BlockExplorer.DataAccess\Solaris.BlockExplorer.DataAccess.csproj" />
     <ProjectReference Include="..\Solaris.BlockExplorer.Domain\Solaris.BlockExplorer.Domain.csproj" />
+    <ProjectReference Include="..\Solaris.BlockExplorer.Indexer.ColdStaking\Solaris.BlockExplorer.Indexer.ColdStaking.csproj" />
+    <ProjectReference Include="..\Solaris.BlockExplorer.Indexer.Networks\Solaris.BlockExplorer.Indexer.Networks.csproj" />
   </ItemGroup>
 
   <ItemGroup>

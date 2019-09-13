@@ -108,21 +108,25 @@
                                     {
                                         <div class="row">
                                             <div class="col-6 text-left">
-                                                @if (transaction.OutputSum <= 0)
+                                                @if (transaction.OutputSum <= 0 && !output.IsNullData)
                                                 {
                                                     <span>Included in another transaction</span>
                                                 }
 
-                                                @if (output.Addresses.Any(string.IsNullOrWhiteSpace) && transaction.OutputSum > 0)
+                                                @if (output.Addresses.Any(string.IsNullOrWhiteSpace) && transaction.OutputSum > 0 && !output.IsNullData)
                                                 {
                                                     <span>Generation + Fees</span>
+                                                }
+                                                @if (output.IsNullData)
+                                                {
+                                                    <span>No data</span>
                                                 }
                                                 @Url.AddressLink(output.Addresses)
                                             </div>
                                             <div class="col-6 text-right">
-                                                @if (output.Amount == null || output.Amount == 0)
+                                                @if (output.Amount == null || output.Amount == 0 && !output.IsNullData)
                                                 {
-                                                    <span>@transaction.Mined @ViewBag.Ticker</span>
+                                                    <span>@(Model.Block.OutputValue - Model.Block.InputValue) @ViewBag.Ticker</span>
                                                 }
                                                 else
                                                 {

@@ -14,12 +14,5 @@ namespace Solaris.BlockExplorer.UI.Models
         {
             get { return Outputs.Sum(p => p.Amount) ?? 0; }
         }
-
-        public decimal? Mined {
-            get
-            {
-                return Outputs.Sum(p => p.Amount) - Inputs.Sum(p => p.Amount);
-            }
-        }
     }
 }

@@ -22,7 +22,7 @@
 
         public decimal FeePerByte => Fee / Size;
 
-        public bool IsReward => (TotalInputs == null);
+        public bool IsReward => (TotalOutputs - TotalInputs > 0);
 
         public long Confirmations { get; set; }
         public long BlockHeight { get; set; }

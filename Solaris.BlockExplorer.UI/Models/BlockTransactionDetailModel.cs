@@ -4,5 +4,6 @@
     {
         public string[] Addresses { get; set; } = new string[0];
         public decimal? Amount { get; set; }
+        public bool IsNullData { get; set; }
     }
 }
