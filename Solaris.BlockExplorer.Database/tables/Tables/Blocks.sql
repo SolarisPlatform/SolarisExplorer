@@ -16,4 +16,6 @@
     CONSTRAINT [PK_Blocks] PRIMARY KEY ([Id]), 
     CONSTRAINT [FK_Blocks_PreviousBlocks] FOREIGN KEY ([PreviousBlock]) REFERENCES [tables].[Blocks]([Id])
 );
-
+GO
+CREATE INDEX [IX_Blocks_Height_Time_Size] ON [tables].[Blocks] ([Height], [Time], [Size])
+GO

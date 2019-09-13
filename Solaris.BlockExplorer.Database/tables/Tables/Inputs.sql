@@ -10,3 +10,9 @@
     CONSTRAINT [FK_Inputs_Outputs] FOREIGN KEY ([OutputId]) REFERENCES [tables].[Outputs]([Id]) ON DELETE CASCADE
 );
 GO
+CREATE NONCLUSTERED INDEX [IX_Inputs_TransactionId]
+ON [tables].[Inputs] ([TransactionId])
+GO
+CREATE NONCLUSTERED INDEX [IX_Inputs_OutputId]
+ON [tables].[Inputs] ([OutputId])
+GO

@@ -19,3 +19,6 @@ GO
 CREATE NONCLUSTERED INDEX [IX_Transactions_BlockId]
 ON [tables].[Transactions] ([BlockId])
 GO
+
+CREATE INDEX [IX_Transactions_InputSum_OutputSum] ON [tables].[Transactions] ([InputSum], [OutputSum])
+GO
