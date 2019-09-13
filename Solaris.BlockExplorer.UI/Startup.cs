@@ -87,30 +87,30 @@ namespace Solaris.BlockExplorer.UI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHsts(new HstsOptions(TimeSpan.FromDays(365*2), includeSubDomains: true, preload: true));
-            //TODO Set correct CSP rules
-            //app.UseCsp(csp =>
-            //{
-            //    //csp.ByDefaultAllow
-            //    //    .FromNowhere();
-            //    //csp.AllowScripts
-            //    //    .FromSelf().AllowUnsafeInline();
-            //    //csp.AllowStyles
-            //    //    .FromSelf().AllowUnsafeInline();
-            //    //csp.AllowImages
-            //    //    .FromSelf();
-            //    //csp.AllowAudioAndVideo
-            //    //    .FromNowhere();
-            //    //csp.AllowFrames
-            //    //    .FromNowhere();
-            //    //csp.AllowConnections
-            //    //    .ToNowhere();
-            //    //csp.AllowFonts
-            //    //    .FromSelf();
-            //    //csp.AllowPlugins
-            //    //    .FromNowhere();
-            //    //csp.AllowFraming
-            //    //    .FromNowhere();
-            //});
+            
+            app.UseCsp(csp =>
+            {
+                csp.ByDefaultAllow
+                    .FromNowhere();
+                csp.AllowScripts
+                    .FromSelf().AllowUnsafeInline().AllowUnsafeEval();
+                csp.AllowStyles
+                    .FromSelf().AllowUnsafeInline();
+                csp.AllowImages
+                    .FromSelf();
+                csp.AllowAudioAndVideo
+                    .FromNowhere();
+                csp.AllowFrames
+                    .FromNowhere();
+                csp.AllowConnections
+                    .ToNowhere();
+                csp.AllowFonts
+                    .FromSelf();
+                csp.AllowPlugins
+                    .FromNowhere();
+                csp.AllowFraming
+                    .FromNowhere();
+            });
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("x-frame-options", "DENY");
