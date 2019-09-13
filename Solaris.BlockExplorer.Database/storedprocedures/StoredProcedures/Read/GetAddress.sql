@@ -9,28 +9,39 @@ DECLARE @Mined DECIMAL(28, 8)
 DECLARE @MinedCount BIGINT
 
 SELECT 
-	@Sent = SUM(tables.Outputs.[Value]),
+	@Sent = ISNULL(SUM(tables.Outputs.[Value]), 0),
 	@SentCount = COUNT(DISTINCT tables.Inputs.TransactionId)
 FROM 
 	tables.Inputs
+INNER JOIN
+	tables.Transactions
+ON
+	tables.Transactions.Id = tables.Inputs.TransactionId
 INNER JOIN 
 	tables.Outputs 
 ON 
 	tables.Outputs.Id = tables.Inputs.OutputId
 WHERE 
 	tables.Outputs.Addresses like '%' + @PublicKey + '%' 
+AND
+	tables.Transactions.OutputSum <= tables.Transactions.InputSum
 
 SELECT 
-	@Received = SUM(tables.Outputs.[Value]),
+	@Received = ISNULL(SUM(tables.Outputs.[Value]), 0),
 	@ReceivedCount = COUNT(DISTINCT tables.Outputs.TransactionId)
 FROM 
 	tables.Outputs
+INNER JOIN
+	tables.Transactions
+ON
+	tables.Transactions.Id = tables.Outputs.TransactionId
 WHERE 
 	tables.Outputs.Addresses like '%' + @PublicKey + '%' 
-
+AND
+	tables.Transactions.OutputSum <= tables.Transactions.InputSum
 
 SELECT
-	@Mined = SUM(tables.Transactions.OutputSum - tables.Transactions.InputSum),
+	@Mined = ISNULL(SUM(tables.Transactions.OutputSum - tables.Transactions.InputSum), 0),
 	@MinedCount = COUNT(DISTINCT tables.Transactions.Id)
 FROM
 	tables.Outputs
@@ -49,6 +60,6 @@ SELECT
 	@SentCount AS SentCount,
 	@ReceivedCount AS ReceivedCount,
 	@PublicKey AS PublicKey,
-	@Received - @Sent AS Balance,
+	(@Received - @Sent) + @Mined AS Balance,
 	@Mined AS Mined,
 	@MinedCount AS MinedCount
