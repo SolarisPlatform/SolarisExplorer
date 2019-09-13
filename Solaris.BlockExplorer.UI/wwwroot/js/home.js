@@ -11,5 +11,5 @@ function setPageSize(obj) {
 }
 
 $(document).ready(function() {
-    $(".pageSizeControl").val($("#pageSize").val());
+    $("#pageSizeControl").val($("#pageSize").val());
 });
