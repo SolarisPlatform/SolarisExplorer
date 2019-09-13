@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using Solaris.BlockExplorer.DataAccess.Repositories;
 using Solaris.BlockExplorer.Domain.Factories;
 using Solaris.BlockExplorer.Domain.Mappings;
@@ -110,6 +111,10 @@ namespace Solaris.BlockExplorer.UI
                     .FromNowhere();
                 csp.AllowFraming
                     .FromNowhere();
+                csp.AllowBaseUri
+                    .FromNowhere();
+                csp.AllowFormActions
+                    .ToSelf();
             });
             app.Use(async (context, next) =>
             {
