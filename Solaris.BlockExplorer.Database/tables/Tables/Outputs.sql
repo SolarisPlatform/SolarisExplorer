@@ -16,3 +16,5 @@ CREATE NONCLUSTERED INDEX [IX_Outputs_TransactionId]
 ON [tables].[Outputs] ([TransactionId])
 INCLUDE ([Value])
 GO
+CREATE INDEX [IX_Outputs_Addresses] ON [tables].[Outputs] ([Id]) INCLUDE(Addresses)
+GO
