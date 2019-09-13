@@ -23,8 +23,11 @@ namespace Solaris.BlockExplorer.UI.Controllers
 
         public async Task<IActionResult> Index(PagingModel pagingModel)
         {
-            if (pagingModel != null && pagingModel.PageSize > 1000)
+            if (pagingModel?.PageSize > 1000)
                 pagingModel.PageSize = 1000;
+
+            if (pagingModel?.PageNumber <= 0)
+                pagingModel.PageSize = 0;
 
             var blocks = await _blockModelService.GetBlocks(pagingModel ?? new PagingModel());
 
