@@ -30,32 +30,18 @@ WHERE
 
 
 SELECT
-	@MinedCount = COUNT(DISTINCT BlockTransactions.Id),
-	@Mined = SUM(BlockTransactionOutputs.[Value])
+	@Mined = SUM(tables.Transactions.OutputSum - tables.Transactions.InputSum),
+	@MinedCount = COUNT(DISTINCT tables.Transactions.Id)
 FROM
-	tables.Blocks
-LEFT JOIN
-	tables.Transactions BlockTransactions
+	tables.Outputs
+INNER JOIN
+	tables.Transactions
 ON
-	BlockTransactions.BlockId = tables.Blocks.Id
-LEFT JOIN
-	tables.Inputs BlockTransactionInputs
-ON
-	BlockTransactionInputs.TransactionId = BlockTransactions.Id
-LEFT JOIN
-	tables.Outputs BlockTransactionOutputs
-ON
-	BlockTransactionOutputs.TransactionId = BlockTransactions.Id
-LEFT JOIN
-	tables.Outputs BlockTransactionInputOutput
-ON
-	BlockTransactionInputOutput.Id = BlockTransactionInputs.OutputId
+	tables.Transactions.Id = tables.Outputs.TransactionId
 WHERE
-	BlockTransactionOutputs.[Addresses] LIKE '%' + @PublicKey + '%'
+	tables.Outputs.Addresses LIKE '%' + @PublicKey + '%'
 AND
-	BlockTransactionInputOutput.[Addresses] = BlockTransactionOutputs.[Addresses]
-AND
-	BlockTransactionInputs.OutputId IS NULL
+	tables.Transactions.OutputSum > tables.Transactions.InputSum
 
 SELECT
 	@Sent AS [Sent],
