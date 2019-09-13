@@ -44,14 +44,70 @@
         <div class="container">
             <div class="row mt-2 pt-2 pb-2">
                 <div class="col-sm-12 col-md-12 text-center">
-                    <a href="https://solarisplatform.com" class="text-white" target="_blank"><i class="fas fa-globe mr-2"></i></a>
-                    <a href="https://twitter.com/SolarisCoin" class="text-white" target="_blank"><i class="fab fa-twitter mr-2"></i></a>
-                    <a href="https://t.me/solariscoin" class="text-white" target="_blank"><i class="fab fa-telegram-plane mr-2"></i></a>
-                    <a href="https://discordapp.com/invite/wMcqapP" class="text-white" target="_blank"><i class="fab fa-discord mr-2"></i></a>
-                    <a href="https://www.reddit.com/r/solarisxlr/" class="text-white" target="_blank"><i class="fab fa-reddit-alien mr-2"></i></a>
-                    <a href="https://bitcointalk.org/index.php?topic=1831629.0" class="text-white" target="_blank"><i class="fab fa-bitcoin mr-2"></i></a>
-                    <a href="https://medium.com/@@solarisxlr" class="text-white" target="_blank"><i class="fab fa-medium-m mr-2"></i></a>
-                    <a href="https://github.com/SolarisPlatform" class="text-white" target="_blank"><i class="fab fa-github"></i></a>
+                    @if (string.IsNullOrEmpty(@ViewBag.Website))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Website" class="text-white" target="_blank"><i class="fas fa-globe mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.Twitter))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Twitter" class="text-white" target="_blank"><i class="fab fa-twitter mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.Telegram))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Telegram" class="text-white" target="_blank"><i class="fab fa-telegram-plane mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.Discord))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Discord" class="text-white" target="_blank"><i class="fab fa-discord mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.Reddit))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Reddit" class="text-white" target="_blank"><i class="fab fa-reddit-alien mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.BitcoinTalk))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.BitcoinTalk" class="text-white" target="_blank"><i class="fab fa-bitcoin mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.Medium))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Medium" class="text-white" target="_blank"><i class="fab fa-medium-m mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.GitHub))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.GitHub" class="text-white" target="_blank"><i class="fab fa-github"></i></a>
+                    }
                 </div>
             </div>
         </div>
