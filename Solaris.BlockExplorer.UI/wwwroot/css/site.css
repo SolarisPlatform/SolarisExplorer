@@ -37,6 +37,10 @@ body {
     background-color: #FFFFFF;
 }
 
+.day-mode .badge-primary {
+    color: white;
+}
+
 a {
     color: #387fe1;
 }
