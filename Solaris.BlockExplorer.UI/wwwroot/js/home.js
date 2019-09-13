@@ -9,7 +9,13 @@ function setPageSize(obj) {
     $("#pagingForm").submit();
     return false;
 }
+function loadMarketData() {
+    $.post(_endpoints.marketData, function(result) {
+        $("#marketData").html(result);
+    });
+}
 
 $(document).ready(function() {
     $("#pageSizeControl").val($("#pageSize").val());
+    loadMarketData();
 });

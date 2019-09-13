@@ -31,6 +31,15 @@ namespace Solaris.BlockExplorer.UI.Controllers
 
             var blocks = await _blockModelService.GetBlocks(pagingModel ?? new PagingModel());
 
+            return View(new BlocksViewModel
+            {
+                Blocks = blocks
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> MarketData()
+        {
             var coinDataEnabled = _configuration.GetSection("CoinGecko")?.GetValue<bool?>("IsEnabled") ?? false;
             var totalSupplyEnabled = _configuration.GetValue<bool?>("IsTotalSupplyEnabled") ?? false;
 
@@ -44,10 +53,8 @@ namespace Solaris.BlockExplorer.UI.Controllers
             ViewBag.CurrentTotalSupplyEnabled = totalSupplyEnabled;
 
             ViewBag.BlockHeight = await _blockModelService.GetBlockHeight();
-            return View(new BlocksViewModel
-            {
-                Blocks = blocks
-            });
+
+            return PartialView();
         }
     }
 }

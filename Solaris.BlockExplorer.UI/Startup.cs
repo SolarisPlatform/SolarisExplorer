@@ -104,7 +104,7 @@ namespace Solaris.BlockExplorer.UI
                 csp.AllowFrames
                     .FromNowhere();
                 csp.AllowConnections
-                    .ToNowhere();
+                    .ToSelf();
                 csp.AllowFonts
                     .FromSelf();
                 csp.AllowPlugins
