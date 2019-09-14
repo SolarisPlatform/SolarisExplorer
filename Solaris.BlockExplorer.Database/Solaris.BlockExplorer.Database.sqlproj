@@ -94,5 +94,6 @@
     <Build Include="types\Output.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetSearch.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetCurrentTotalSupply.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetAddressTransactions.sql" />
   </ItemGroup>
 </Project>

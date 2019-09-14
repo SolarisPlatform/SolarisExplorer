@@ -18,7 +18,9 @@ namespace Solaris.BlockExplorer.Domain.Mappings
             CreateMap<Address, Models.Address>();
             CreateMap<Paging, Models.Paging>().ReverseMap();
             CreateMap<Search, Models.Search>();
+            CreateMap<AddressTransaction, Models.AddressTransaction>();
             CreateMap<PagedResult<IEnumerable<Block>>, Models.PagedResult<IEnumerable<Models.Block>>>();
+            CreateMap<PagedResult<IEnumerable<AddressTransaction>>, Models.PagedResult<IEnumerable<Models.AddressTransaction>>>();
         }  
     }
 }

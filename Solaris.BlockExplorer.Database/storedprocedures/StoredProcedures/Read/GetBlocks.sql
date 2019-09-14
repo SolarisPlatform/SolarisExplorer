@@ -43,6 +43,6 @@ ROWS ONLY;
 
 
 SELECT
-	@ReturnValue = CEILING(COUNT_BIG(*) / @PageSize)
+	@ReturnValue = CEILING(COUNT_BIG(*) / CAST(@PageSize AS DECIMAL(28, 8)))
 FROM
 	tables.Blocks

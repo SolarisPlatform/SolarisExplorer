@@ -3,6 +3,7 @@
     ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using System.Globalization
 @model Solaris.BlockExplorer.UI.Models.ViewModels.IAddressViewModel
 <div class="row mt-2 mb-2 collapse clipboard-success">
     <div class="col-12">
@@ -58,10 +59,106 @@
                         </div>
                     </div>
                     <div class="col-4 col-md-2 col-xxl-1 text-right">
-                        <img src="@Url.Action("Index", "Qr", new { Id = Model.Address.PublicKey })" alt="@Model.Address.PublicKey" height="128" class="img-fluid"/>
+                        <img src="@Url.Action("Index", "Qr", new { Id = Model.Address.PublicKey })" alt="@Model.Address.PublicKey" height="128" class="img-fluid" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<form id="pagingForm" method="get">
+    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.Transactions.CurrentPage" />
+    <input type="hidden" name="pageSize" id="pageSize" value="@Model.Transactions.PageSize" />
+</form>
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="title-bottom-border mb-2">
+                    Transactions
+                </h4>
+                <div class="row row-header">
+                    <div class="row-header-column col-9 col-md-3 text-left">Transaction hash</div>
+                    <div class="row-header-column d-none d-lg-block col-md-1 text-right">Block height</div>
+                    <div class="row-header-column d-none d-md-block d-lg-none col-md-1 text-right">Block#</div>
+                    <div class="row-header-column d-none d-md-block col-md-3 text-right">Date</div>
+                    <div class="row-header-column col-3 col-md-2 text-right">Amount</div>
+                    <div class="row-header-column d-none d-md-block col-md-3 text-right">Balance</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach (var transaction in Model.Transactions.Result)
+                        {
+                            <div class="row rows">
+                                <div class="row-column col-9 col-md-3 text-left">
+                                    <a href="@Url.Action("Index", "Transaction", new {id = transaction.Id})">@transaction.Id</a>
+                                </div>
+                                <div class="row-column d-none d-md-block col-md-1 text-right">
+                                    <a href="@Url.Action("Index", "Block", new {id = transaction.BlockId})">@transaction.BlockHeight</a>
+                                </div>
+                                <div class="row-column d-none d-md-block col-md-3 text-right">
+                                    @DateTimeOffset.FromUnixTimeSeconds(transaction.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
+                                </div>
+                                <div class="row-column col-3 col-md-2 text-right">
+                                    @if (transaction.IsMined)
+                                    {
+                                        <span class="d-none d-xl-inline-block badge badge-primary">Reward</span>
+                                    }
+                                    @transaction.Amount @ViewBag.Ticker
+                                </div>
+                                <div class="row-column d-none d-md-block col-md-3 text-right">
+                                    @transaction.Balance @ViewBag.Ticker
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="float-right">
+                    <select onchange="setPageSize(this);" class="form-control mt-3 ml-2" style="width: 80px;" id="pageSizeControl">
+                        <option value="10">
+                            10
+                        </option>
+                        <option value="25">
+                            25
+                        </option>
+                        <option value="100">
+                            100
+                        </option>
+                        <option value="250">
+                            250
+                        </option>
+                        <option value="500">
+                            500
+                        </option>
+                        <option value="1000">
+                            1000
+                        </option>
+                    </select>
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-12">
+                        <div class="col-11 offset-1 d-flex justify-content-center">
+                            <ul class="pagination mt-3 mb-0">
+                                @if (Model.Transactions.CurrentPage > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Transactions.CurrentPage - 1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
+                                }
+                                @for (var i = Model.Transactions.PagingStart; i <= Model.Transactions.PagingEnd; i++)
+                                {
+                                    <li class="page-item d-none d-md-block @(Model.Transactions.CurrentPage == i ? "active" : "")"><a class="page-link" href="#" onclick="return setPage(@i);">@i</a></li>
+                                }
+                                @if (Model.Transactions.CurrentPage < Model.Transactions.PageCount)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.Transactions.CurrentPage + 1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@Model.Transactions.PageCount);"><i class="fas fa-step-forward"></i></a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/addresstransactions.js"></script>

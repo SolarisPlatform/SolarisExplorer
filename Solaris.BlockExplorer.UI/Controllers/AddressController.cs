@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Solaris.BlockExplorer.UI.Models;
 using Solaris.BlockExplorer.UI.Models.ViewModels;
 using Solaris.BlockExplorer.UI.Services;
 
@@ -16,11 +17,12 @@ namespace Solaris.BlockExplorer.UI.Controllers
         }
 
         [Route("Address/{Id}", Name = "Address")]
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index(string id, PagingModel paging)
         {
             return View(new AddressViewModel
             {
-                Address = await _addressModelService.GetAddress(id)
+                Address = await _addressModelService.GetAddress(id),
+                Transactions = await _addressModelService.GetTransactions(id, paging)
             });
         }
     }

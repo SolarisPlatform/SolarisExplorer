@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
+using Solaris.BlockExplorer.Domain.Models;
 using Solaris.BlockExplorer.Domain.Services;
 using Solaris.BlockExplorer.UI.Models;
 
@@ -21,6 +23,12 @@ namespace Solaris.BlockExplorer.UI.Services
             var address = await _addressService.GetAddress(publicKey);
 
             return _mapper.Map<AddressModel>(address);
+        }
+
+        public async Task<PagedResultModel<IEnumerable<AddressTransactionModel>>> GetTransactions(string publicKey, PagingModel paging)
+        {
+            var transactions = await _addressService.GetTransactions(publicKey, _mapper.Map<Paging>(paging));
+            return _mapper.Map<PagedResultModel<IEnumerable<AddressTransactionModel>>>(transactions);
         }
     }
 }
