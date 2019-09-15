@@ -22,6 +22,7 @@ namespace Solaris.BlockExplorer.UI.Controllers
             var socials = _configuration.GetSection("Socials");
             var website = socials.GetValue<string>("Website");
             var twitter = socials.GetValue<string>("Twitter");
+            var facebook = socials.GetValue<string>("Facebook");
             var telegram = socials.GetValue<string>("Telegram");
             var discord = socials.GetValue<string>("Discord");
             var reddit = socials.GetValue<string>("Reddit");
@@ -33,6 +34,7 @@ namespace Solaris.BlockExplorer.UI.Controllers
             ViewBag.Ticker = ticker;
             ViewBag.Website = website;
             ViewBag.Twitter = twitter;
+            ViewBag.Facebook = facebook;
             ViewBag.Telegram = telegram;
             ViewBag.Discord = discord;
             ViewBag.Reddit = reddit;

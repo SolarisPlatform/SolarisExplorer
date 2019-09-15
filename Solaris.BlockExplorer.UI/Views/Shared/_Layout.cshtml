@@ -64,6 +64,18 @@
                     {
                         <div class="d-none"></div>
                     }
+                    @if (string.IsNullOrEmpty(@ViewBag.Twitter))
+                    {
+                        <div class="d-none"></div>
+                    }
+                    else
+                    {
+                        <a href="@ViewBag.Facebook" class="text-white" target="_blank"><i class="fab fa-facebook mr-2"></i></a>
+                    }
+                    @if (string.IsNullOrEmpty(@ViewBag.Telegram))
+                    {
+                        <div class="d-none"></div>
+                    }
                     else
                     {
                         <a href="@ViewBag.Telegram" class="text-white" target="_blank"><i class="fab fa-telegram-plane mr-2"></i></a>
@@ -112,7 +124,7 @@
             </div>
             <div class="row">
                 <div class=" col-12 mb-2 text-center">
-                    Made with <i class="far fa-heart" style="color: red;"></i> by Solaris Platform
+                    Made with <i class="far fa-heart" style="color: red;"></i> by <a href="https://www.solarisplatform.com">Solaris Platform</a>
                 </div>
             </div>
         </div>
