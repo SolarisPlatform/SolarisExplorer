@@ -71,8 +71,8 @@
                 </h4>
                 <div class="row row-header">
                     <div class="col-lg-2 col-xl-3 col-xxl-4 row-header-column text-left">Transaction Hash</div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 text-left">From (amount)</div>
-                    <div class="col-lg-6 col-xl-5 col-xxl-4 row-header-column text-left">To (amount)</div>
+                    <div class="col-lg-5 col-xl-4 col-xxl-4 text-left">From (amount)</div>
+                    <div class="col-lg-5 col-xl-5 col-xxl-4 row-header-column text-left">To (amount)</div>
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -82,7 +82,7 @@
                                 <div class="col-lg-2 col-xl-3 col-xxl-4 row-column text-left">
                                     <a href="@Url.Action("Index", "Transaction", new { id = transaction.TransactionId })">@transaction.TransactionId</a>
                                 </div>
-                                <div class="col-lg-4 col-xl-4 col-xxl-4 row-column text-left">
+                                <div class="col-lg-5 col-xl-4 col-xxl-4 row-column text-left">
                                     @foreach (var input in transaction.Inputs)
                                     {
                                         <div class="row">
@@ -103,7 +103,7 @@
                                         </div>
                                     }
                                 </div>
-                                <div class="col-lg-6 col-xl-5 col-xxl-4 row-column text-right">
+                                <div class="col-lg-5 col-xl-5 col-xxl-4 row-column text-right">
                                     @foreach (var output in transaction.Outputs)
                                     {
                                         <div class="row">
@@ -149,9 +149,96 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="title-bottom-border mb-2">
+                <h4 class="title-bottom-border mb-0">
                     Transactions
                 </h4>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach (var transaction in Model.Transactions)
+                        {
+
+                            <div class="row row-header mt-2">
+                                <div class="col-12 row-header-column text-left">
+                                    <span>Transaction</span>
+                                </div>
+                            </div>
+                            <div class="row rows">
+                                <div class="col-12 text-lightblue text-left my-1">
+                                    <span>Hash:</span>
+                                </div>
+                                <div class="col-12 text-truncate">
+                                    <a href="@Url.Action("Index", "Transaction", new {id = transaction.TransactionId})">@transaction.TransactionId</a>
+                                </div>
+                                @foreach (var input in transaction.Inputs)
+                                {
+                                    <div class="row col-12">
+                                        <div class="col-8 text-lightblue text-left my-1">
+                                            <span>From:</span>
+                                        </div>
+                                        <div class="col-4 text-lightblue text-right text-right my-1">
+                                            <span>Amount:</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row col-12">
+                                        <div class="col-8 text-left">
+                                            @if (!input.Addresses.Any())
+                                            {
+                                                <span>Generation + Fees</span>
+                                            }
+
+                                            @Url.AddressLink(input.Addresses)
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            @if (input.Amount != null)
+                                            {
+                                                <span>@input.Amount @ViewBag.Ticker</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                }
+                                <div class="row col-12">
+                                    <div class="col-12 text-lightblue text-left my-1">
+                                        <span>To:</span>
+                                    </div>
+                                </div>
+                                @foreach (var output in transaction.Outputs)
+                                {
+                                    <div class="row col-12">
+                                        <div class="col-8 text-left">
+                                            @if (transaction.OutputSum <= 0 && !output.IsNullData)
+                                            {
+                                                <span>Included in another transaction</span>
+                                            }
+
+                                            @if (output.Addresses.Any(string.IsNullOrWhiteSpace) && transaction.OutputSum > 0 && !output.IsNullData)
+                                            {
+                                                <span>Generation + Fees</span>
+                                            }
+                                            @if (output.IsNullData)
+                                            {
+                                                <span>No data</span>
+                                            }
+                                            @Url.AddressLink(output.Addresses)
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            @if (output.Amount == null || output.Amount == 0 && !output.IsNullData)
+                                            {
+                                                <span>@(Model.Block.OutputValue - Model.Block.InputValue) @ViewBag.Ticker</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@output.Amount @ViewBag.Ticker</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        }
+                        </div>
+                </div>
             </div>
         </div>
     </div>
