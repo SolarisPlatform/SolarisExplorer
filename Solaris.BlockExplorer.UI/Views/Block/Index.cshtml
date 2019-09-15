@@ -156,7 +156,6 @@
                     <div class="col-12">
                         @foreach (var transaction in Model.Transactions)
                         {
-
                             <div class="row row-header mt-2">
                                 <div class="col-12 row-header-column text-left">
                                     <span>Transaction</span>
@@ -169,17 +168,17 @@
                                 <div class="col-12 rows text-truncate">
                                     <a href="@Url.Action("Index", "Transaction", new {id = transaction.TransactionId})">@transaction.TransactionId</a>
                                 </div>
+                                <div class="row col-12">
+                                    <div class="col-8 text-lightblue text-left my-1">
+                                        <i class="fas fa-sign-in-alt"></i><span> From</span>
+                                    </div>
+                                    <div class="col-4 text-lightblue text-right text-right my-1">
+                                        <i class="far fa-money-bill-alt"></i><span> Amount</span>
+                                    </div>
+                                </div>
                                 @foreach (var input in transaction.Inputs)
                                 {
-                                    <div class="row col-12">
-                                        <div class="col-8 text-lightblue text-left my-1">
-                                            <i class="fas fa-sign-in-alt"></i><span> From</span>
-                                        </div>
-                                        <div class="col-4 text-lightblue text-right text-right my-1">
-                                            <i class="far fa-money-bill-alt"></i><span> Amount</span>
-                                        </div>
-                                    </div>
-
+                                    
                                     <div class="row rows col-12">
                                         <div class="col-8 text-left">
                                             @if (!input.Addresses.Any())
@@ -196,7 +195,6 @@
                                             }
                                         </div>
                                     </div>
-
                                 }
                                 <div class="row col-12">
                                     <div class="col-8 text-lightblue text-left my-1">
@@ -236,7 +234,6 @@
                                             }
                                         </div>
                                     </div>
-
                                 }
                             </div>
                         }
