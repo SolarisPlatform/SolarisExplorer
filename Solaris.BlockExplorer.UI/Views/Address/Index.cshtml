@@ -78,35 +78,35 @@
                     Transactions
                 </h4>
                 <div class="row row-header">
-                    <div class="row-header-column col-9 col-md-3 text-left">Transaction hash</div>
+                    <div class="row-header-column col-5 col-sm-3 col-md-3 text-left">Transaction hash</div>
                     <div class="row-header-column d-none d-lg-block col-md-1 text-right">Block height</div>
-                    <div class="row-header-column d-none d-md-block d-lg-none col-md-1 text-right">Block#</div>
+                    <div class="row-header-column d-sm-block d-lg-none col-2 col-md-1 text-right">Block#</div>
                     <div class="row-header-column d-none d-md-block col-md-3 text-right">Date</div>
-                    <div class="row-header-column col-3 col-md-2 text-right">Amount</div>
-                    <div class="row-header-column d-none d-md-block col-md-3 text-right">Balance</div>
+                    <div class="row-header-column col-5 col-sm-3 col-md-2 text-right">Amount</div>
+                    <div class="row-header-column d-none d-sm-block col-sm-4 col-md-3 text-right">Balance</div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         @foreach (var transaction in Model.Transactions.Result)
                         {
                             <div class="row rows">
-                                <div class="row-column col-9 col-md-3 text-left">
+                                <div class="row-column col-5 col-sm-3 col-md-3 text-left">
                                     <a href="@Url.Action("Index", "Transaction", new {id = transaction.Id})">@transaction.Id</a>
                                 </div>
-                                <div class="row-column d-none d-md-block col-md-1 text-right">
+                                <div class="row-column d-sm-block col-2 col-md-1 text-right">
                                     <a href="@Url.Action("Index", "Block", new {id = transaction.BlockId})">@transaction.BlockHeight</a>
                                 </div>
                                 <div class="row-column d-none d-md-block col-md-3 text-right">
                                     @DateTimeOffset.FromUnixTimeSeconds(transaction.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
                                 </div>
-                                <div class="row-column col-3 col-md-2 text-right">
+                                <div class="row-column col-5 col-sm-3 col-md-2 text-right">
                                     @if (transaction.IsMined)
                                     {
                                         <span class="d-none d-xl-inline-block badge badge-primary">Reward</span>
                                     }
                                     @transaction.Amount @ViewBag.Ticker
                                 </div>
-                                <div class="row-column d-none d-md-block col-md-3 text-right">
+                                <div class="row-column d-none d-sm-block col-sm-4 col-md-3 text-right">
                                     @transaction.Balance @ViewBag.Ticker
                                 </div>
                             </div>
