@@ -68,6 +68,7 @@
     <Folder Include="storedprocedures\StoredProcedures\Read" />
     <Folder Include="storedprocedures\StoredProcedures\Create" />
     <Folder Include="types" />
+    <Folder Include="storedprocedures\StoredProcedures\Read\Api" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="tables\Tables\Transactions.sql" />
@@ -95,5 +96,14 @@
     <Build Include="storedprocedures\StoredProcedures\Read\GetSearch.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetCurrentTotalSupply.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetAddressTransactions.sql" />
+    <Build Include="Security\apistoredprocedures.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetDifficulty.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetBlockHash.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetBlock.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetRawTransaction.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetMoneySupply.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetAddress.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetAddressTransactions.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetBalance.sql" />
   </ItemGroup>
 </Project>

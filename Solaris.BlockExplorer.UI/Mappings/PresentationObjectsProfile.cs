@@ -14,11 +14,14 @@ namespace Solaris.BlockExplorer.UI.Mappings
             CreateMap<Domain.Models.TransactionInput, Models.TransactionInputModel>();
             CreateMap<Domain.Models.TransactionOutput, Models.TransactionOutputModel>();
             CreateMap<Domain.Models.Address, Models.AddressModel>();
+            CreateMap<Domain.Models.AddressTransaction, Models.AddressTransactionModel>();
             CreateMap<Domain.Models.Paging, Models.PagingModel>().ReverseMap();
             CreateMap<Domain.Models.Search, Models.SearchModel>();
             CreateMap<Domain.Models.AddressTransaction, Models.AddressTransactionModel>();
             CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.Block>>, Models.PagedResultModel<IEnumerable<Models.BlockModel>>>();
             CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.AddressTransaction>>, Models.PagedResultModel<IEnumerable<Models.AddressTransactionModel>>>();
+            CreateMap<Domain.Models.Api.Address, Models.Api.AddressModel>();
+            CreateMap<Domain.Models.Api.AddressTransaction, Models.Api.AddressTransactionModel>();
         }
     }
 }

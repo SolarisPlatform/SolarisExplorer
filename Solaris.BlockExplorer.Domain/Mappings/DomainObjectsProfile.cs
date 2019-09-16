@@ -21,6 +21,8 @@ namespace Solaris.BlockExplorer.Domain.Mappings
             CreateMap<AddressTransaction, Models.AddressTransaction>();
             CreateMap<PagedResult<IEnumerable<Block>>, Models.PagedResult<IEnumerable<Models.Block>>>();
             CreateMap<PagedResult<IEnumerable<AddressTransaction>>, Models.PagedResult<IEnumerable<Models.AddressTransaction>>>();
+            CreateMap<DataAccess.Entities.Read.Api.Address, Models.Api.Address>();
+            CreateMap<DataAccess.Entities.Read.Api.AddressTransaction, Models.Api.AddressTransaction>();
         }  
     }
 }

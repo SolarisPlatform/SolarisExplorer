@@ -11,11 +11,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Solaris.BlockExplorer.DataAccess.Repositories;
+using Solaris.BlockExplorer.DataAccess.Repositories.Api;
 using Solaris.BlockExplorer.Domain.Factories;
 using Solaris.BlockExplorer.Domain.Mappings;
 using Solaris.BlockExplorer.Domain.Services;
+using Solaris.BlockExplorer.Domain.Services.Api;
 using Solaris.BlockExplorer.UI.Mappings;
 using Solaris.BlockExplorer.UI.Services;
+using Solaris.BlockExplorer.UI.Services.Api;
 
 namespace Solaris.BlockExplorer.UI
 {
@@ -39,9 +42,9 @@ namespace Solaris.BlockExplorer.UI
             services.AddSingleton(provider => mapperConfiguration.CreateMapper());
 
             services
-                .AddScoped<IBlockRepository, BlockRepository>()
-                .AddScoped<IBlockService, BlockService>()
-                .AddScoped<IBlockModelService, BlockModelService>()
+                .AddScoped<DataAccess.Repositories.IBlockRepository, DataAccess.Repositories.BlockRepository>()
+                .AddScoped<Domain.Services.IBlockService, Domain.Services.BlockService>()
+                .AddScoped<Services.IBlockModelService, Services.BlockModelService>()
                 .AddScoped<IBlockTransactionRepository, BlockTransactionRepository>()
                 .AddScoped<IBlockTransactionService, BlockTransactionService>()
                 .AddScoped<IBlockTransactionModelService, BlockTransactionModelService>()
@@ -55,15 +58,39 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<ITransactionOutputRepository, TransactionOutputRepository>()
                 .AddScoped<ITransactionOutputService, TransactionOutputService>()
                 .AddScoped<ITransactionOutputModelService, TransactionOutputModelService>()
-                .AddScoped<IAddressRepository, AddressRepository>()
-                .AddScoped<IAddressService, AddressService>()
-                .AddScoped<IAddressModelService, AddressModelService>()
+                .AddScoped<DataAccess.Repositories.IAddressRepository, DataAccess.Repositories.AddressRepository>()
+                .AddScoped<Domain.Services.IAddressService, Domain.Services.AddressService>()
+                .AddScoped<Services.IAddressModelService, Services.AddressModelService>()
                 .AddScoped<ISearchRepository, SearchRepository>()
                 .AddScoped<ISearchService, SearchService>()
                 .AddScoped<ISearchModelService, SearchModelService>()
                 .AddScoped<ICurrentTotalSupplyRepository, CurrentTotalSupplyRepository>()
                 .AddScoped<ICurrentTotalSupplyService, CurrentTotalSupplyService>()
                 .AddScoped<ICurrentTotalSupplyModelService, CurrentTotalSupplyModelService>()
+                .AddScoped<IDifficultyRepository, DifficultyRepository>()
+                .AddScoped<IDifficultyService, DifficultyService>()
+                .AddScoped<IDifficultyModelService, DifficultyModelService>()
+                .AddScoped<IBlockHashRepository, BlockHashRepository>()
+                .AddScoped<IBlockHashService, BlockHashService>()
+                .AddScoped<IBlockHashModelService, BlockHashModelService>()
+                .AddScoped<DataAccess.Repositories.Api.IBlockRepository, DataAccess.Repositories.Api.BlockRepository>()
+                .AddScoped<Domain.Services.Api.IBlockService, Domain.Services.Api.BlockService>()
+                .AddScoped<Services.Api.IBlockModelService, Services.Api.BlockModelService>()
+                .AddScoped<IRawTransactionRepository, RawTransactionRepository>()
+                .AddScoped<IRawTransactionService, RawTransactionService>()
+                .AddScoped<IRawTransactionModelService, RawTransactionModelService>()
+                .AddScoped<IMoneySupplyRepository, MoneySupplyRepository>()
+                .AddScoped<IMoneySupplyService, MoneySupplyService>()
+                .AddScoped<IMoneySupplyModelService, MoneySupplyModelService>()
+                .AddScoped<DataAccess.Repositories.Api.IAddressRepository, DataAccess.Repositories.Api.AddressRepository>()
+                .AddScoped<Domain.Services.Api.IAddressService, Domain.Services.Api.AddressService>()
+                .AddScoped<Services.Api.IAddressModelService, Services.Api.AddressModelService>()
+                .AddScoped<IBalanceRepository, BalanceRepository>()
+                .AddScoped<IBalanceService, BalanceService>()
+                .AddScoped<IBalanceModelService, BalanceModelService>()
+                .AddScoped<IAddressTransactionRepository, AddressTransactionRepository>()
+                .AddScoped<IAddressTransactionService, AddressTransactionService>()
+                .AddScoped<IAddressTransactionModelService, AddressTransactionModelService>()
                 .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
                 .AddScoped(provider =>
                 {
@@ -172,6 +199,16 @@ namespace Solaris.BlockExplorer.UI
                 routes.MapRoute(
                     name: "Transaction",
                     template: "Transaction/{Id}");
+                routes.MapRoute(
+                    name: "ApiGetAddress",
+                    template: "api/GetAddress/{PublicKey}");
+                routes.MapRoute(
+                    name: "ApiGetBalance",
+                    template: "api/GetBalance/{PublicKey}");
+                routes.MapRoute(
+                    name: "ApiGetAddressTransactions",
+                    template: "api/getlasttxs/{PublicKey}/{Count}/{Min}");
+
             });
         }
     }
