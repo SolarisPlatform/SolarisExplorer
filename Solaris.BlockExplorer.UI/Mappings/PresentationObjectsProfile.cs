@@ -18,6 +18,8 @@ namespace Solaris.BlockExplorer.UI.Mappings
             CreateMap<Domain.Models.Paging, Models.PagingModel>().ReverseMap();
             CreateMap<Domain.Models.Search, Models.SearchModel>();
             CreateMap<Domain.Models.AddressTransaction, Models.AddressTransactionModel>();
+            CreateMap<Domain.Models.RichListItem, Models.RichListItemModel>();
+            CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.RichListItem>>, Models.PagedResultModel<IEnumerable<Models.RichListItemModel>>>();
             CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.Block>>, Models.PagedResultModel<IEnumerable<Models.BlockModel>>>();
             CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.AddressTransaction>>, Models.PagedResultModel<IEnumerable<Models.AddressTransactionModel>>>();
             CreateMap<Domain.Models.Api.Address, Models.Api.AddressModel>();

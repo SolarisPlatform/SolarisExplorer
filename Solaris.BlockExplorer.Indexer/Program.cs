@@ -226,13 +226,17 @@ namespace Solaris.BlockExplorer.Indexer
 
         private static void ShowAscii()
         {
-            if (!Environment.UserInteractive)
-                return;
+            try
+            {
+                var ascii = File.ReadAllText("Ascii.txt");
 
-            var ascii = File.ReadAllText("Ascii.txt");
-
-            Console.SetWindowSize(100, 45);
-            Console.WriteLine(ascii);
+                Console.SetWindowSize(100, 45);
+                Console.WriteLine(ascii);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         private static Network GetNetwork()
@@ -246,22 +250,18 @@ namespace Solaris.BlockExplorer.Indexer
 
             switch (template?.Type)
             {
-                case TxOutType.TX_PUBKEY:
+                case TxOutType.TX_PUBKEY: case TxOutType.TX_MULTISIG:
                     var pubkeys = script.GetDestinationPublicKeys(network);
                     return pubkeys.Select(p => p.GetAddress(network).ToString()).ToArray();
                 case TxOutType.TX_PUBKEYHASH: case TxOutType.TX_SCRIPTHASH: case TxOutType.TX_SEGWIT:
                     var bitcoinAddress = script.GetDestinationAddress(network);
                     return bitcoinAddress != null ? new[] { bitcoinAddress.ToString() } : new string[0];
-                case TxOutType.TX_MULTISIG:
-                    //TODO
-                    return new string[0];
                 case TxOutType.TX_COLDSTAKE:
-                    if (ColdStakingScriptTemplate.Instance.ExtractScriptPubKeyParameters(script, out var hotPubKeyHash, out var coldPubKeyHash))
+                    if (ColdStakingScriptTemplate.Instance.ExtractScriptPubKeyParameters(script, out _, out var coldPubKeyHash))
                     {
                         return new[]
                         {
-                            hotPubKeyHash.GetAddress(network).ToString(),
-                            coldPubKeyHash.GetAddress(network).ToString(),
+                            coldPubKeyHash.GetAddress(network).ToString()
                         };
                     }
 

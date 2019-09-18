@@ -105,5 +105,10 @@
     <Build Include="storedprocedures\StoredProcedures\Read\Api\GetAddress.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\Api\GetAddressTransactions.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\Api\GetBalance.sql" />
+    <Build Include="tables\Tables\AddressTransactions.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetRichList.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Solaris.BlockExplorer.Database.refactorlog" />
   </ItemGroup>
 </Project>

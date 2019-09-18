@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "Rich List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Globalization
+@using Solaris.BlockExplorer.UI.HtmlHelpers
+@model Solaris.BlockExplorer.UI.Models.ViewModels.IRichtListViewModel
+<form id="pagingForm" method="get">
+    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.RichListItems.CurrentPage" />
+    <input type="hidden" name="pageSize" id="pageSize" value="@Model.RichListItems.PageSize" />
+</form>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="title-bottom-border mb-2">
+                    Rich List
+                </h4>
+
+                <div class="row row-header">
+                    <div class="col-3 row-header-column text-left">Address</div>
+                    <div class="col-3 row-header-column text-right">Balance</div>
+                    <div class="col-3 row-header-column text-right">Last Transaction</div>
+                    <div class="col-3 row-header-column text-right">%</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach (var richListItem in Model.RichListItems.Result)
+                        {
+                        <div class="row rows">
+                            <div class="col-3 row-column text-left">
+                                @Url.AddressLink(richListItem.Addresses)
+                            </div>
+                            <div class="col-3 row-column text-right">
+                                @richListItem.Amount @ViewBag.Ticker
+                            </div>
+                            <div class="col-3 row-column text-right">
+                                @DateTimeOffset.FromUnixTimeSeconds(richListItem.LastTransaction).DateTime.ToString(CultureInfo.CurrentUICulture)
+                            </div>
+                            <div class="col-3 row-column text-right">
+                                @richListItem.Percentage %
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="float-right">
+                    <select onchange="setPageSize(this);" class="form-control mt-3 ml-2" style="width: 80px;" id="pageSizeControl">
+                        <option value="10">
+                            10
+                        </option>
+                        <option value="25">
+                            25
+                        </option>
+                        <option value="100">
+                            100
+                        </option>
+                        <option value="250">
+                            250
+                        </option>
+                        <option value="500">
+                            500
+                        </option>
+                        <option value="1000">
+                            1000
+                        </option>
+                    </select>
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-12">
+                        <div class="col-11 offset-1 d-flex justify-content-center">
+                            <ul class="pagination mt-3 mb-0">
+                                @if (Model.RichListItems.CurrentPage > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(1);"><i class="fas fa-step-backward"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.RichListItems.CurrentPage - 1));"><i class="fas fa-chevron-circle-left mr-2"></i> Previous</a></li>
+                                }
+                                @for (var i = Model.RichListItems.PagingStart; i <= Model.RichListItems.PagingEnd; i++)
+                                {
+                                    <li class="page-item d-none d-md-block @(Model.RichListItems.CurrentPage == i ? "active" : "")"><a class="page-link" href="#" onclick="return setPage(@i);">@i</a></li>
+                                }
+                                @if (Model.RichListItems.CurrentPage < Model.RichListItems.PageCount)
+                                {
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@(Model.RichListItems.CurrentPage + 1));">Next <i class="fas fa-chevron-circle-right ml-2"></i></a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="return setPage(@Model.RichListItems.PageCount);"><i class="fas fa-step-forward"></i></a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/richlist.js"></script>

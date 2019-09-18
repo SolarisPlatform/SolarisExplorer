@@ -91,6 +91,9 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<IAddressTransactionRepository, AddressTransactionRepository>()
                 .AddScoped<IAddressTransactionService, AddressTransactionService>()
                 .AddScoped<IAddressTransactionModelService, AddressTransactionModelService>()
+                .AddScoped<IRichListRepository, RichListRepository>()
+                .AddScoped<IRichListService, RichListService>()
+                .AddScoped<IRichListModelService, RichListModelService>()
                 .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
                 .AddScoped(provider =>
                 {

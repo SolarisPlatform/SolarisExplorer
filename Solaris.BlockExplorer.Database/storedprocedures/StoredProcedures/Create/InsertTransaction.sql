@@ -13,6 +13,29 @@
 	@Outputs types.[Output] READONLY,
 	@Json VARCHAR(MAX)
 AS
+	DECLARE @OutputSum DECIMAL(28, 8) =
+	ISNULL(
+	(
+		SELECT 
+			SUM(Outputs.[Value]) 
+		FROM 
+			@Outputs Outputs
+	), 0.00000000)
+	DECLARE @InputSum DECIMAL(28, 8) =
+	ISNULL(
+	(
+		SELECT 
+			SUM(tables.Outputs.[Value]) 
+		FROM 
+			@Inputs Inputs
+		INNER JOIN
+			tables.Outputs
+		ON
+			tables.Outputs.TransactionId = Inputs.OutputTransactionId
+		AND
+			tables.Outputs.[Index] = Inputs.OutputIndex
+	), 0.00000000)
+
 	INSERT INTO
 		tables.Transactions
 		(
@@ -42,26 +65,8 @@ AS
 			@Vsize,
 			@BlockId,
 			@BlockOrder,
-			ISNULL(
-			(
-				SELECT 
-					SUM(Outputs.[Value]) 
-				FROM 
-					@Outputs Outputs
-			), 0.00000000),
-			ISNULL(
-			(
-				SELECT 
-					SUM(tables.Outputs.[Value]) 
-				FROM 
-					@Inputs Inputs
-				INNER JOIN
-					tables.Outputs
-				ON
-					tables.Outputs.TransactionId = Inputs.OutputTransactionId
-				AND
-					tables.Outputs.[Index] = Inputs.OutputIndex
-			), 0.00000000),
+			@OutputSum,
+			@InputSum,
 			@Json
 		)
 	INSERT INTO 
@@ -92,7 +97,6 @@ AS
 		Inputs.Hex
 	FROM
 		@Inputs Inputs
-
 	INSERT INTO 
 		tables.Outputs
 		(
@@ -116,3 +120,63 @@ AS
 		Outputs.Addresses
 	FROM
 		@Outputs Outputs
+
+	DECLARE @IsMined BIT = 
+	CAST
+	(
+		CASE WHEN 
+			@OutputSum > @InputSum THEN 
+				1 
+			ELSE 
+				0 
+			END 
+		AS BIT
+	)
+
+	INSERT INTO
+		tables.AddressTransactions
+		(
+			[Value],
+			[IsMined],
+			[Time],
+			[Addresses],
+			[TransactionId]
+		)
+		SELECT
+			SUM([Value]),
+			@IsMined,
+			@Time,
+			Addresses,
+			@Id
+		FROM
+		(
+			SELECT
+				-SUM(tables.Outputs.Value) AS [Value],
+				tables.Outputs.Addresses
+			FROM
+				@Inputs Inputs
+			INNER JOIN
+				tables.Outputs
+			ON
+				tables.Outputs.TransactionId = Inputs.OutputTransactionId 
+			AND 
+				tables.Outputs.[Index] = Inputs.OutputIndex		
+			WHERE 
+				NOT tables.Outputs.Addresses IS NULL
+			GROUP BY
+				tables.Outputs.Addresses
+			UNION
+			SELECT
+				SUM(Outputs.[Value]) AS [Value],
+				Outputs.Addresses
+			FROM
+				@Outputs Outputs
+			GROUP BY
+				Outputs.Addresses
+		) [Values]
+		WHERE NOT
+			[Values].Addresses = ''
+		GROUP BY
+			[Values].Addresses
+
+	
