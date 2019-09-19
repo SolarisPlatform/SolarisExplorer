@@ -20,29 +20,35 @@
                 </h4>
 
                 <div class="row row-header">
+                    <div class="col-1 row-header-column text-left">#</div>
                     <div class="col-3 row-header-column text-left">Address</div>
                     <div class="col-3 row-header-column text-right">Balance</div>
                     <div class="col-3 row-header-column text-right">Last Transaction</div>
-                    <div class="col-3 row-header-column text-right">%</div>
+                    <div class="col-2 row-header-column text-right">%</div>
                 </div>
                 <div class="row">
                     <div class="col-12">
+                        @{ var position = Model.RichListItems.PageSize * (Model.RichListItems.CurrentPage - 1); }
                         @foreach (var richListItem in Model.RichListItems.Result)
                         {
-                        <div class="row rows">
-                            <div class="col-3 row-column text-left">
-                                @Url.AddressLink(richListItem.Addresses)
+                            position++;
+                            <div class="row rows">
+                                <div class="col-1 row-column text-left">
+                                    @position
+                                </div>
+                                <div class="col-3 row-column text-left">
+                                    @Url.AddressLink(richListItem.Addresses)
+                                </div>
+                                <div class="col-3 row-column text-right">
+                                    @richListItem.Amount @ViewBag.Ticker
+                                </div>
+                                <div class="col-3 row-column text-right">
+                                    @DateTimeOffset.FromUnixTimeSeconds(richListItem.LastTransaction).DateTime.ToString(CultureInfo.CurrentUICulture)
+                                </div>
+                                <div class="col-2 row-column text-right">
+                                    @richListItem.Percentage %
+                                </div>
                             </div>
-                            <div class="col-3 row-column text-right">
-                                @richListItem.Amount @ViewBag.Ticker
-                            </div>
-                            <div class="col-3 row-column text-right">
-                                @DateTimeOffset.FromUnixTimeSeconds(richListItem.LastTransaction).DateTime.ToString(CultureInfo.CurrentUICulture)
-                            </div>
-                            <div class="col-3 row-column text-right">
-                                @richListItem.Percentage %
-                            </div>
-                        </div>
                         }
                     </div>
                 </div>
