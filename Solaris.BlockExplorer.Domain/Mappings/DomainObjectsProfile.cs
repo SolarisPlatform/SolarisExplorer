@@ -25,6 +25,7 @@ namespace Solaris.BlockExplorer.Domain.Mappings
             CreateMap<PagedResult<IEnumerable<RichListItem>>, Models.PagedResult<IEnumerable<Models.RichListItem>>>();
             CreateMap<DataAccess.Entities.Read.Api.Address, Models.Api.Address>();
             CreateMap<DataAccess.Entities.Read.Api.AddressTransaction, Models.Api.AddressTransaction>();
+            CreateMap<WealthChartData, Models.WealthChartData>();
         }  
     }
 }

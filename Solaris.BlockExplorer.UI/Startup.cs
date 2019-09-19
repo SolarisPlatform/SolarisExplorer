@@ -94,6 +94,9 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<IRichListRepository, RichListRepository>()
                 .AddScoped<IRichListService, RichListService>()
                 .AddScoped<IRichListModelService, RichListModelService>()
+                .AddScoped<IWealthChartDataRepository, WealthChartDataRepository>()
+                .AddScoped<IWealthChartDataService, WealthChartDataService>()
+                .AddScoped<IWealthChartDataModelService, WealthChartDataModelService>()
                 .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
                 .AddScoped(provider =>
                 {
@@ -128,6 +131,7 @@ namespace Solaris.BlockExplorer.UI
                 csp.AllowStyles
                     .FromSelf().AllowUnsafeInline();
                 csp.AllowImages
+                    .From("data:")
                     .FromSelf();
                 csp.AllowAudioAndVideo
                     .FromNowhere();

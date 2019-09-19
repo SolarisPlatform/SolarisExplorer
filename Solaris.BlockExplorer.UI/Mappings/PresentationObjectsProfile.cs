@@ -24,6 +24,7 @@ namespace Solaris.BlockExplorer.UI.Mappings
             CreateMap<Domain.Models.PagedResult<IEnumerable<Domain.Models.AddressTransaction>>, Models.PagedResultModel<IEnumerable<Models.AddressTransactionModel>>>();
             CreateMap<Domain.Models.Api.Address, Models.Api.AddressModel>();
             CreateMap<Domain.Models.Api.AddressTransaction, Models.Api.AddressTransactionModel>();
+            CreateMap<Domain.Models.WealthChartData, Models.WealthChartDataModel>();
         }
     }
 }

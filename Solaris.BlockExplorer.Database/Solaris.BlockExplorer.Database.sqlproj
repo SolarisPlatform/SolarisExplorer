@@ -107,6 +107,7 @@
     <Build Include="storedprocedures\StoredProcedures\Read\Api\GetBalance.sql" />
     <Build Include="tables\Tables\AddressTransactions.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetRichList.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetWealthChart.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Solaris.BlockExplorer.Database.refactorlog" />

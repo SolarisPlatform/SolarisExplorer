@@ -10,10 +10,11 @@ namespace Solaris.BlockExplorer.UI.Controllers
     public class RichListController : BaseController
     {
         private readonly IRichListModelService _richListModelService;
-
-        public RichListController(IRichListModelService richListModelService, IConfiguration configuration) : base(configuration)
+        private readonly IWealthChartDataModelService _wealthChartDataModelService;
+        public RichListController(IRichListModelService richListModelService, IConfiguration configuration, IWealthChartDataModelService wealthChartDataModelService) : base(configuration)
         {
             _richListModelService = richListModelService;
+            _wealthChartDataModelService = wealthChartDataModelService;
         }
 
         public async Task<IActionResult> Index(PagingModel pagingModel)
@@ -30,6 +31,12 @@ namespace Solaris.BlockExplorer.UI.Controllers
             {
                 RichListItems = richList
             });
+        }
+
+        [HttpPost]
+        public Task<WealthChartDataModel> GetWealthChartData()
+        {
+            return _wealthChartDataModelService.GetWealthChartData();
         }
     }
 }

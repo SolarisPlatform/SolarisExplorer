@@ -6,12 +6,19 @@
 @using System.Globalization
 @using Solaris.BlockExplorer.UI.HtmlHelpers
 @model Solaris.BlockExplorer.UI.Models.ViewModels.IRichtListViewModel
+<script src="~/lib/chartjs/Chart.min.js"></script>
+<script src="~/lib/chartjs/Chart.bundle.min.js"></script>
+<link rel="stylesheet" href="~/lib/chartjs/Chart.min.css" />
+<script>
+    Endpoints.prototype.wealthChartData = '@Url.Action("GetWealthChartData")';
+    Settings.prototype.ticker = '@ViewBag.Ticker';
+</script>
 <form id="pagingForm" method="get">
     <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.RichListItems.CurrentPage" />
     <input type="hidden" name="pageSize" id="pageSize" value="@Model.RichListItems.PageSize" />
 </form>
 <div class="row">
-    <div class="col-12">
+    <div class="col-12 col-lg-7 mt-2">
         <div class="card">
             <div class="card-body">
 
@@ -99,5 +106,75 @@
             </div>
         </div>
     </div>
+    <div class="col-12 col-lg-5 mt-2">
+        <div class="card h-100">
+            <div class="card-body">
+
+                <h4 class="title-bottom-border mb-2">
+                    Distribution
+                </h4>
+                
+                <img src="images/loading.svg" alt="Loading" title="Loading" id="distribution-loading" class="mt-2"/>
+                <div class="row collapse" id="distribution">
+                    <div class="col-12">
+                        <div class="row row-header">
+                            <div class="col-4 row-header-column"></div>
+                            <div class="col-4 row-header-column text-right">Amount</div>
+                            <div class="col-4 row-header-column text-right">%</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row rows">
+                                    <div class="col-4 row-column text-left">
+                                        Top 1-25
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top1amount"></span> @ViewBag.Ticker
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top1"></span>%
+                                    </div>
+                                </div>
+                                <div class="row rows">
+                                    <div class="col-4 row-column text-left">
+                                        Top 26-50
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top2amount"></span> @ViewBag.Ticker
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top2"></span>%
+                                    </div>
+                                </div>
+                                <div class="row rows">
+                                    <div class="col-4 row-column text-left">
+                                        Top 51-75
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top3amount"></span> @ViewBag.Ticker
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top3"></span>%
+                                    </div>
+                                </div>
+                                <div class="row rows">
+                                    <div class="col-4 row-column text-left">
+                                        Top >76
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top4amount"></span> @ViewBag.Ticker
+                                    </div>
+                                    <div class="col-4 row-column text-right">
+                                        <span id="top4"></span>%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <canvas id="wealthChart" class="mt-2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script src="~/js/richlist.js"></script>
+<script src="~/js/richlist.js" asp-append-version="true"></script>
