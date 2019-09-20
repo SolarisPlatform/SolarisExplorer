@@ -71,10 +71,9 @@
                     <div class="col-2 d-md-none row-header-column text-left">#</div>
                     <div class="col-1 d-none d-md-block row-header-column text-left">Block Height</div>
                     <div class="col-5 col-xl-4 d-none d-md-block row-header-column text-left">Block Hash</div>
-
-                    <div class="col d-none d-xl-block row-header-column text-center"></div>
-                    <div class="col d-none d-sm-block row-header-column text-center">Transactions</div>
-                    <div class="col row-header-column text-left">Amount</div>
+                    <div class="col d-none d-xl-block row-header-column text-center">Size</div>
+                    <div class="col d-none d-sm-block row-header-column text-right">Transactions</div>
+                    <div class="col row-header-column text-right">Amount</div>
                     <div class="col row-header-column text-right">Time</div>
                 </div>
                 <div class="row">
@@ -95,10 +94,10 @@
                                 <div class="col d-none d-xl-block row-column text-center">
                                     <span class="badge badge-primary">@(Math.Round(block.Size / 1024m, 4)) kB</span>
                                 </div>
-                                <div class="col d-none d-sm-block row-column text-center">
+                                <div class="col d-none d-sm-block row-column text-right">
                                     @block.Transactions
                                 </div>
-                                <div class="col row-column text-left">
+                                <div class="col row-column text-right">
                                     @block.OutputValue @ViewBag.Ticker
                                 </div>
                                 <div class="col row-column text-right">
