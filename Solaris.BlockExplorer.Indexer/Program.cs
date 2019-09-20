@@ -61,7 +61,8 @@ namespace Solaris.BlockExplorer.Indexer
                 .AddScoped<IBlockRepository, BlockRepository>()
                 .AddScoped<DataAccess.Repositories.ITransactionRepository, TransactionRepository>()
                 .AddScoped<ITransactionOutputRepository, TransactionOutputRepository>()
-                .AddScoped<ITransactionInputRepository, TransactionInputRepository>();
+                .AddScoped<ITransactionInputRepository, TransactionInputRepository>()
+                .AddScoped<IClearAllDataRepository, ClearAllDataRepository>();
 
 
             serviceCollection.AddHttpClient("Daemon", (provider, client) =>
@@ -91,6 +92,25 @@ namespace Solaris.BlockExplorer.Indexer
             ShowAscii();
             ConfigureServiceProvider();
             SetNetwork();
+
+            if (args?.FirstOrDefault() == "clear")
+            {
+                Console.WriteLine("Are you sure you want to clear all data? [Yes/No]");
+                var answer = Console.ReadLine();
+                if (answer?.ToLower() == "yes")
+                {
+                    Console.WriteLine("Clearing all data...");
+                    var clearAllDataRepository = _serviceProvider.GetService<IClearAllDataRepository>();
+                    await clearAllDataRepository.ClearAllData();
+                    Console.WriteLine("All data cleared");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Aborted");
+                    return;
+                }
+            }
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
