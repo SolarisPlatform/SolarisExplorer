@@ -66,10 +66,6 @@
         </div>
     </div>
 </div>
-<form id="pagingForm" method="get">
-    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.Transactions.CurrentPage" />
-    <input type="hidden" name="pageSize" id="pageSize" value="@Model.Transactions.PageSize" />
-</form>
 <div class="row mt-2">
     <div class="col-12">
         <div class="card">
@@ -161,4 +157,8 @@
         </div>
     </div>
 </div>
-<script src="~/js/addresstransactions.js"></script>
+<form id="pagingForm" method="get">
+    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.Transactions.CurrentPage" />
+    <input type="hidden" name="pageSize" id="pageSize" value="@Model.Transactions.PageSize" />
+</form>
+<script src="~/js/paging.min.js" asp-append-version="true"></script>

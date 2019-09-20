@@ -1,4 +1,7 @@
-﻿var _endpoints = new Endpoints();
+﻿var Endpoints = function() {};
+var Settings = function() {};
+
+var _endpoints = new Endpoints();
 var _settings = new Settings();
 var PageViewModel =
     function() {
@@ -18,6 +21,20 @@ var PageViewModel =
         this.viewModeChecked = ko.computed(function () {
             return self.viewMode() === "night-mode";
         });
+
+        this.bindClipboard = function() {
+            const clipboard = new window.ClipboardJS(".clipboard");
+            clipboard.on("success",
+                function(e) {
+                    $(".clipboard-success").fadeIn("slow",
+                        function() {
+                            setTimeout(function() {
+                                    $(".clipboard-success").fadeOut("slow");
+                                },
+                                3000);
+                        });
+                });
+        };
     };
 
 var _cookieFunctions = {
@@ -55,4 +72,6 @@ var _pageViewModel = new PageViewModel();
 $(document).ready(function() {
     ko.applyBindings(_pageViewModel);
     _pageViewModel.viewMode(_settings.viewMode);
+    _pageViewModel.bindClipboard();
 });
+

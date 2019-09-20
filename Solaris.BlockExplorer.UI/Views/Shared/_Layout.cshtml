@@ -6,27 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/lib/fontawesome-free-5.2.0-web/css/fontawesome.min.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/lib/fontawesome-free-5.2.0-web/css/all.min.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/libs.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/highlightjs/styles/vs@(Html.ViewMode() == "night-mode" ? "2015" : "").min.css" asp-append-version="true" />
+
     <link rel="icon" href="~/favicon.png" type="image/png" asp-append-version="true">
+    
+    <script src="~/js/libs.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+
     <script>
-        var Endpoints = function() {};
-        var Settings = function() {};
-        Endpoints.prototype.darkTheme = '@Url.Content("~/lib/highlight/styles/vs2015.css")';
-        Endpoints.prototype.lightTheme = '@Url.Content("~/lib/highlight/styles/vs.css")';
+        Endpoints.prototype.darkTheme = '@Url.Content("~/css/highlightjs/styles/vs2015.min.css")';
+        Endpoints.prototype.lightTheme = '@Url.Content("~/css/highlightjs/styles/vs.min.css")';
         Endpoints.prototype.marketData = '@Url.Action("MarketData", "Home")';
+        Endpoints.prototype.wealthChartData = '@Url.Action("GetWealthChartData", "RichList")';
+
+        Settings.prototype.ticker = '@ViewBag.Ticker';
         Settings.prototype.viewMode = '@Html.ViewMode()';
     </script>
-
-    <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js" asp-append-version="true"></script>
-    <script src="~/lib/clipboardjs/clipboard.min.js" asp-append-version="true"></script>
-    <script src="~/lib/highlight/highlight.pack.js" asp-append-version="true"></script>
-    <script src="~/lib/knockoutjs/knockout-min.js" asp-append-version="true"></script>
-    <link rel="stylesheet" href="~/lib/highlight/styles/default.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/highlight/styles/vs@(Html.ViewMode() == "night-mode" ? "2015" : "").css" asp-append-version="true" />
 </head>
 <body data-bind="css: viewMode" class="@Html.ViewMode()">
     <header>
@@ -130,17 +127,5 @@
         </div>
         <div class="clearfix"></div>
     </footer>
-
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        var clipboard = new ClipboardJS('.clipboard');
-        clipboard.on('success', function (e) {
-            $(".clipboard-success").fadeIn("slow", function () {
-                setTimeout(function () {
-                    $(".clipboard-success").fadeOut("slow");
-                }, 3000);
-            });
-        });
-    </script>
 </body>
 </html>

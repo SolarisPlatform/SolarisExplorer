@@ -112,12 +112,12 @@ namespace Solaris.BlockExplorer.UI
                 var coinName = section.GetValue<string>("CoinName");
                 var baseAddress = url + coinName;
 
-                client.BaseAddress= new Uri(baseAddress);
+                client.BaseAddress = new Uri(baseAddress);
             });
             services.AddMemoryCache();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHsts(new HstsOptions(TimeSpan.FromDays(365*2), includeSubDomains: true, preload: true));

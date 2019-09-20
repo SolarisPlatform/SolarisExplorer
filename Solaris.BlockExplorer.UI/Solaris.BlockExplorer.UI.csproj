@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.0.415" />
     <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="2.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -20,6 +21,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Solaris.BlockExplorer.DataAccess\Solaris.BlockExplorer.DataAccess.csproj" />
     <ProjectReference Include="..\Solaris.BlockExplorer.Domain\Solaris.BlockExplorer.Domain.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\highlightjs\styles\" />
   </ItemGroup>
 
 </Project>

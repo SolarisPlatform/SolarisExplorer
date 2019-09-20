@@ -6,17 +6,6 @@
 @using System.Globalization
 @using Solaris.BlockExplorer.UI.HtmlHelpers
 @model Solaris.BlockExplorer.UI.Models.ViewModels.IRichtListViewModel
-<script src="~/lib/chartjs/Chart.min.js"></script>
-<script src="~/lib/chartjs/Chart.bundle.min.js"></script>
-<link rel="stylesheet" href="~/lib/chartjs/Chart.min.css" />
-<script>
-    Endpoints.prototype.wealthChartData = '@Url.Action("GetWealthChartData")';
-    Settings.prototype.ticker = '@ViewBag.Ticker';
-</script>
-<form id="pagingForm" method="get">
-    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.RichListItems.CurrentPage" />
-    <input type="hidden" name="pageSize" id="pageSize" value="@Model.RichListItems.PageSize" />
-</form>
 <div class="row">
     <div class="col-12 col-lg-7 mt-2">
         <div class="card">
@@ -177,4 +166,10 @@
         </div>
     </div>
 </div>
-<script src="~/js/richlist.js" asp-append-version="true"></script>
+<form id="pagingForm" method="get">
+    <input type="hidden" name="pageNumber" id="pageNumber" value="@Model.RichListItems.CurrentPage" />
+    <input type="hidden" name="pageSize" id="pageSize" value="@Model.RichListItems.PageSize" />
+</form>
+<script src="~/js/chart.min.js" asp-append-version="true"></script>
+<script src="~/js/richlist.min.js" asp-append-version="true"></script>
+<script src="~/js/paging.min.js" asp-append-version="true"></script>

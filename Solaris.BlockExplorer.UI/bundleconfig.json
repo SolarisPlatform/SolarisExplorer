@@ -1,0 +1,101 @@
+[
+  {
+    "outputFileName": "wwwroot/css/libs.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/css/bootstrap.css",
+      "wwwroot/lib/chartjs/Chart.css",
+      "wwwroot/lib/fontawesome-free-5.2.0-web/css/fontawesome.css",
+      "wwwroot/lib/fontawesome-free-5.2.0-web/css/all.css",
+      "wwwroot/lib/highlight/styles/default.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/highlightjs/styles/vs.min.css",
+    "inputFiles": [
+      "wwwroot/lib/highlight/styles/vs.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/highlightjs/styles/vs2015.min.css",
+    "inputFiles": [
+      "wwwroot/lib/highlight/styles/vs2015.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/libs.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/js/bootstrap.js",
+      "wwwroot/lib/bootstrap/js/bootstrap.bundle.js",
+      "wwwroot/lib/clipboardjs/clipboard.min.js",
+      "wwwroot/lib/highlight/highlight.pack.js",
+      "wwwroot/lib/knockoutjs/knockout-min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/home.min.js",
+    "inputFiles": [
+      "wwwroot/js/home.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/richlist.min.js",
+    "inputFiles": [
+      "wwwroot/js/richlist.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/paging.min.js",
+    "inputFiles": [
+      "wwwroot/js/paging.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/chart.min.js",
+    "inputFiles": [
+      "wwwroot/lib/chartjs/Chart.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": false
+    },
+    "sourceMap": false
+  }
+]
