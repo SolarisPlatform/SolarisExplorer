@@ -27,6 +27,7 @@ namespace Solaris.BlockExplorer.Indexer
     public class Program
     {
         private static ServiceProvider _serviceProvider;
+        private static Network _network;
         private const string GenesisBlock = "0000000000000000000000000000000000000000000000000000000000000000";
         private static void ConfigureServiceProvider()
         {
@@ -79,13 +80,17 @@ namespace Solaris.BlockExplorer.Indexer
 
             StandardScripts.RegisterStandardScriptTemplate(ColdStakingScriptTemplate.Instance);
         }
-
-        private static readonly Network Network = GetNetwork();
+        private static void SetNetwork()
+        {
+            _network = GetNetwork(_serviceProvider.GetService<IConfiguration>());
+        }
+        
 
         public static async Task Main(string[] args)
         {
             ShowAscii();
             ConfigureServiceProvider();
+            SetNetwork();
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -197,7 +202,7 @@ namespace Solaris.BlockExplorer.Indexer
 
                 if (!string.IsNullOrEmpty(output.ScriptPublicKey.Hex))
                 {
-                    addresses = GetAddress(Network, DecodeScriptHex(output.ScriptPublicKey.Hex));
+                    addresses = GetAddress(DecodeScriptHex(output.ScriptPublicKey.Hex));
                 }
 
                 yield return new Output
@@ -239,29 +244,29 @@ namespace Solaris.BlockExplorer.Indexer
             }
         }
 
-        private static Network GetNetwork()
+        private static Network GetNetwork(IConfiguration configuration)
         {
-            return new ExplorerNetwork();
+            return new ExplorerNetwork(configuration);
         }
 
-        public static string[] GetAddress(Network network, Script script)
+        public static string[] GetAddress(Script script)
         {
             var template = StandardScripts.GetTemplateFromScriptPubKey(script);
 
             switch (template?.Type)
             {
                 case TxOutType.TX_PUBKEY: case TxOutType.TX_MULTISIG:
-                    var pubkeys = script.GetDestinationPublicKeys(network);
-                    return pubkeys.Select(p => p.GetAddress(network).ToString()).ToArray();
+                    var pubkeys = script.GetDestinationPublicKeys(_network);
+                    return pubkeys.Select(p => p.GetAddress(_network).ToString()).ToArray();
                 case TxOutType.TX_PUBKEYHASH: case TxOutType.TX_SCRIPTHASH: case TxOutType.TX_SEGWIT:
-                    var bitcoinAddress = script.GetDestinationAddress(network);
+                    var bitcoinAddress = script.GetDestinationAddress(_network);
                     return bitcoinAddress != null ? new[] { bitcoinAddress.ToString() } : new string[0];
                 case TxOutType.TX_COLDSTAKE:
                     if (ColdStakingScriptTemplate.Instance.ExtractScriptPubKeyParameters(script, out _, out var coldPubKeyHash))
                     {
                         return new[]
                         {
-                            coldPubKeyHash.GetAddress(network).ToString()
+                            coldPubKeyHash.GetAddress(_network).ToString()
                         };
                     }
 
