@@ -20,6 +20,9 @@
         Endpoints.prototype.lightTheme = '@Url.Content("~/css/highlightjs/styles/vs.min.css")';
         Endpoints.prototype.marketData = '@Url.Action("MarketData", "Home")';
         Endpoints.prototype.wealthChartData = '@Url.Action("GetWealthChartData", "RichList")';
+        Endpoints.prototype.difficultyChartData = '@Url.Action("GetDifficultyData", "Statistics")';
+        Endpoints.prototype.transactionCountChartData = '@Url.Action("GetTransactionCountData", "Statistics")';
+        Endpoints.prototype.blockSizeChartData = '@Url.Action("GetBlockSizeData", "Statistics")';
 
         Settings.prototype.ticker = '@ViewBag.Ticker';
         Settings.prototype.viewMode = '@Html.ViewMode()';

@@ -35,7 +35,8 @@
       "wwwroot/lib/bootstrap/js/bootstrap.bundle.js",
       "wwwroot/lib/clipboardjs/clipboard.min.js",
       "wwwroot/lib/highlight/highlight.pack.js",
-      "wwwroot/lib/knockoutjs/knockout-min.js"
+      "wwwroot/lib/knockoutjs/knockout-min.js",
+      "wwwroot/lib/momentjs/moment.min.js"
     ],
     "minify": {
       "enabled": true,
@@ -80,6 +81,17 @@
     "outputFileName": "wwwroot/js/paging.min.js",
     "inputFiles": [
       "wwwroot/js/paging.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/statistics.min.js",
+    "inputFiles": [
+      "wwwroot/js/statistics.js"
     ],
     "minify": {
       "enabled": true,

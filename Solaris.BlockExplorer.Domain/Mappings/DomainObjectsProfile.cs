@@ -26,6 +26,9 @@ namespace Solaris.BlockExplorer.Domain.Mappings
             CreateMap<DataAccess.Entities.Read.Api.Address, Models.Api.Address>();
             CreateMap<DataAccess.Entities.Read.Api.AddressTransaction, Models.Api.AddressTransaction>();
             CreateMap<WealthChartData, Models.WealthChartData>();
+            CreateMap<DifficultyData, Models.DifficultyData>().ForMember(p => p.Time, expression => expression.ConvertUsing(new TimeConverter()));
+            CreateMap<TransactionCountData, Models.TransactionCountData>();
+            CreateMap<BlockSizeData, Models.BlockSizeData>();
         }  
     }
 }

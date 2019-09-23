@@ -110,6 +110,9 @@
     <Build Include="storedprocedures\StoredProcedures\Read\GetRichList.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetWealthChart.sql" />
     <Build Include="storedprocedures\StoredProcedures\Delete\ClearAllData.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetDifficultyData.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetTransactionCountData.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\GetBlockSizeData.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Solaris.BlockExplorer.Database.refactorlog" />

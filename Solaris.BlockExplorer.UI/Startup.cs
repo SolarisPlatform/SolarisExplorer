@@ -97,6 +97,15 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<IWealthChartDataRepository, WealthChartDataRepository>()
                 .AddScoped<IWealthChartDataService, WealthChartDataService>()
                 .AddScoped<IWealthChartDataModelService, WealthChartDataModelService>()
+                .AddScoped<IDifficultyDataRepository, DifficultyDataRepository>()
+                .AddScoped<IDifficultyDataService, DifficultyDataService>()
+                .AddScoped<IDifficultyDataModelService, DifficultyDataModelService>()
+                .AddScoped<ITransactionCountDataRepository, TransactionCountDataRepository>()
+                .AddScoped<ITransactionCountDataService, TransactionCountDataService>()
+                .AddScoped<ITransactionCountDataModelService, TransactionCountDataModelService>()
+                .AddScoped<IBlockSizeDataRepository, BlockSizeDataRepository>()
+                .AddScoped<IBlockSizeDataService, BlockSizeDataService>()
+                .AddScoped<IBlockSizeDataModelService, BlockSizeDataModelService>()
                 .AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory {ConnectionString = Configuration.GetConnectionString("SolarisExplorerDatabase")})
                 .AddScoped(provider =>
                 {

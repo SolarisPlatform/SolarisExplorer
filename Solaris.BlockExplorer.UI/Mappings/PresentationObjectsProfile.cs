@@ -25,6 +25,9 @@ namespace Solaris.BlockExplorer.UI.Mappings
             CreateMap<Domain.Models.Api.Address, Models.Api.AddressModel>();
             CreateMap<Domain.Models.Api.AddressTransaction, Models.Api.AddressTransactionModel>();
             CreateMap<Domain.Models.WealthChartData, Models.WealthChartDataModel>();
+            CreateMap<Domain.Models.DifficultyData, Models.DifficultyDataModel>();
+            CreateMap<Domain.Models.TransactionCountData, Models.TransactionCountDataModel>();
+            CreateMap<Domain.Models.BlockSizeData, Models.BlockSizeDataModel>();
         }
     }
 }

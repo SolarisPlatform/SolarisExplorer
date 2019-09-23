@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Statistics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row">
+        <div class="col-6 mt-2">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="title-bottom-border mb-2">
+                        Difficulty
+                    </h4>
+                    <img src="~/images/loading.svg" id="difficultyChartLoading" title="Loading..." alt="Loading..." />
+                    <canvas id="difficultyChart" class="collapse"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 mt-2">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="title-bottom-border mb-2">
+                        Transactions per block
+                    </h4>
+                    <img src="~/images/loading.svg" id="transactionCountChartLoading" title="Loading..." alt="Loading..."/>
+                    <canvas id="transactionCountChart" class="collapse"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 mt-2">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="title-bottom-border mb-2">
+                        Block size
+                    </h4>
+                    <img src="~/images/loading.svg" id="blockSizeChartLoading" title="Loading..." alt="Loading..." />
+                    <canvas id="blockSizeChart" class="collapse"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="~/js/chart.min.js" asp-append-version="true"></script>
+<script src="~/js/statistics.min.js" asp-append-version="true"></script>
