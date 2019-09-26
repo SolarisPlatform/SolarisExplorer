@@ -31,8 +31,8 @@
                         <p>Returns information for given address.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getaddress/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getaddress/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getaddress/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -42,8 +42,8 @@
                         <p>Returns current balance of given address.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getbalance/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getbalance/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getbalance/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -53,8 +53,8 @@
                         <p>Returns last [count] transactions greater than [min]</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getlasttxs/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM/100/1</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getlasttxs/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM/100/1")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getlasttxs/XaPKW2C9g4UCxSSQXbK9TTjbmXgpx2gwZM/100/1")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -64,8 +64,8 @@
                         <p>Returns information about the block with the given hash.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getblock?hash=3ae44db970654a765a8dfcacadcdb2e4c8c32c43bd72a56ff8f3b944dcbd64e8</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getblock?hash=3ae44db970654a765a8dfcacadcdb2e4c8c32c43bd72a56ff8f3b944dcbd64e8")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getblock?hash=3ae44db970654a765a8dfcacadcdb2e4c8c32c43bd72a56ff8f3b944dcbd64e8")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -75,8 +75,8 @@
                         <p>Returns the hash of the block at a given height, where index 0 is the genesis block.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getblockhash?index=1</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getblockhash?index=1")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getblockhash?index=1")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -86,8 +86,8 @@
                         <p>Returns the current difficulty.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getdifficulty</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getdifficulty")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getdifficulty")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -97,8 +97,8 @@
                         <p>Returns current money supply.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getmoneysupply</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getmoneysupply")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getmoneysupply")'></i>
                     </div>
                 </div>
                 <div class="row rows">
@@ -108,8 +108,8 @@
                         <p>Returns raw transaction representation for given transaction id.</p>
                     </div>
                     <div class="col-6">
-                        <code>api/getrawtransaction?txId=836cf908bcf0693f5e9cb7d61a45d4441a787b86993305399231bb052f3a7bd1</code>
-                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text="todo"></i>
+                        <code>@(ViewBag.Url + "api/getrawtransaction?txId=836cf908bcf0693f5e9cb7d61a45d4441a787b86993305399231bb052f3a7bd1")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getrawtransaction?txId=836cf908bcf0693f5e9cb7d61a45d4441a787b86993305399231bb052f3a7bd1")'></i>
                     </div>
                 </div>
             </div>

@@ -18,6 +18,7 @@ namespace Solaris.BlockExplorer.UI.Controllers
             var section = _configuration.GetSection("Asset");
             var name = section.GetValue<string>("Name");
             var ticker = section.GetValue<string>("Ticker");
+            var url = section.GetValue<string>("ExplorerUrl");
 
             var socials = _configuration.GetSection("Socials");
             var website = socials.GetValue<string>("Website");
@@ -32,6 +33,7 @@ namespace Solaris.BlockExplorer.UI.Controllers
 
             ViewBag.Name = name;
             ViewBag.Ticker = ticker;
+            ViewBag.Url = url;
             ViewBag.Website = website;
             ViewBag.Twitter = twitter;
             ViewBag.Facebook = facebook;
