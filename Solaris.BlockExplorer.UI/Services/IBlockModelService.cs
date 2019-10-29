@@ -8,6 +8,7 @@ namespace Solaris.BlockExplorer.UI.Services
     {
         Task<PagedResultModel<IEnumerable<BlockModel>>> GetBlocks(PagingModel paging);
         Task<IBlockModel> GetBlock(string blockId);
+        Task<IBlockModel> GetBlock(long height);
         Task<long> GetBlockHeight();
     }
 }

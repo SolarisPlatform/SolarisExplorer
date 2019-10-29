@@ -56,5 +56,11 @@ namespace Solaris.BlockExplorer.UI.Controllers
 
             return PartialView();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Block(long height)
+        {
+            return PartialView(await _blockModelService.GetBlock(height));
+        }
     }
 }

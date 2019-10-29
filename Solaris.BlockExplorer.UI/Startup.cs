@@ -16,6 +16,7 @@ using Solaris.BlockExplorer.Domain.Factories;
 using Solaris.BlockExplorer.Domain.Mappings;
 using Solaris.BlockExplorer.Domain.Services;
 using Solaris.BlockExplorer.Domain.Services.Api;
+using Solaris.BlockExplorer.UI.Hubs;
 using Solaris.BlockExplorer.UI.Mappings;
 using Solaris.BlockExplorer.UI.Services;
 using Solaris.BlockExplorer.UI.Services.Api;
@@ -112,6 +113,8 @@ namespace Solaris.BlockExplorer.UI
                     var dbConnectionFactory = provider.GetService<IDbConnectionFactory>();
                     return dbConnectionFactory.CreateConnection();
                 });
+
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddHttpClient("CoinGecko", (provider, client) =>
             {
@@ -226,6 +229,8 @@ namespace Solaris.BlockExplorer.UI
                     template: "api/getlasttxs/{PublicKey}/{Count}/{Min}");
 
             });
+
+            app.UseSignalR(routes => { routes.MapHub<FrontendNotificationHub>("/wsbn"); });
         }
     }
 }

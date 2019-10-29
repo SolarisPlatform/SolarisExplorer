@@ -7,6 +7,7 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
     {
         Task<Entities.Read.PagedResult<IEnumerable<Entities.Read.Block>>> GetBlocks(Entities.Read.Paging paging);
         Task<Entities.Read.Block> GetBlock(string blockId);
+        Task<Entities.Read.Block> GetBlock(long height);
         Task<long> GetBlockHeight();
         Task Insert(Entities.Create.Block block);
     }

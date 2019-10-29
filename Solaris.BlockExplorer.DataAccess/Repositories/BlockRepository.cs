@@ -2,6 +2,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using Solaris.BlockExplorer.DataAccess.Entities.Read;
 
 
 namespace Solaris.BlockExplorer.DataAccess.Repositories
@@ -15,16 +16,16 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
             _dbConnection = dbConnection;
         }
 
-        public async Task<Entities.Read.PagedResult<IEnumerable<Entities.Read.Block>>> GetBlocks(Entities.Read.Paging paging)
+        public async Task<PagedResult<IEnumerable<Block>>> GetBlocks(Paging paging)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@ReturnValue", dbType: DbType.Int64, direction: ParameterDirection.Output);
             parameters.Add("@PageSize", value: paging.PageSize, dbType: DbType.Int64, direction: ParameterDirection.Input);
             parameters.Add("@PageNumber", value: paging.PageNumber, dbType: DbType.Int64, direction: ParameterDirection.Input);
 
-            var result = _dbConnection.QueryAsync<Entities.Read.Block>("storedprocedures.GetBlocks", parameters, commandType: CommandType.StoredProcedure);
+            var result = _dbConnection.QueryAsync<Block>("storedprocedures.GetBlocks", parameters, commandType: CommandType.StoredProcedure);
 
-            return new Entities.Read.PagedResult<IEnumerable<Entities.Read.Block>>
+            return new PagedResult<IEnumerable<Block>>
             {
                 Result = await result,
                 CurrentPage = paging.PageNumber,
@@ -33,12 +34,22 @@ namespace Solaris.BlockExplorer.DataAccess.Repositories
             };
         }
 
-        public Task<Entities.Read.Block> GetBlock(string blockId)
+        public Task<Block> GetBlock(string blockId)
         {
-            return _dbConnection.QuerySingleAsync<Entities.Read.Block>("storedprocedures.GetBlock", 
+            return _dbConnection.QuerySingleAsync<Block>("storedprocedures.GetBlock", 
                 new
                 {
                     blockId
+                },
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public Task<Block> GetBlock(long height)
+        {
+            return _dbConnection.QuerySingleAsync<Block>("storedprocedures.GetBlockByHeight", 
+                new
+                {
+                    height
                 },
                 commandType: CommandType.StoredProcedure);
         }

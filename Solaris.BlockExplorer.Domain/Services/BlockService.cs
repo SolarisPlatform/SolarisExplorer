@@ -28,6 +28,12 @@ namespace Solaris.BlockExplorer.Domain.Services
             return _mapper.Map<Block>(block);
         }
 
+        public async Task<Block> GetBlock(long height)
+        {
+            var block = await _blockRepository.GetBlock(height);
+            return _mapper.Map<Block>(block);
+        }
+
         public Task<long> GetBlockHeight()
         {
             return _blockRepository.GetBlockHeight();

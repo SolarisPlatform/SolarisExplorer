@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = $"{ViewBag.Name} Block Explorer";
 }
-@using System.Globalization
+
 @model Solaris.BlockExplorer.UI.Models.ViewModels.IBlocksViewModel
 
 <div class="row mt-2">
@@ -77,33 +77,10 @@
                     <div class="col row-header-column text-right">Time</div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12" id="rows">
                         @foreach (var block in Model.Blocks.Result)
                         {
-                            <div class="row rows">
-                                <div class="col-2 d-md-none row-header-column text-left">
-                                    <a href="@Url.Action("Index", "Block", new {id = block.Id})">@block.Height</a>
-                                </div>
-                                <div class="col-1 d-none d-md-block row-header-column text-left">
-                                    <a href="@Url.Action("Index", "Block", new {id = block.Id})">@block.Height</a>
-                                </div>
-                                <div class="col-5 col-xl-4 d-none d-md-block row-column text-left">
-                                    <a href="@Url.Action("Index", "Block", new {id = block.Id})">@block.Id</a>
-                                </div>
-
-                                <div class="col d-none d-xl-block row-column text-center">
-                                    <span class="badge badge-primary">@(Math.Round(block.Size / 1024m, 4)) kB</span>
-                                </div>
-                                <div class="col d-none d-sm-block row-column text-right">
-                                    @block.Transactions
-                                </div>
-                                <div class="col row-column text-right">
-                                    @block.OutputValue @ViewBag.Ticker
-                                </div>
-                                <div class="col row-column text-right">
-                                    @DateTimeOffset.FromUnixTimeSeconds(block.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
-                                </div>
-                            </div>
+                            <partial model="block" name="Block"/>
                         }
                     </div>
                 </div>

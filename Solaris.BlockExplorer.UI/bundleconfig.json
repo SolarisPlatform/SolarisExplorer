@@ -31,12 +31,15 @@
     "outputFileName": "wwwroot/js/libs.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/jquery-ui/ui/effect.js",
+      "wwwroot/lib/jquery-ui/ui/effects/effect-highlight.js",
       "wwwroot/lib/bootstrap/js/bootstrap.js",
       "wwwroot/lib/bootstrap/js/bootstrap.bundle.js",
       "wwwroot/lib/clipboardjs/clipboard.min.js",
       "wwwroot/lib/highlight/highlight.pack.js",
       "wwwroot/lib/knockoutjs/knockout-min.js",
-      "wwwroot/lib/momentjs/moment.min.js"
+      "wwwroot/lib/momentjs/moment.min.js",
+      "wwwroot/lib/signalr/signalr.min.js"
     ],
     "minify": {
       "enabled": true,

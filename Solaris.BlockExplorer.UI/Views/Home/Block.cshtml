@@ -1,0 +1,25 @@
+﻿@using System.Globalization
+<div class="row rows">
+    <div class="col-2 d-md-none row-header-column text-left">
+        <a href="@Url.Action("Index", "Block", new {id = Model.Id})">@Model.Height</a>
+    </div>
+    <div class="col-1 d-none d-md-block row-header-column text-left">
+        <a href="@Url.Action("Index", "Block", new {id = Model.Id})">@Model.Height</a>
+    </div>
+    <div class="col-5 col-xl-4 d-none d-md-block row-column text-left">
+        <a href="@Url.Action("Index", "Block", new {id = Model.Id})">@Model.Id</a>
+    </div>
+
+    <div class="col d-none d-xl-block row-column text-center">
+        <span class="badge badge-primary">@(Math.Round(Model.Size / 1024m, 4)) kB</span>
+    </div>
+    <div class="col d-none d-sm-block row-column text-right">
+        @Model.Transactions
+    </div>
+    <div class="col row-column text-right">
+        @Model.OutputValue @ViewBag.Ticker
+    </div>
+    <div class="col row-column text-right">
+        @DateTimeOffset.FromUnixTimeSeconds(Model.Time).DateTime.ToString(CultureInfo.CurrentUICulture)
+    </div>
+</div>
