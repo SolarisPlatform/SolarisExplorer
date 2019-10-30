@@ -245,10 +245,10 @@ namespace Solaris.BlockExplorer.Indexer
 
                                     await transactionRepository.Insert(transaction, inputs, outputs);
 
-                                    await FrontEndNotification(block.Height);
-
                                     blockOrder++;
                                 }
+
+                                await FrontEndNotification(block.Height);
 
                                 if (block.Height % 100 == 0 || i == blockCount || i == rpcBlockCount)
                                     Console.WriteLine($"{block.Height} - {block.Id}");
