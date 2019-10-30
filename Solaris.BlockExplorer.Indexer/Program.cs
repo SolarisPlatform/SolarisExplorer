@@ -352,16 +352,23 @@ namespace Solaris.BlockExplorer.Indexer
 
         private static async Task FrontEndNotification(long height)
         {
-            var configuration = _serviceProvider.GetService<IConfiguration>();
-            var frontendNotificationSection = configuration.GetSection("FrontendNotification");
+            try
+            {
+                var configuration = _serviceProvider.GetService<IConfiguration>();
+                var frontendNotificationSection = configuration.GetSection("FrontendNotification");
 
-            if (frontendNotificationSection == null || !frontendNotificationSection.GetValue<bool>("IsEnabled"))
-                return;
+                if (frontendNotificationSection == null || !frontendNotificationSection.GetValue<bool>("IsEnabled"))
+                    return;
 
-            var httpClientFactory = _serviceProvider.GetService<IHttpClientFactory>();
-            var httpClient = httpClientFactory.CreateClient("FrontendNotification");
+                var httpClientFactory = _serviceProvider.GetService<IHttpClientFactory>();
+                var httpClient = httpClientFactory.CreateClient("FrontendNotification");
 
-            await httpClient.GetAsync($"?height={height}");
+                await httpClient.GetAsync($"?height={height}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("FE-ERROR => {0}", e.Message);
+            }
         }
     }
 }
