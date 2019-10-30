@@ -12,13 +12,26 @@ function connectFeed() {
     connection.on("wsbn",
         (message) => {
             var element = $("#lastBlockHeight");
-            element.html(message.height);
+
+            if (parseInt(element.html()) < message.height)
+                element.html(message.height);
 
             highLight(element);
 
             $.post(_endpoints.block, { height: message.height }, function (block) {
-                var row = $.parseHTML(block);
-                $("#rows").prepend(row);
+                const row = $.parseHTML(block);
+                const existingRow = $(`#${message.height}`);
+                
+                if (existingRow.length) {
+                    existingRow.replaceWith(row);
+                } else {
+                    const firstBlock = $("#rows .row").first();
+                    var firstBlockHeight = parseInt(firstBlock.prop("id"));
+
+                    if (firstBlockHeight < message.height)
+                        $("#rows").prepend(row);
+                }
+
                 highLight(row);
             });
         });
