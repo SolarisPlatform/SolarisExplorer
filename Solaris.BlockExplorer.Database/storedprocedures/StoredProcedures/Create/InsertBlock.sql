@@ -14,8 +14,8 @@
 	@PreviousBlock CHAR(64),
 	@Json VARCHAR(MAX)
 AS
-DECLARE @TransactionIds TABLE (Id BIGINT NOT NULL)
-DECLARE @BlockIds TABLE (Id BIGINT NOT NULL)
+DECLARE @TransactionIds TABLE (Id CHAR(64) NOT NULL)
+DECLARE @BlockIds TABLE (Id CHAR(64) NOT NULL)
 
 IF EXISTS(SELECT * FROM tables.Blocks WHERE tables.Blocks.Height = @Height)
 BEGIN
