@@ -14,31 +14,141 @@
 	@PreviousBlock CHAR(64),
 	@Json VARCHAR(MAX)
 AS
+DECLARE @TransactionIds TABLE (Id BIGINT NOT NULL)
+DECLARE @BlockIds TABLE (Id BIGINT NOT NULL)
+
 IF EXISTS(SELECT * FROM tables.Blocks WHERE tables.Blocks.Height = @Height)
 BEGIN
-	DELETE FROM	
+	INSERT INTO 
+		@BlockIds
+	SELECT
+		Id 
+	FROM 
 		tables.Blocks
 	WHERE
 		tables.Blocks.Height >= @Height
 
+	INSERT INTO
+		@TransactionIds
+	SELECT
+		tables.Transactions.Id
+	FROM
+		tables.Transactions
+	WHERE
+		tables.Transactions.BlockId 
+	IN
+	(
+		SELECT 
+			Id 
+		FROM 
+			@BlockIds
+	)
+
+	DELETE FROM
+		tables.Inputs
+	WHERE
+		tables.Inputs.TransactionId
+	IN
+	(
+		SELECT
+			Id
+		FROM
+			@TransactionIds
+	)
+
+	DELETE FROM
+		tables.Blocks
+	WHERE
+		tables.Blocks.Id 
+	IN
+	(
+		SELECT 
+			Id 
+		FROM 
+			@BlockIds
+	)
+
 	RETURN;
 END
-
-IF NOT @PreviousBlock IS NULL AND NOT EXISTS(SELECT * FROM tables.Blocks WHERE tables.Blocks.Id = @PreviousBlock)
+IF EXISTS(SELECT * FROM tables.Transactions WHERE tables.Transactions.BlockId = @Id)
 BEGIN
-;WITH CTE AS
-(
-SELECT TOP 2 *
-FROM 
-	tables.Blocks
-ORDER BY 
-	tables.Blocks.Height 
-DESC
-)
-DELETE FROM CTE;
-RETURN;
-END
+	INSERT INTO 
+		@TransactionIds
+	SELECT 
+		Id 
+	FROM 
+		tables.Transactions 
+	WHERE 
+		tables.Transactions.BlockId = @Id
 
+	DELETE FROM
+		tables.Inputs
+	WHERE
+		tables.Inputs.TransactionId
+	IN
+	(
+		SELECT
+			Id
+		FROM
+			@TransactionIds
+	)
+
+	DELETE FROM
+		tables.Blocks
+	WHERE
+		tables.Blocks.Id = @Id
+END
+IF NOT @PreviousBlock IS NULL AND NOT EXISTS(SELECT * FROM tables.Blocks WHERE tables.Blocks.Id = @PreviousBlock)
+BEGIN	
+	INSERT INTO 
+		@BlockIds
+	SELECT TOP (2)
+		Id 
+	FROM 
+		tables.Blocks
+	ORDER BY
+		tables.Blocks.Height
+	DESC
+
+	INSERT INTO
+		@TransactionIds
+	SELECT
+		tables.Transactions.Id
+	FROM
+		tables.Transactions
+	WHERE
+		tables.Transactions.BlockId 
+	IN
+	(
+		SELECT Id FROM @BlockIds
+	)
+
+	DELETE FROM
+		tables.Inputs
+	WHERE
+		tables.Inputs.TransactionId
+	IN
+	(
+		SELECT
+			Id
+		FROM
+			@TransactionIds
+	)
+
+	DELETE FROM
+		tables.Blocks
+	WHERE
+		tables.Blocks.Id
+	IN
+	(
+		SELECT
+			Id
+		FROM
+			@BlockIds
+	)
+	
+	RETURN;
+END
 INSERT INTO
 	tables.Blocks
 	(

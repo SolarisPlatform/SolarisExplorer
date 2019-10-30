@@ -17,49 +17,7 @@ AS
 	BEGIN
 		RETURN;
 	END
-	IF EXISTS(SELECT * FROM tables.Transactions WHERE tables.Transactions.BlockId = @BlockId)
-	BEGIN
-		DELETE FROM
-			tables.Inputs
-		WHERE
-			tables.Inputs.TransactionId = 
-				(
-					SELECT 
-						Id 
-					FROM 
-						tables.Transactions 
-					WHERE 
-						tables.Transactions.BlockId = @BlockId
-				)
-		DELETE FROM
-			tables.Outputs
-		WHERE
-			tables.Outputs.TransactionId = 
-				(
-					SELECT 
-						Id 
-					FROM 
-						tables.Transactions 
-					WHERE 
-						tables.Transactions.BlockId = @BlockId
-				)
-		DELETE FROM
-			tables.AddressTransactions
-		WHERE
-			tables.AddressTransactions.TransactionId = 
-				(
-					SELECT 
-						Id 
-					FROM 
-						tables.Transactions 
-					WHERE 
-						tables.Transactions.BlockId = @BlockId
-				)
-		DELETE FROM
-			tables.Transactions 
-		WHERE
-			tables.Transactions.BlockId = @BlockId
-	END
+	
 	DECLARE @OutputSum DECIMAL(28, 8) =
 	ISNULL(
 	(
