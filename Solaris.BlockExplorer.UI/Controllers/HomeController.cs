@@ -13,6 +13,7 @@ namespace Solaris.BlockExplorer.UI.Controllers
         private readonly ICoinDataService _coinDataService;
         private readonly ICurrentTotalSupplyModelService _currentTotalSupplyModelService;
         private readonly IConfiguration _configuration;
+        
         public HomeController(IBlockModelService blockModelService, IConfiguration configuration, ICoinDataService coinDataService, ICurrentTotalSupplyModelService currentTotalSupplyModelService) : base(configuration)
         {
             _blockModelService = blockModelService;

@@ -115,6 +115,7 @@ namespace Solaris.BlockExplorer.UI
                 });
 
             services.AddSignalR();
+            services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddHttpClient("CoinGecko", (provider, client) =>
             {

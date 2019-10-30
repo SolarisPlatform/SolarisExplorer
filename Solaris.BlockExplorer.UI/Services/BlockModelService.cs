@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using Solaris.BlockExplorer.Domain.Models;
 using Solaris.BlockExplorer.Domain.Services;
 using Solaris.BlockExplorer.UI.Models;
@@ -11,34 +12,66 @@ namespace Solaris.BlockExplorer.UI.Services
     {
         private readonly IBlockService _blockService;
         private readonly IMapper _mapper;
-
-        public BlockModelService(IBlockService blockService, IMapper mapper)
+        private readonly IMemoryCache _memoryCache;
+        public BlockModelService(IBlockService blockService, IMapper mapper, IMemoryCache memoryCache)
         {
             _blockService = blockService;
             _mapper = mapper;
+            _memoryCache = memoryCache;
         }
 
         public async Task<PagedResultModel<IEnumerable<BlockModel>>> GetBlocks(PagingModel paging)
         {
-            var blocks = await _blockService.GetBlocks(_mapper.Map<Paging>(paging));
+            var key = $"Blocks_{paging.PageNumber}_{paging.PageSize}";
+
+            if (!_memoryCache.TryGetValue(key, out PagedResult<IEnumerable<Block>> blocks))
+            {
+                blocks = await _blockService.GetBlocks(_mapper.Map<Paging>(paging));
+                CacheItemKeys.Keys.Add(key);
+                _memoryCache.Set(key, blocks);
+            }
+
             return _mapper.Map<PagedResultModel<IEnumerable<BlockModel>>>(blocks);
         }
 
         public async Task<IBlockModel> GetBlock(string blockId)
         {
-            var block = await _blockService.GetBlock(blockId);
-            return _mapper.Map<BlockModel>(block);
+            var key = blockId;
+
+            if (!_memoryCache.TryGetValue(key, out IBlockModel block))
+            {
+                block = _mapper.Map<BlockModel>(await _blockService.GetBlock(blockId));
+                CacheItemKeys.Keys.Add(key);
+                _memoryCache.Set(key, block);
+            }
+
+            return block;
         }
 
         public async Task<IBlockModel> GetBlock(long height)
         {
-            var block = await _blockService.GetBlock(height);
-            return _mapper.Map<BlockModel>(block);
+            var key = height;
+            if (!_memoryCache.TryGetValue(key, out IBlockModel block))
+            {
+                block = _mapper.Map<BlockModel>(await _blockService.GetBlock(height));
+                CacheItemKeys.Keys.Add(key.ToString());
+                _memoryCache.Set(key, block);
+            }
+
+            return block;
         }
 
-        public Task<long> GetBlockHeight()
+        public async Task<long> GetBlockHeight()
         {
-            return _blockService.GetBlockHeight();
+            const string key = "BlockHeight";
+            if (!_memoryCache.TryGetValue(key, out long blockHeight))
+            {
+                blockHeight = await _blockService.GetBlockHeight();
+                CacheItemKeys.Keys.Add(key);
+                _memoryCache.Set(key, blockHeight);
+            }
+
+            return blockHeight;
         }
     }
 }
