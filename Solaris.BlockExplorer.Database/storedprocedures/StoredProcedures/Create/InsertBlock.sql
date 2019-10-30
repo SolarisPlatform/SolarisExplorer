@@ -14,6 +14,13 @@
 	@PreviousBlock CHAR(64),
 	@Json VARCHAR(MAX)
 AS
+IF EXISTS(SELECT * FROM tables.Blocks WHERE tables.Blocks.Height = @Height)
+BEGIN
+	DELETE FROM	
+		tables.Blocks
+	WHERE
+		tables.Blocks.Height >= @Height
+END
 INSERT INTO
 	tables.Blocks
 	(
