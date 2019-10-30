@@ -154,7 +154,7 @@ namespace Solaris.BlockExplorer.Indexer
                     await Task.Delay(500);
                     try
                     {
-                        if (c % 1200 == 1)
+                        if (c % 12000 == 1)
                             Console.WriteLine("Still running");
 
                         var rpcBlockCountService = _serviceProvider.GetService<IRpcBlockCountService>();
