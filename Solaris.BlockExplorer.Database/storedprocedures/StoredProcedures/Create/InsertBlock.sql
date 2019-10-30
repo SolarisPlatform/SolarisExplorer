@@ -20,7 +20,25 @@ BEGIN
 		tables.Blocks
 	WHERE
 		tables.Blocks.Height >= @Height
+
+	RETURN;
 END
+
+IF NOT @PreviousBlock IS NULL AND NOT EXISTS(SELECT * FROM tables.Blocks WHERE tables.Blocks.Id = @PreviousBlock)
+BEGIN
+;WITH CTE AS
+(
+SELECT TOP 2 *
+FROM 
+	tables.Blocks
+ORDER BY 
+	tables.Blocks.Height 
+DESC
+)
+DELETE FROM CTE;
+RETURN;
+END
+
 INSERT INTO
 	tables.Blocks
 	(

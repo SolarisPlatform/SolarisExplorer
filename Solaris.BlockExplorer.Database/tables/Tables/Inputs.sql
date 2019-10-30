@@ -7,7 +7,8 @@
 	[Asm]     VARCHAR (2048)   NULL,
     [Hex]     VARCHAR (2048)   NULL,
     CONSTRAINT [PK_Inputs] PRIMARY KEY ([Id]), 
-    CONSTRAINT [FK_Inputs_Outputs] FOREIGN KEY ([OutputId]) REFERENCES [tables].[Outputs]([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_Inputs_Outputs] FOREIGN KEY ([OutputId]) REFERENCES [tables].[Outputs]([Id]) ON DELETE CASCADE, 
+    CONSTRAINT [FK_Inputs_Transactions] FOREIGN KEY ([TransactionId]) REFERENCES [tables].[Transactions]([Id])
 );
 GO
 CREATE NONCLUSTERED INDEX [IX_Inputs_TransactionId]

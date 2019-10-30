@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [storedprocedures].[ClearAllData]
 
 AS
-EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?'
-EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
-EXEC sp_MSForEachTable 'DELETE FROM ?'
-EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
-EXEC sp_MSForEachTable 'ENABLE TRIGGER ALL ON ?'
+DELETE FROM tables.Inputs
+DELETE FROM tables.Blocks
+DELETE FROM tables.Outputs
+DELETE FROM tables.Transactions
+DELETE FROM tables.AddressTransactions

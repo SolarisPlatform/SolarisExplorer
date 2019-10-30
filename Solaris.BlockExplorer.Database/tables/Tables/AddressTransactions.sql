@@ -6,7 +6,7 @@
     [Time] BIGINT NOT NULL, 
     [Addresses] VARCHAR(MAX) NOT NULL, 
     [TransactionId] CHAR(64) NOT NULL, 
-    CONSTRAINT [FK_AddressTransactions_Transactions] FOREIGN KEY ([TransactionId]) REFERENCES [tables].[Transactions]([Id])
+    CONSTRAINT [FK_AddressTransactions_Transactions] FOREIGN KEY ([TransactionId]) REFERENCES [tables].[Transactions]([Id]) ON DELETE CASCADE
 )
 
 GO
