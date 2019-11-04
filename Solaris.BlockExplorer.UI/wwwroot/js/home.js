@@ -1,6 +1,9 @@
-﻿function loadMarketData() {
+﻿function loadMarketData(callBack) {
     $.post(_endpoints.marketData, function (result) {
         $("#marketData").html(result);
+
+        if (callBack)
+            callBack();
     });
 }
 function connectFeed() {
@@ -37,7 +40,11 @@ function connectFeed() {
         });
     startFeed(connection);
 }
-
+function setMarketDataInterval() {
+    setInterval(function() {
+        loadMarketData();
+    }, 30 * 1000);
+}
 function startFeed(connection) {
     connection.onclose(() => {
         console.log("Websocket closed, restarting...");
@@ -65,6 +72,8 @@ function highLight(element) {
 }
 
 $(document).ready(function () {
-    loadMarketData();
+    loadMarketData(function() {
+        setMarketDataInterval();
+    });
     connectFeed();
 });

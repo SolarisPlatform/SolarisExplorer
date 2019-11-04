@@ -205,7 +205,17 @@ namespace Solaris.BlockExplorer.Indexer
                                 var blockOrder = 0L;
                                 foreach (var rpcBlockTransaction in rpcBlock.Transactions)
                                 {
-                                    var rpcTransaction = await rpcTransactionService.GetTransaction(rpcBlockTransaction);
+                                    IRpcTransaction rpcTransaction = null;
+
+                                    try
+                                    {
+                                        rpcTransaction = await rpcTransactionService.GetTransaction(rpcBlockTransaction);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        if (block.Height > 0)
+                                            throw;
+                                    }
 
                                     if (rpcTransaction == null)
                                         continue;
@@ -213,7 +223,7 @@ namespace Solaris.BlockExplorer.Indexer
                                     var transaction = new Transaction
                                     {
                                         BlockTime = rpcTransaction.BlockTime,
-                                        Hash = rpcTransaction.Hash,
+                                        Hash = rpcTransaction.TxId,
                                         Id = rpcTransaction.TxId,
                                         Locktime = rpcTransaction.Locktime,
                                         Size = rpcTransaction.Size,

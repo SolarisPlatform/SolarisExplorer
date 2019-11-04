@@ -40,7 +40,7 @@
                     Current Price
                 </h4>
                 <div class="display-4 text-center" style="font-size: 1.8rem;">
-                    <strong>@ViewBag.Ticker</strong> $@Math.Round(ViewBag.CoinData.MarketData.CurrentPrice.Usd, 2)
+                    <strong>@ViewBag.Ticker</strong> $@ViewBag.CoinData.MarketData.CurrentPrice.Usd
                     <div class="text-lightblue lead">
                         @ViewBag.CoinData.MarketData.CurrentPrice.Btc BTC
                         @if (ViewBag.CoinData.MarketData.PriceChangePercentage24H > 0)

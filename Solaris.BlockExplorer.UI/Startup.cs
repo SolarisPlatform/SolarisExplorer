@@ -231,7 +231,10 @@ namespace Solaris.BlockExplorer.UI
 
             });
 
-            app.UseSignalR(routes => { routes.MapHub<FrontendNotificationHub>("/wsbn"); });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<FrontendNotificationHub>("/wsbn");
+            });
         }
     }
 }
