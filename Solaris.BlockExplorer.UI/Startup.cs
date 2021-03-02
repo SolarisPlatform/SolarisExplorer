@@ -77,6 +77,9 @@ namespace Solaris.BlockExplorer.UI
                 .AddScoped<DataAccess.Repositories.Api.IBlockRepository, DataAccess.Repositories.Api.BlockRepository>()
                 .AddScoped<Domain.Services.Api.IBlockService, Domain.Services.Api.BlockService>()
                 .AddScoped<Services.Api.IBlockModelService, Services.Api.BlockModelService>()
+                .AddScoped<DataAccess.Repositories.Api.IBlockCountRepository, DataAccess.Repositories.Api.BlockCountRepository>()
+                .AddScoped<Domain.Services.Api.IBlockCountService, Domain.Services.Api.BlockCountService>()
+                .AddScoped<Services.Api.IBlockCountModelService, Services.Api.BlockCountModelService>()
                 .AddScoped<IRawTransactionRepository, RawTransactionRepository>()
                 .AddScoped<IRawTransactionService, RawTransactionService>()
                 .AddScoped<IRawTransactionModelService, RawTransactionModelService>()
@@ -228,7 +231,6 @@ namespace Solaris.BlockExplorer.UI
                 routes.MapRoute(
                     name: "ApiGetAddressTransactions",
                     template: "api/getlasttxs/{PublicKey}/{Count}/{Min}");
-
             });
 
             app.UseSignalR(routes =>

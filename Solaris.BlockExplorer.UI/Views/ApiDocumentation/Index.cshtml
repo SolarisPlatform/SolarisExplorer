@@ -81,6 +81,17 @@
                 </div>
                 <div class="row rows">
                     <div class="col-6">
+                        <span class="lead">getblockcount</span>
+                        <span class="badge badge-primary d-none d-md-inline">api/getblockcount</span>
+                        <p>Returns the height of the most-work fully-validated chain.</p>
+                    </div>
+                    <div class="col-6">
+                        <code>@(ViewBag.Url + "api/getblockcount")</code>
+                        <i class="ml-2 fas fa-copy cursor-pointer clipboard" title="Copy to clipboard" data-clipboard-text='@(ViewBag.Url+"api/getblockcount")'></i>
+                    </div>
+                </div>
+                <div class="row rows">
+                    <div class="col-6">
                         <span class="lead">getdifficulty</span>
                         <span class="badge badge-primary d-none d-md-inline">api/getdifficulty</span>
                         <p>Returns the current difficulty.</p>

@@ -114,6 +114,7 @@
     <Build Include="storedprocedures\StoredProcedures\Read\GetTransactionCountData.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetBlockSizeData.sql" />
     <Build Include="storedprocedures\StoredProcedures\Read\GetBlockByHeight.sql" />
+    <Build Include="storedprocedures\StoredProcedures\Read\Api\GetBlockCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Solaris.BlockExplorer.Database.refactorlog" />
